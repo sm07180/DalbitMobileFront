@@ -772,6 +772,21 @@ export default function LeftSideAgora(props: {
             animationWrapElem.style.width = "100%";
             animationWrapElem.style.height = "100%";
             isCombo = count ? count > 1 : false;
+          } else if (location === "center") {
+            animationWrapElem.classList.add("center");
+            animationWrapElem.style.width = "100%";
+            animationWrapElem.style.height = "100%";
+            setTimeout(() => {
+              animationWrapElem.innerHTML = `
+                <div class="storyAni">
+                  일번줄<br/>
+                  이번줄<br/>
+                  삼번줄<br/>
+                  사번줄<br/>                  
+                </div>
+              `;
+            }, 3000)
+            
           } else if (location === "topRight") {
             animationWrapElem.classList.add("topRight");
 
@@ -1546,6 +1561,32 @@ const LottieDisplayStyled = styled.div`
   z-index: 3;
   pointer-events: none;
 
+  .storyAni {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -70%);
+    width:400px; height:333px;
+    padding: 75px 82px 90px;
+    background: url("https://image.dalbitlive.com/ani/story/ani_story-bg.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    animation: STORY_ANI 0.5s ease forwards;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 28px;
+    color: #303030;
+  }
+  @keyframes STORY_ANI {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
   .animation-wrapper {
     position: absolute;
 
@@ -1630,6 +1671,9 @@ const LottieDisplayStyled = styled.div`
           opacity: 1;
         }
       }
+    }
+    &.center {
+
     }
 
     &.midLeft {
