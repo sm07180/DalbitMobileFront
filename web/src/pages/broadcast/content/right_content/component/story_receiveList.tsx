@@ -32,6 +32,7 @@ export default function ReceiveList(props: any) {
         roomNo: roomNo,
         page: 1,
         records: 9999,
+        plusYn: 'n'
       });
       if (result === "success") {
         setStoryArr(data.list);

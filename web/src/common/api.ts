@@ -464,6 +464,7 @@ export async function getStory(data: {
   roomNo: string;
   page?: number;
   records?: number;
+  plusYn?: string;
 }): Promise<responseType> {
   return await ajax(Method.GET, "/broad/story", data);
 }

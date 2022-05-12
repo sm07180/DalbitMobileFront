@@ -8,7 +8,7 @@ import {useDispatch} from "react-redux";
 
 export default function SendingReceive(props: any) {
   const dispatch = useDispatch();
-  const { roomNo } = props;
+  const { roomNo, roomInfo } = props;
 
   const [storyMsg, setStoryMsg] = useState<string>("");  
 
@@ -18,6 +18,8 @@ export default function SendingReceive(props: any) {
       const { result, data, message } = await postStory({
         roomNo: roomNo,
         contents: storyMsg,
+        djMemNo: roomInfo?.bjMemNo,
+        plusYn: 'y'
       });
       if (result === "success") {
         setStoryMsg("");

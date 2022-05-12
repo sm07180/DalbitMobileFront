@@ -9,7 +9,7 @@ import SendingPlus from "./component/story_plusSend";
 type storyTabType = "receive" | "plus";
 
 export default function StoryList(props: any) {
-  const { roomOwner, roomNo } = props;
+  const { roomOwner, roomNo, roomInfo } = props;
 
   //state
   const [storyTab, setStoryTab] = useState<storyTabType>('receive');
@@ -20,18 +20,18 @@ export default function StoryList(props: any) {
       {roomOwner === true ?
         <>
           {storyTab === 'receive' ?
-              <ReceiveList roomNo={roomNo}></ReceiveList>
+              <ReceiveList roomNo={roomNo}/>
             :
-              <PlusList roomNo={roomNo}></PlusList>
+              <PlusList roomNo={roomNo}/>
           }
         </>
 
         :
         <>
           {storyTab === 'receive' ?
-                <SendingReceive roomNo={roomNo}></SendingReceive>
+                <SendingReceive roomNo={roomNo} roomInfo={roomInfo}/>
               :
-                <SendingPlus roomNo={roomNo}></SendingPlus>
+                <SendingPlus roomNo={roomNo} roomInfo={roomInfo}/>
             }
         </>
       }
