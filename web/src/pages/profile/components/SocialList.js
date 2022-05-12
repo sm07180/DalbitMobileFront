@@ -15,6 +15,7 @@ const SocialList = (props) => {
   const params = useParams();
   const socialRef = useRef([]);
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const profileData = useSelector(state => state.profile);
   const limitHeight = 64;
 
   console.log(socialList);
@@ -89,8 +90,8 @@ const SocialList = (props) => {
         if (type === "fanBoard" && (item?.viewOn === 0 && !isMyProfile && item.mem_no !== globalState.profile.memNo)) {
           return <React.Fragment key={item.replyIdx}/>
         }
-        const memNo = type === "feed" ? globalState.profile.memNo : item?.writerMemNo; //글 작성자
-        const detailPageParam = {history, action: "detail", type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: globalState.profile.memNo, fromMemNo: params?.memNo ? params.memNo : globalState.profile.memNo};
+        const memNo = type === "feed" ? profileData.memNo : item?.writerMemNo; //글 작성자
+        const detailPageParam = {history, action: "detail", type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: profileData.memNo, fromMemNo: params?.memNo ? params.memNo : globalState.profile.memNo};
         const modifyParam = {history, action: "modify", type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: globalState.profile.memNo};
         return (
           <div className="socialList" key={item.reg_no ? item.reg_no : item.replyIdx}>
@@ -102,11 +103,10 @@ const SocialList = (props) => {
               deleteEvent={() => deleteContents(type, item.reg_no ? item.reg_no : item.replyIdx, globalState.profile.memNo)}
               photoClick={() => photoClickEvent(item.mem_no)} />
 
-            <div className="socialContent">
+            <div className="socialContent" onClick={() => goProfileDetailPage(detailPageParam)}>
               <div className={`socialTextWrap ${isClicked[index] || type !== "feed" ? 'isMore' : ''}`}>
                 <div className="socialText" data-num={index}
                      ref={el => socialRef.current[index] = el}
-                     onClick={() => goProfileDetailPage(detailPageParam)}
                      dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents)}} />
                 {type === "feed" &&
                   <>

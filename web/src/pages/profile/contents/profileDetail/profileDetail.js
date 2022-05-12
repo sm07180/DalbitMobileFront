@@ -20,11 +20,10 @@ import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
 import {setProfileDetailData, setProfileTabData} from "redux/actions/profile";
 import {setGlobalCtxAlertStatus, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
-const ProfileDetail = () => {
+const ProfileDetail = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const member = useSelector(state => state.member);
   //context
   const {token, profile} = globalState;
   const {memNo, type, index} = useParams();
@@ -34,6 +33,7 @@ const ProfileDetail = () => {
   const replyRef = useRef(null);
   const replyButtonRef = useRef(null);  //button Ref
   const blurBlockStatus = useRef(false); // click 이벤트 막기용
+  const member = useSelector(state => state.member);
 
   //팝업 사진 스와이퍼
   const [showSlide, setShowSlide] = useState(false);
