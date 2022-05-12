@@ -31,6 +31,7 @@ export const InfoBox = (props) => {
 }
 
 export const BroadcastNotice = (props) => {
+  const history = useHistory();
   const { onClickNotice, swiperParams, swiperRef, noticeFixData, fetchHandleLike, noticeData } = props;
   return (
     <div className="broadcastNotice">
