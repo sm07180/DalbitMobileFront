@@ -17,6 +17,79 @@ import {profilePagingDefault} from "redux/types/profileType";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 
+// fan top 3, best cupid, team 박스 컴포넌트
+export const InfoBox = (props) => {
+  const {type, children, openSlidePop } = props; // top3, cupid, team
+  return (
+    <div className="box">
+      <div className="title" data-target-type={type} onClick={openSlidePop}>
+        <img src={`${IMG_SERVER}/profile/infoTitle-${type}.png`} alt={type} />
+      </div>
+      {children}
+    </div>
+  )
+}
+
+export const BroadcastNotice = (props) => {
+  const history = useHistory();
+  const { onClickNotice, swiperParams, swiperRef, noticeFixData, fetchHandleLike, noticeData } = props;
+  return (
+    <div className="broadcastNotice">
+      <div className="title" onClick={onClickNotice}>방송공지</div>
+      <Swiper {...swiperParams} ref={swiperRef}>
+        {noticeFixData?.fixedFeedList.map((v, idx) => {
+          const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
+          return (
+            <div key={idx}>
+              <div className="noticeBox">
+                <div className="badge">Notice</div>
+                <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
+                <FeedLike data={v} fetchHandleLike={fetchHandleLike} type={"notice"} likeType={"fix"} detailPageParam={detailPageParam} />
+              </div>
+            </div>
+          )
+        })}
+        {noticeData?.feedList.map((v, idx) => {
+          const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
+          return (
+            <div key={idx}>
+              <div className="noticeBox">
+                <div className="badge">Notice</div>
+                <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
+                <FeedLike data={v} fetchHandleLike={fetchHandleLike} type={"notice"} likeType={"nonFix"} detailPageParam={detailPageParam} />
+              </div>
+            </div>
+          )
+        })}
+      </Swiper>
+    </div>
+  )
+}
+
+export const BroadcastNoticeNone = (props) => {
+  const { onClickNotice, defaultNotice } = props;
+  return (
+    <div className="broadcastNotice">
+      <div className="title" onClick={onClickNotice}>방송공지</div>
+      <div className="swiper-wrapper">
+        <div className="swiper-slide" onClick={onClickNotice}>
+          <div className="noticeBox cursor">
+            <div className="badge">Notice</div>
+            <div className="text">{defaultNotice.contents}</div>
+            <div className="info">
+              <i className="likeOff">{defaultNotice.rcv_like_cnt}</i>
+              <i className="cmt">{defaultNotice.replyCnt}</i>
+            </div>
+            <button className="fixIcon">
+              <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const ProfileInfo = (props) => {
   const {data, goProfile, isMyProfile, openSlidePop} = props;
   const history = useHistory();
@@ -182,82 +255,6 @@ const ProfileInfo = (props) => {
     }
       // swiper.slideTo(0);
   }, [noticeData, noticeFixData]);
-  
-  {/* 내부 컴포넌트 */}
-  // fan top 3, best cupid, team 박스 컴포넌트
-  const InfoBox = (props) => {
-    const {type, children} = props; // top3, cupid, team
-    return (
-      <div className="box">
-        <div className="title" data-target-type={type} onClick={openSlidePop}>
-          <img src={`${IMG_SERVER}/profile/infoTitle-${type}.png`} alt={type} />
-        </div>
-        {children}
-      </div>
-    )
-  }
-
-  // 방송공지 컴포넌트
-  const BroadcastNotice = (props) => {
-    const {listNone} = props;
-    return (
-      <div className="broadcastNotice">
-        <div className="title" onClick={onClickNotice}>방송공지</div>
-        {!listNone ?
-        <Swiper {...swiperParams} ref={swiperRef}>
-        {/* 고정 공지글 */}
-        {noticeFixData?.fixedFeedList.map((v, idx) => {
-          const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
-          return (
-            <div key={idx}>
-              <div className="noticeBox">
-                <div className="badge">Notice</div>
-                <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
-                <FeedLike data={v} type={"notice"} likeType={"fix"} detailPageParam={detailPageParam} />
-                <i className="fixIcon">
-                  <img src={`${IMG_SERVER}/profile/bookmark-on.png`}/>
-                </i>
-              </div>
-            </div>
-          )
-        })}
-        {/* 일반 공지글 */}
-        {noticeData?.feedList.map((v, idx) => {
-          const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
-          return (
-            <div key={idx}>
-              <div className="noticeBox">
-                <div className="badge">Notice</div>
-                <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
-                <FeedLike data={v} type={"notice"} likeType={"nonFix"} detailPageParam={detailPageParam} />
-                <i className="fixIcon">
-                  <img src={`${IMG_SERVER}/profile/bookmark-off.png`} />
-                </i>
-              </div>
-            </div>
-          )
-        })}
-        </Swiper>
-        :
-        <div className="swiper-wrapper">
-          <div className="swiper-slide" onClick={onClickNotice}>
-            <div className="noticeBox cursor">
-              <div className="badge">Notice</div>
-              <div className="text">{defaultNotice.contents}</div>
-              <div className="info">
-                <i className="likeOff">{defaultNotice.rcv_like_cnt}</i>
-                <i className="cmt">{defaultNotice.replyCnt}</i>
-              </div>
-              <button className="fixIcon">
-                <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
-              </button>
-            </div>
-          </div>
-        </div>
-        }
-      </div>
-    )
-  }
 
   {/* 컴포넌트 시작 */}
   return (
@@ -278,7 +275,7 @@ const ProfileInfo = (props) => {
 
       {/* 랭킹 정보 */}
       <div className="rankInfo">
-        <InfoBox type="top3">
+        <InfoBox type="top3" openSlidePop={openSlidePop}>
           <div className="photoGroup">
           {data.fanRank.map((item, index) => {
             return (
@@ -297,7 +294,7 @@ const ProfileInfo = (props) => {
           })}
           </div>
         </InfoBox>
-        <InfoBox type="cupid">
+        <InfoBox type="cupid" openSlidePop={openSlidePop}>
           <div className="photo cursor" onClick={() => goProfile(data.cupidMemNo)}>
           {data.cupidProfImg && data.cupidProfImg.path ?
             <img src={data.cupidProfImg.thumb62x62} alt="BEST CUPID"/>
@@ -311,7 +308,7 @@ const ProfileInfo = (props) => {
       {/* 팀 정보 */}
       {(data.teamInfo !== undefined && data.teamInfo.team_no !== 0) &&
       <div className="teamInfo" data-team-no={data.teamInfo.team_no} onClick={goTeamDetailPage}>
-        <InfoBox type="team">
+        <InfoBox type="team" openSlidePop={openSlidePop}>
           <TeamSymbol data={data.teamInfo} />
           <div className="teamName">{data.teamInfo.team_name}</div>
         </InfoBox>
@@ -330,9 +327,11 @@ const ProfileInfo = (props) => {
 
       {/* 방송공지 정보 */}
       {noticeFixData.fixedFeedList.length !== 0 || noticeData.feedList.length !== 0 ?
-      <BroadcastNotice />
+      <BroadcastNotice onClickNotice={onClickNotice} swiperParams={swiperParams} swiperRef={swiperRef}
+                       noticeFixData={noticeFixData} noticeData={noticeData}
+      />
       : isMyProfile ?
-      <BroadcastNotice listNone={true} />
+      <BroadcastNoticeNone onClickNotice={onClickNotice} defaultNotice={defaultNotice} />
       :
       <></>
       }

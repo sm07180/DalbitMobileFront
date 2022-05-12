@@ -51,6 +51,7 @@ import ContentLab from './contentLab'
 import ContentStar from './contentStar'
 import ContentStarSchedule from './contentStarSchedule'
 import Wassup from './wassup'
+import BugReport from './bugreport'
 import moment from "moment";
 
 export default (props) => {
@@ -163,6 +164,8 @@ export default (props) => {
         return <ContentStar />
       case 'contentstar_schedule':
         return <ContentStarSchedule />
+      case 'bugreport':
+        return <BugReport />
       default:
         return <></>
         break
