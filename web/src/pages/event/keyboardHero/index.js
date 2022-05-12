@@ -2,13 +2,14 @@ import React, {useEffect, useRef, useState} from 'react';
 import {useHistory} from 'react-router-dom'
 import Swiper from 'react-id-swiper'
 import {IMG_SERVER} from 'context/config'
-import Header from 'components/ui/header/Header'
 import ListRow from 'components/ui/listRow/ListRow'
 import Api from "context/api";
 import './style.scss'
 import Utility from "common/utility/utility";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 import {useDispatch, useSelector} from "react-redux";
+import {Hybrid, isHybrid} from "context/hybrid";
+import qs from 'query-string';
 
 const keyboardHero = () => {
   const globalState = useSelector(({globalCtx}) => globalCtx);
@@ -19,7 +20,8 @@ const keyboardHero = () => {
 
   const [tabFixed, setTabFixed] = useState(false)
   const [tabType, setTabType] = useState('keyboardhero');
-  
+  const {webview} = qs.parse(location.search);
+
   const swiperParams = {
     loop: true,
     direction: 'vertical',
@@ -136,9 +138,21 @@ const keyboardHero = () => {
     });
   }
 
+  const clickBack = () => {
+    if (isHybrid() && webview && webview === 'new') {
+      Hybrid('CloseLayerPopup')
+    } else {
+      return history.goBack()
+    }
+  }
+
   return (
     <div id="keyboardHero">
-      <Header title="키보드 히어로 31" type="back"/>
+      <header className="back sticky">
+        <button className="back" onClick={()=>clickBack()}/>
+        <h1 className="title">키보드 히어로 31</h1>
+      </header>
+
       <img src={`${IMG_SERVER}/event/keyboardHero/mainTop.png`} alt="키보드 히어로 31" ref={mainTopRef}/>
       <section className={`tabWrap ${tabFixed ? 'fixed' : ''}`} ref={tabRef}>
         <div className="tabBox">
