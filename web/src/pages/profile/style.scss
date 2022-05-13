@@ -42,6 +42,16 @@
     @import "./scss/socialList.scss";
     // 플로팅 버튼 스타일
     @import "./scss/floatBtn.scss";
+    #noResult{
+      img{
+        width: 110px;
+        margin-bottom: 0;
+      }
+      span{
+        @include font(14px, $Medium, #666);
+        height: 21px;
+      }
+    }
   }
 
   #popSlide {

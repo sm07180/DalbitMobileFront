@@ -282,7 +282,7 @@ const ProfileInfo = (props) => {
           {[...Array(3 - data.fanRank.length)].map((item, index) => {
             return (
               <div className="photo" key={index}>
-                <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
+                <img src={`${IMG_SERVER}/common/photoNone-bgGray.png`} alt="기본 이미지" />
               </div>
             )
           })}
@@ -293,7 +293,7 @@ const ProfileInfo = (props) => {
           {data.cupidProfImg && data.cupidProfImg.path ?
             <img src={data.cupidProfImg.thumb62x62} alt="BEST CUPID"/>
             :
-            <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
+            <img src={`${IMG_SERVER}/common/photoNone-bgGray.png`} alt="기본 이미지" />
           }
           </div>
         </InfoBox>
