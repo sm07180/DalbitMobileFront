@@ -1,0 +1,61 @@
+@import 'components/ui/_mixin.scss';
+
+#todayWinning{
+  position: relative;
+  .winningTopWrap{
+    width: 100%;
+    margin-bottom: 10px;
+    .topBox{
+      @include flex(center, center, column);
+      width: 100%;
+      background: #FF3C7B;
+      padding: 18px 0;
+      .mainText{
+        @include font(14px, $Bold, #FFF93D);
+      }
+      .subText{
+        @include font(14px, $Regular, #fff);
+        margin-top: 7px;
+      }
+    }
+  }
+  .listRow{
+    width: 100%;
+    height: 80px;
+    padding: 0 16px;
+    .photo{
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 8px;
+    }
+    .listContent{
+      max-width: calc(100% - 140px);
+      .item{
+        @include font(14px, $SemiBold, #202020);
+        @include fontCut;
+        &+.item{
+          @include font(13px, $Medium, #666);
+          margin-top: 4px;
+        }
+      }
+    }
+    .listBack{
+      margin-left: auto;
+      button{
+        width: 63px;
+        height: 28px;
+        line-height: 28px;
+        border-radius: 36px;
+        background: #202020;
+        @include font(12px, $SemiBold, #fff);
+        text-align: center;
+        &.disabled{
+          background: #e3e3e3;
+          cursor: default;
+        }
+      }
+    }
+  }
+}
