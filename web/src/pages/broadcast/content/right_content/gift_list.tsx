@@ -69,13 +69,13 @@ export default function Profile(props: { roomNo: string }) {
                             <span className="thumb" style={{ backgroundImage: `url(${data.profImg.url})` }}></span>
                             <span className="user">
                               <span className="nickNm">{data.nickNm}</span>
-                              <em>{convertDateFormat(data.giftDt, "HH:mm:ss")}</em>
+                              <span className="itemNm">{data.itemNm}</span>
                             </span>
                             {data.isSecret && <span className="ico ico--secret">몰래</span>}
-                            <span className="item">
-                              <span className="itemNm">{data.itemNm}</span>
+                            <div className="item">
+                              <em>{convertDateFormat(data.giftDt, "HH:mm:ss")}</em>
                               <em>별 {data.gold}</em>
-                            </span>
+                            </div>
                           </li>
                         );
                       })}
