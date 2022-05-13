@@ -10,20 +10,22 @@ import {
 } from "redux/actions/globalCtx";
 
 const SpecialHistoryPop = (props) => {
-  const {profileData} = props;
+  const {memNo} = props;
   const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
   const starHistoryPopRef = useRef();
   
+  const [profileData, setProfileData] = useState([]);
   const [specialHistory, setSpecialHistory] = useState({cnt: 0, list: [], isLoading: false, pageNo: 1}); // 해당유저의 스페셜DJ 데이터
   
   let pagePerCnt = 100;
 
   /* 스타DJ 약력 조회 Api */
-  const fetchSpecialHistory = (pageNo) => {
+  const fetchSpecialHistory = (pageNo, memNo) => {
     const param = {
       pageNo: pageNo,
-      pagePerCnt: pagePerCnt
+      pagePerCnt: pagePerCnt,
+      memNo: memNo
     }
     Api.getStarDjLog(param).then(res => {
       if (res.result === 'success') {
@@ -36,16 +38,16 @@ const SpecialHistoryPop = (props) => {
       }
     });
   }
-
-  useEffect(() => {
-    const target = starHistoryPopRef.current;
-    if (target){
-      target.addEventListener("scroll", scrollEvent);
-    }
-    return () => {
-      target.removeEventListener("scroll", scrollEvent);
-    }
-  }, [specialHistory]);
+  
+  const fetchProfile = (memNo) => {
+    Api.profile({params: {memNo: memNo}}).then((res) => {
+      const {result, data} = res
+      if (result === 'success') {
+        setProfileData(data);        
+        fetchSpecialHistory(1, data.memNo);
+      }
+    })
+  }  
 
   const scrollEvent = () => {
     let scrollHeight = starHistoryPopRef.current?.scrollHeight;
@@ -60,7 +62,7 @@ const SpecialHistoryPop = (props) => {
   }
 
   useEffect(() => {
-    fetchSpecialHistory(1);
+    fetchProfile(memNo);
 
     if(isAndroid()) {
       dispatch(setGlobalCtxBackState(true))
@@ -74,10 +76,21 @@ const SpecialHistoryPop = (props) => {
     }
   },[]);
 
+  useEffect(() => {
+    const target = starHistoryPopRef.current;
+    if (target){
+      target.addEventListener("scroll", scrollEvent);
+    }
+    return () => {
+      target.removeEventListener("scroll", scrollEvent);
+    }
+  }, [specialHistory]);
+
+
   return (
     <section className="honorPopup">
       <div className="title">
-        <span><strong>{specialHistory.list[0]?.mem_nick}</strong>님은</span>
+        <span><strong>{profileData.nickNm}</strong>님은</span>
         <span>{profileData.isSpecial ? "현재 스타DJ입니다." : "현재 스타DJ가 아닙니다."}</span>
       </div>
       <div className='reference'>
@@ -86,7 +99,7 @@ const SpecialHistoryPop = (props) => {
       <div className="table">
         <div className="summary">
           <span>스타 DJ 약력</span>
-          <span>총 {specialHistory.cnt}회</span>
+          <span>총 {specialHistory.list.length}회</span>
         </div>
         <div className="tableInfo">
           <div className="thead">

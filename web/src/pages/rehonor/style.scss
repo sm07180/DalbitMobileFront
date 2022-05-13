@@ -508,7 +508,10 @@
         padding-bottom: 2px;
         @include font(11px, $Regular, #FFF);
         transform: rotate(45deg);
-        background-color: #8865FF;
+        background-color: #666666;
+        &.active {
+          background-color: #8865FF;
+        }
       }
     }
   }
@@ -617,6 +620,11 @@
         span {
           @include flex(center);
         }
+      }
+      .reference {
+        margin: 4px 0 23px;
+        @include font(12px,$Regular,#666666);
+        text-align: center;
       }
       .table {
         width: 100%;

@@ -12,12 +12,18 @@ import Lottie from 'react-lottie'
 import DetailView from '../components/DetailView'
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {setCommonPopupOpenData} from "redux/actions/common";
+
+import LayerPopup from "../../../components/ui/layerPopup/LayerPopup2";
+import SpecialHistoryPop from "../../remypage/components/popup/SpecialHistoryPop";
 
 const StarDj = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const commonPopup = useSelector(state => state.popup);
   const [specialList, setSpecialList] = useState([]);
+  const [targetMemNo, setTargetMemNo] = useState("");
 
   let date = new Date();
 
@@ -105,6 +111,14 @@ const StarDj = (props) => {
     setSpecialList(editFan);
   }
 
+  const historyPopupOpen = (e) => {
+    const memNo = e.currentTarget.id;
+    e.preventDefault();
+    e.stopPropagation();
+    setTargetMemNo(memNo);
+    dispatch(setCommonPopupOpenData({...commonPopup, commonPopup: true}))
+  }
+
   return (
     <>
       <div className='starDjInfo'>
@@ -179,12 +193,19 @@ const StarDj = (props) => {
                       </div>
                     </div>
                   </div>
-                  <span className='countTag'>{list.specialCnt}회</span>
+                  <span className={`countTag ${list.specialdj_badge === 1 ? "active" : ""}`} onClick={historyPopupOpen} id={list.memNo}>{list.specialCnt}회</span>
                 </div>
               )
             })
         }
       </div>
+      {/* 스페셜DJ 약력 팝업 */}
+      {commonPopup.layerPopup &&
+        <LayerPopup>
+          <SpecialHistoryPop
+            memNo={targetMemNo}/>
+        </LayerPopup>
+      }
     </>
   )
 }

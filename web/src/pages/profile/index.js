@@ -5,13 +5,13 @@ import './style.scss';
 // global components
 import Header from '../../components/ui/header/Header';
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
-import LayerPopup from '../../components/ui/layerPopup/LayerPopup2';
 // components
 import ProfileSwiper from './components/ProfileSwiper';
 import ProfileCard from './components/profileCard';
 import ProfileInfo from './components/ProfileInfo';
 import SocialContents from './components/SocialContents';
 import SlidepopZip from './components/popup/SlidepopZip';
+import LayerpopZip from './components/popup/layerpopZip';
 import ProfileNoticePop from "pages/profile/components/popup/ProfileNoticePop";
 
 import {useHistory, useParams} from 'react-router-dom';
@@ -237,9 +237,11 @@ const ProfilePage = () => {
 
       {/* 좋아요 -> ? 아이콘 */}
       {popup.layerPopup &&
-        <LayerPopup title="랭킹 기준">
-          <ProfileNoticePop />
-        </LayerPopup>
+        <LayerpopZip
+          slideData={slidePopInfo}
+          goProfile={goProfile}
+          openSlidePop={openSlidePop}
+          isMyProfile={isMyProfile} />
       }
     </div>
   )
