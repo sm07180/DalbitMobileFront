@@ -1,16 +1,18 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useState } from "react";
 // Api
 import { postStory, getStory, deleteStory } from "common/api";
-// import moment from 'moment'
 // component
 import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../../redux/actions/globalCtx";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setDalCnt} from "../send_gift";
 
 export default function SendingPlus(props: any) {
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const { splash, chatInfo } = globalState;
   const { roomNo, roomInfo } = props;
 
-  const [storyMsg, setStoryMsg] = useState<string>("");  
+  const [storyMsg, setStoryMsg] = useState<string>("");
 
   //사연 작성
   const fetchStory = (roomNo: string, storyMsg: string) => {
@@ -23,6 +25,7 @@ export default function SendingPlus(props: any) {
       });
       if (result === "success") {
         setStoryMsg("");
+        setDalCnt(chatInfo, splash?.story, splash?.story[0]?.itemNo, 1);
         dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "사연이 등록되었습니다",
@@ -45,10 +48,6 @@ export default function SendingPlus(props: any) {
     setStoryMsg(value);
   };
 
-  useEffect(() => {
-
-  }, []);
-
   return (
     <div className="storyForm">
       <p className="infoText">
@@ -65,7 +64,7 @@ export default function SendingPlus(props: any) {
         <span className="msgCount"> {storyMsg.length} / 50</span>
       </div>
       <button className="registBtn" onClick={() => fetchStory(roomNo, storyMsg)}>
-        등록하기 (<span className="iconDal"></span> 100)
+        등록하기 (<span className="iconDal"/> 100)
       </button>
     </div>
   );

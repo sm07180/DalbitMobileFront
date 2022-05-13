@@ -406,8 +406,7 @@ export default function SendGift(props: {
       }));
 
       /* 누적 선물 달에 선물한 달 더하기 */
-      const item = giftList.find(v => v?.itemNo === itemNo);
-      chatInfo?.addRoomInfoDalCnt(item?.cost * count);
+      setDalCnt(chatInfo, giftList, itemNo, count);
 
       setItem(-1);
       setCount(0);
@@ -682,4 +681,9 @@ export default function SendGift(props: {
       )}
     </div>
   );
+}
+/** 누적 선물 달에 선물한 달 더하기 */
+export const setDalCnt = (chatInfo, giftList: Array<any>, itemNo: string, count: number ) => {
+  const item = giftList.find(v => v?.itemNo === itemNo);
+  chatInfo?.addRoomInfoDalCnt(item?.cost * count);
 }

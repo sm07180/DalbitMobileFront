@@ -931,6 +931,7 @@ export class ChatSocketHandler {
                           memNo,
                           ttsItemInfo,
                           isTTSItem,
+                          storyText
                           // repeatCnt,
                         }))
                       }

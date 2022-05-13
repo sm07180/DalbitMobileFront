@@ -753,6 +753,7 @@ export default function LeftSideAgora(props: {
             memNo,
             ttsItemInfo,
             isTTSItem,
+            storyText
           } = chatAnimation;
 
           const animationWrapElem = document.createElement("div");
@@ -773,20 +774,24 @@ export default function LeftSideAgora(props: {
             animationWrapElem.style.height = "100%";
             isCombo = count ? count > 1 : false;
           } else if (location === "center") {
+            // 사연 플러스 아이템 영역 추가
             animationWrapElem.classList.add("center");
             animationWrapElem.style.width = "100%";
             animationWrapElem.style.height = "100%";
+            duration && (duration += 5000);  // 편지지 노출시간
+            // 3초 애니메이션 재생중 선물받은 경우
+            if(lottieDisplayElem.querySelector("[data-story = 'playing']")) {
+              webpUrl += `?${Date.now()}`;
+            }
+            animationWrapElem.dataset.story = 'playing';
             setTimeout(() => {
-              animationWrapElem.innerHTML = `
-                <div class="storyAni">
-                  일번줄<br/>
-                  이번줄<br/>
-                  삼번줄<br/>
-                  사번줄<br/>                  
-                </div>
-              `;
-            }, 3000)
-            
+              if (storyText && animationWrapElem) {
+                animationWrapElem.innerHTML = `<div class="storyAni">${storyText.replaceAll('\n', '<br/>')}</div>`;
+              }
+              animationWrapElem.dataset.story = '';
+
+            }, 3000);
+
           } else if (location === "topRight") {
             animationWrapElem.classList.add("topRight");
 
@@ -917,12 +922,6 @@ export default function LeftSideAgora(props: {
                     `position: absolute; object-fit: contain; width: 360px; height: 540px; top: 20px; left:50%`
                   );
                 }
-              } else if(location === 'center') {
-
-                webpImg.setAttribute(
-                  "style",
-                  "position: absolute; object-fit: contain; width: 100%; height: inherit;"
-                );
               } else {
                 webpImg.setAttribute(
                   "style",
