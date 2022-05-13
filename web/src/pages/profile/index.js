@@ -12,7 +12,7 @@ import ProfileCard from './components/profileCard';
 import ProfileInfo from './components/ProfileInfo';
 import SocialContents from './components/SocialContents';
 import SlidepopZip from './components/popup/SlidepopZip';
-import ProfileNoticePop from "pages/profile/components/popup/ProfileNoticePop";
+import LayerpopZip from './components/popup/LayerpopZip';
 
 import {useHistory, useParams} from 'react-router-dom';
 // redux
@@ -42,6 +42,8 @@ const ProfilePage = () => {
   const [slidePopInfo, setSlidePopInfo] = useState({
     data: profileData, memNo: profileData.memNo, nickNm: profileData.nickNm, type: "", fanStarType: "", likeType: {titleTab: 0, subTab: 0, subTabType: ''},
   }); // 슬라이드 팝업 정보
+
+  const [layerPopInfo, setLayerPopInfo] = useState({type: "", memNo:""}); // 슬라이드 팝업 정보
 
   /* 상단 스와이퍼에서 사용하는 profileData (대표사진 제외한 프로필 이미지만 넣기) */
   const profileDataNoReader = useMemo(() => {
@@ -194,6 +196,8 @@ const ProfilePage = () => {
         listenOpen={profileData.listenOpen}
         webview={webview}
         openShowSlide={openShowSlide}
+        layerPopInfo={layerPopInfo}
+        setLayerPopInfo={setLayerPopInfo}
         type="profile"/>
 
       {/* 프로필 메인 정보 */}
@@ -232,14 +236,15 @@ const ProfilePage = () => {
           slideData={slidePopInfo}
           goProfile={goProfile}
           openSlidePop={openSlidePop}
-          isMyProfile={isMyProfile} />
+          isMyProfile={isMyProfile}
+          layerPopInfo={layerPopInfo}
+          setLayerPopInfo={setLayerPopInfo}
+        />
       }
 
       {/* 좋아요 -> ? 아이콘 */}
       {popup.layerPopup &&
-        <LayerPopup title="랭킹 기준">
-          <ProfileNoticePop />
-        </LayerPopup>
+        <LayerpopZip layerPopInfo={layerPopInfo}/>
       }
     </div>
   )

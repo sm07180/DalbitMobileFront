@@ -40,7 +40,7 @@ const notMyProfileTabInfos = {
 const pagePerCnt = 20;
 
 const LikePopup = (props) => {
-  const {isMyProfile, profileData, goProfile, myMemNo, likePopTabState, closePopupAction} = props
+  const {isMyProfile, profileData, goProfile, myMemNo, likePopTabState, closePopupAction, layerPopInfo, setLayerPopInfo} = props
   const dispatch = useDispatch();
   const likeContainerRef = useRef();
   const popup = useSelector(state => state.popup);
@@ -218,8 +218,9 @@ const LikePopup = (props) => {
 
   const openNoticePop = (e) => {
     e.preventDefault();
-    e.stopPropagation();
-    dispatch(setCommonPopupOpenData({...popup, commonPopup: true}));
+    e.stopPropagation();    
+    setLayerPopInfo({...layerPopInfo, type:"rank"});
+    dispatch(setCommonPopupOpenData({...popup, layerPopup: true}));
     if(isAndroid()) {
       dispatch(setGlobalCtxBackFunction({name: 'commonPop'}));
     }
