@@ -124,12 +124,19 @@ const keyboardHero = () => {
           method: 'POST'
         }).then((res) => {
           const result = res.data
-          if(result === 0 || result === -2 || result === -3){
-            dispatch(setGlobalCtxMessage({type: "alert",msg: '이미 선물을 받은 계정이 있습니다.'}));
+          if(result === -3) {
+            dispatch(setGlobalCtxMessage({type: "alert", msg: '이미 선물을 받은 계정이 있습니다.'}));
+          }else if(result === -2){
+            dispatch(setGlobalCtxMessage({type: "alert", msg: '이미 선물을 받았습니다.'}));
           }else if(result === -1){
             dispatch(setGlobalCtxMessage({type: "alert",msg: '조건이 충족하지 않습니다.'}));
           }else if(result === 1){
             dispatch(setGlobalCtxMessage({type: "alert",msg: '선물받기 완료'}));
+            if(bonusSlct==="o"){
+              setMyInfo({...myInfo, one_step_rcv_yn:"y"})
+            }else{
+              setMyInfo({...myInfo, two_step_rcv_yn:"y"})
+            }
           }else{
             dispatch(setGlobalCtxMessage({type: "alert",msg: '잠시 후에 다시 시도해주세요.'}));
           }
