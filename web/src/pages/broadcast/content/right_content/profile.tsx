@@ -34,6 +34,7 @@ import {
   setBroadcastCtxUserMemNo,
   setBroadcastCtxUserNickName
 } from "../../../../redux/actions/broadcastCtx";
+import {setCommonPopupOpenData} from "redux/actions/common";
 import {
   setGlobalCtxAlertStatus,
   setGlobalCtxMultiViewer,
@@ -49,6 +50,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
+  const popup = useSelector(state => state.popup);
 
   const { baseData } = globalState;
   const { isLogin } = baseData;
@@ -56,6 +58,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   // state
   const [profileData, setProfileData] = useState<userProfileType | null>(null);
   const [badgeList, setBadgeList] = useState<Array<any>>([]);
+  const [layerPopMemNo, setLayerPopMemNo] = useState<string>(""); // 슬라이드 팝업 정보
   const [expData, setExpData] = useState<any>({
     expCalc: 0,
     expPercent: 0,
@@ -243,12 +246,23 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
     );
   };
 
-  console.log(profileData);
+  const historyPopupOpen = (e) => {
+    const memNo = e.currentTarget.id;
+    e.preventDefault();
+    e.stopPropagation();
+    setLayerPopMemNo(memNo);
+    dispatch(setCommonPopupOpenData({...popup, layerPopup: true}));
+  }
+
   const checkSpecialDj = (profileData) => {
     if(profileData.specialDjCnt > 0){
       return (
         <div className="badgeGroup">
-          <span id={profileData.memNo} className={`starBdg ${profileData.badgeSpecial === 1 ? "active" : ""}`}>
+          <span
+            id={profileData.memNo}
+            className={`starBdg ${profileData.badgeSpecial === 1 ? "active" : ""}`}
+            onClick={historyPopupOpen}
+          >
             {profileData.specialDjCnt}
           </span>
         </div>
@@ -777,6 +791,12 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
           </div>
         </div>
       )}
+      {popup.layerPopup &&
+        <LayerPopup>
+          <SpecialHistoryPop
+            memNo={layerPopMemNo}/>
+        </LayerPopup>
+      }
     </>
   );
 }
