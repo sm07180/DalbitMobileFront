@@ -4126,6 +4126,30 @@ export default class API {
     })
   }
 
+  //키보드히어로 이벤트
+  static keyboardHero = async (obj) => {
+    const {reqBody, data, params, method} = obj || {}
+    return await ajax({
+      url: '/event/keyboard',
+      method: method,
+      reqBody: reqBody,
+      params: params,
+      data: data,
+    })
+  }
+
+  //키보드히어로 보너스탭
+  static keyboardHeroBonus = async (obj) => {
+    const {reqBody, data, params, method} = obj || {}
+    return await ajax({
+      url: '/event/keyboard/bonus',
+      method: method,
+      reqBody: reqBody,
+      params: params,
+      data: data,
+    })
+  }
+
   // 투표 등록
   static insVote = async (data) => {
     return await ajax({url: '/broad/vote/insVote', method: 'POST', reqBody: true, data: data})
@@ -4383,6 +4407,16 @@ export default class API {
   // 방장 정보 조회
   static roomOwnerSel = async (roomNo, memNo) => {
     return ajax({url: '/broad/owner/sel', method: 'POST', reqBody: true, params: {roomNo:roomNo, memNo:memNo}})
+  }
+
+  // 사연 보관함 조회
+  static getStoryBoxList = async ({pageNo, pagePerCnt}) => {
+    return ajax({url: '/mypage/story/history', method: 'GET', reqBody: true, params: {pageNo:pageNo, pagePerCnt:pagePerCnt}})
+  }
+
+  // 사연 보관함 삭제
+  static getStoryBoxDel = async ({roomNo, storyIdx}) => {
+    return ajax({url: '/broad/story', method: 'DELETE', params: {roomNo:roomNo, storyIdx:storyIdx}})
   }
 }
 

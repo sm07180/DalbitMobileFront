@@ -27,20 +27,32 @@ const Settingblack = () => {
   const tabmenu = ['관리', '등록']
   const filter = ['전체','닉네임','ID']
   const [tabType, setTabType] = useState(tabmenu[0])
-  const [blackList, setBlackList] = useState([])
   const {changes, setChanges, onChange} = useChange({onChange: -1})
-  const [userList, setUserList] = useState([]);
   const [filterTextType, setFilterTextType] = useState(filter[0]);
-  const [blackListSearch, setBlackListSearch] = useState({page: 1, records: 20, searchType: "blackList"});
-  const [blackListPageInfo, setBlackListPageInfo] = useState({list: [], paging: {next: 1, page: 0, prev: 0, records: 20, total: 0, totalPage: 0}});
+  const [searchPageInfo, setSearchPageInfo] = useState({list: [], paging: {next: 2, page: 1, prev: 0, records: 40, total: 0, totalPage: 0}});
+  const [isSearch, setIsSearch] = useState(false);
+  const [searchPaging, setSearchPaging] = useState({page: 1, records: 40});
+  const [isTab, setIsTab] = useState(false); //false: 관리, true: 등록
+  const [blackListPageInfo, setBlackListPageInfo] = useState({list: [], paging: {next: 2, page: 1, prev: 0, records: 40, total: 0, totalPage: 0}});
+  const [blackListPaging, setBlackListPaging] = useState({page: 1, records: 40});
 
   //차단 회원 리스트 조회
   const getblackList = async () => {
     const res = await Api.mypage_black_list({
-      params: {page: 1, records: 999}
+      params: {page: blackListPaging.page, records: blackListPaging.records}
     })
     if(res.result === "success") {
-      setBlackList(res.data.list);
+      if(blackListPaging.page !== 1) {
+        let temp = [];
+        res.data.list.forEach((value) => {
+          if(blackListPageInfo.list.findIndex((target) => target.memNo === value.memNo) === -1) {
+            temp.push(value);
+          }
+        });
+        setBlackListPageInfo({...res.data, list: blackListPageInfo.list.concat(temp)});
+      } else {
+        setBlackListPageInfo({...res.data});
+      }
     }
   }
 
@@ -52,7 +64,6 @@ const Settingblack = () => {
     const res = await Api.mypage_black_add({params})
     if(res.result === "success") {
       getblackList();
-      fetchListData();
       dispatch(setGlobalCtxMessage({type: "alert",msg: res.message}));
     }
   }
@@ -77,37 +88,112 @@ const Settingblack = () => {
       userType: filterTextType === "전체" ? 0 : filterTextType === "닉네임" ? 1 : 2,
       search: changes.search,
       searchType: "blackList",
-      page: 1,
-      records: 10000
+      page: searchPaging.page,
+      records: searchPaging.records
     }
     const res = await Api.mypage_user_search({params})
-    if(res.result === "success") {setUserList(res.data.list);}
+    if(res.result === "success") {
+      setIsSearch(true);
+      if(searchPaging.page !== 1) {
+        let temp = [];
+        res.data.list.forEach((value) => {
+          if(searchPageInfo.list.findIndex((target) => target.memNo === value.memNo) === -1) {
+            temp.push(value);
+          }
+        });
+        setSearchPageInfo({...res.data, list: searchPageInfo.list.concat(temp)});
+      } else {
+        setSearchPageInfo({list: res.data.list, paging: res.data.paging});
+      }
+    }
+  }
+
+  //차단회원 검색 시 스크롤 이벤트
+  const scrollEvt = () => {
+    const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+    const body = document.body
+    const html = document.documentElement
+    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+    const windowBottom = windowHeight + window.pageYOffset;
+
+    if(searchPageInfo.paging?.totalPage > searchPaging.page && windowBottom >= docHeight -300) { //totalPage가 현재 page보다 클경우
+      setSearchPaging({...searchPaging, page: searchPaging.page +1});
+      window.removeEventListener("scroll", scrollEvt);
+    } else if(searchPageInfo.paging?.totalPage === searchPaging.page) {
+      window.removeEventListener("scroll", scrollEvt);
+    }
+  }
+
+  //차단 회원 목록 스크롤 이벤트
+  const scrollEvent = () => {
+    const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+    const body = document.body
+    const html = document.documentElement
+    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+    const windowBottom = windowHeight + window.pageYOffset;
+
+    if(blackListPageInfo.paging?.totalPage > blackListPaging.page && windowBottom >= docHeight -300) {
+      setBlackListPaging({...blackListPaging, page: blackListPaging.page +1});
+      window.removeEventListener("scroll", scrollEvent);
+    } else if(blackListPaging.page === blackListPageInfo.paging?.totalPage) {
+      window.removeEventListener("scroll", scrollEvent);
+    }
   }
 
   //엔터로 검색
   const onKeyUp = (e) => {
-    if(e.keyCode=== 13) {
+    if(e.keyCode === 13) {
       fetchListData("search");
     }
   }
 
   useEffect(() => {
-    getblackList()
-  }, [])
+    if(!isTab) {
+      getblackList()
+    }
+  }, [blackListPaging]);
+
+  useEffect(() => {
+    if(isTab && isSearch && changes.search.length > 1 && searchPaging.page >= 1) {
+      fetchListData();
+    }
+  }, [searchPaging]);
+
+  useEffect(() => {
+    if(isTab) {
+      window.addEventListener("scroll", scrollEvt);
+      return () => {
+        window.removeEventListener("scroll", scrollEvt);
+      }
+    }
+  }, [searchPageInfo, isTab]);
+
+  useEffect(() => {
+    if(!isTab) {
+      window.addEventListener("scroll", scrollEvent);
+      return () => {
+        window.removeEventListener("scroll", scrollEvent);
+      }
+    }
+  }, [blackListPageInfo, isTab]);
+
+  useEffect(() => {
+    setSearchPaging({page: 1, records: 40});
+  }, [changes.search])
 
   return (
     <div id="black">
       <Header position={'sticky'} title={'차단회원 관리'} type={'back'}/>
-      <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
+      <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} isTab={isTab} setIsTab={setIsTab} searchPaging={searchPaging} setSearchPaging={setSearchPaging}/>
       {tabType === tabmenu[0] ? (
         <>
           <section className="counterWrap">
-            <div>차단 회원<span>{blackList.length}</span></div>
+            <div>차단 회원<span>{blackListPageInfo.list.length}</span></div>
           </section>
           <section className="listWrap">
-            {blackList.length > 0 ? (
+            {blackListPageInfo.list.length > 0 ? (
               <>
-                {blackList.map((item, index)=>{
+                {blackListPageInfo.list.map((item, index)=>{
                   return(
                     <SettingList data={item} key={index}>
                       <button className="delete" onClick={() => fetchDeleteData(item.memNo)}>해제</button>
@@ -126,18 +212,18 @@ const Settingblack = () => {
         <>
           <section className="inputWrap">
             <div className="inputBox">
-              <FilterBtn filterTextType={filterTextType} setFilterTextType={setFilterTextType} data={filter} />
+              <FilterBtn filterTextType={filterTextType} setFilterTextType={setFilterTextType} setSearchPaging={setSearchPaging} searchPaging={searchPaging} data={filter} />
               <input type="text" placeholder='검색어를 입력해 보세요' name="search" onChange={onChange} onKeyUp={onKeyUp}/>
               <span className="icon" onClick={() => fetchListData("search")}/>
             </div>
           </section>
           <section className="counterWrap">
-            <div>검색 결과<span>{userList.length}</span></div>
+            <div>검색 결과<span>{searchPageInfo.list.length}</span></div>
           </section>
           <section className="listWrap">
-            {userList.length > 0 ? (
+            {searchPageInfo.list.length > 0 ? (
               <>
-                {userList.map((list, index)=>{
+                {searchPageInfo.list.map((list, index)=>{
                   return(
                     <SettingList data={list} key={index}>
                       <button className="add" onClick={() => fetchAddData(list.memNo)}>등록</button>

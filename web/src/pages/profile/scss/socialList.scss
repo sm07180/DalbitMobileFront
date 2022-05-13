@@ -4,23 +4,11 @@
   .socialList {
     border-bottom: 1px solid #F2F2F2;
     .listRow {
-      @include flex(center);
       height:60px;
       padding:0 16px;
       .photo {
-        position: relative;
-        width:36px;
-        height:36px;
-        border-radius:50%;
+        @include photoStyle(36px,36px,50%);
         overflow:hidden;
-        &::before {
-          content: "";
-          @include position-top-left;
-          width: 100%; height: 100%;
-          border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
-          border-radius:50%;
-          box-sizing: border-box;
-        }
       }
       .listContent {
         letter-spacing: -.5px;
@@ -52,38 +40,44 @@
           @include BGIMG("profile/fixmark-on.png");
           background-size:24px;
         }
-        div.moreBtn {
-          @include moreBtnStyle-1;
+        div#moreBtn {
           margin-left:8px;
-          cursor:pointer;
+          img {
+            opacity: .5;
+          }
         }
       }
     }
   }
   .socialContent {
     padding: 2px 16px 16px;
-    .socialText {
+    .socialTextWrap {
       position:relative;
+      max-height:64px;
       margin-bottom:16px;
-      word-break: break-all;
-      cursor:pointer;
-      @include font(13px,400,#202020);
-      &.lineCut-4 {
-        @include fontLineCut(4);
-        &:after {
-          position:absolute;bottom:0;right:0;
-          content:"더보기";
-          display:inline-block;
-          @include font(14px,$Medium,#999);
+      overflow: hidden;
+      &.isMore {
+        max-height:initial !important;
+        .socialButton {
+          position: relative;
+          width:100%;
+          text-align: right;
         }
       }
-    }
-    .socialButton {
-      position:relative;
-      float: right;
-      display:inline-block;
-      cursor:pointer;
-      @include font(14px,$Medium,#999);
+      .socialText {
+        word-break: break-all;
+        cursor:pointer;
+        @include font(13px,400,#202020);
+      }
+      .socialButton {
+        @include position-bottom-right;
+        display:inline-block;
+        padding:0 8px;
+        text-align:right;
+        background-color: white;
+        @include font(13px,$Medium,#999);
+        cursor:pointer;
+      }
     }
     .swiperPhoto {
       margin-bottom:16px;
@@ -93,10 +87,6 @@
         column-gap: 4px;
         + .photo {
           margin-top:4px;
-        }
-        &.grid-1 {
-          grid-template-columns: 1fr;
-          grid-template-rows: 1fr;
         }
         &.grid-2 {
           grid-template-columns: repeat(2,1fr);
@@ -110,6 +100,7 @@
           width:100%;
           border-radius:8px;
           object-fit: contain;
+          cursor:pointer;
         }
       }
       .photoMore {
@@ -125,6 +116,7 @@
           @include font(23px,$SemiBold,white);
           background-color:rgba(0,0,0,.4);
         }
+        div {cursor: pointer;}
       }
     }
     .swiper-slide {
@@ -151,44 +143,11 @@
       padding: 0 10px;
       border-radius: 10px 0 0 10px;
       background-color: rgba($color: #000000, $alpha: 0.4);
-      @include font(13px, 500, #FFF);
       letter-spacing: 1px;
+      @include font(13px, 500, #FFF);
     }
     .info {
-      @include flex(center);
-      height:25px;
-      margin-top:auto;
-      i {
-        display:inline-block;
-        padding-left:28px;
-        line-height:25px;
-        font-style:normal;
-        cursor:pointer;
-        + i {
-          margin-left:10px;
-        }
-        @include font(14px,$Medium,#666);
-        &.likeOff {
-          @include BGIMG("profile/heart_icon-off.png");
-          background-position:left center;
-          background-size:25px;
-        }
-        &.likeOn {
-          @include BGIMG("profile/heart_icon-on.png");
-          background-position:left center;
-          background-size:25px;
-        }
-        &.cmt {
-          @include BGIMG("profile/comment_icon-notice.png");
-          background-position:left center;
-          background-size:25px;
-        }
-      }
-      .time {
-        margin-left:auto;
-        letter-spacing: -1px;
-        @include font(12px,$Medium,black);
-      }
+      @include likeStyle;
     }
     .dataCnt {
       height: 20px;

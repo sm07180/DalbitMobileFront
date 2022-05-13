@@ -452,6 +452,14 @@ export async function postStory(data: {
 }): Promise<responseType> {
   return await ajax(Method.POST, "/broad/story", data);
 }
+// export async function postStoryNew(data: {
+//   roomNo: string;
+//   contents: string;
+//   djMemNo?: string;
+//   plusYn: string;
+// }): Promise<responseType> {
+//   return await ajax(Method.POST, "/broad/story/new", data);
+// }
 export async function deleteStory(data: {
   roomNo: string;
   storyIdx: number;
@@ -716,6 +724,13 @@ export async function MypageDeleteList(data: {
   memNo: string;
 }): Promise<responseType> {
   return await ajax(Method.DELETE, "/mypage/manager", data);
+}
+
+export async function BroadBlackListAddKickOut(data: {
+  blockNo: string;
+  roomNo: string;
+}): Promise<responseType> {
+  return await ajax(Method.POST, "/broad/black/add", data);
 }
 
 export async function MypageBlackList(data: {

@@ -69,9 +69,9 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
         return broadcastState.userMemNo;
       }
       // 아무것도 선택되지 않았을때
-      return baseData.memNo;
+      return broadcastState.roomInfo.bjMemNo;
     })();
-
+    // const memNo = memNum ? memNum : broadcastState.userMemNo ? broadcastState.userMemNo : broadcastState.roomInfo.bjMemNo;
     dispatch(setBroadcastCtxUserMemNo(memNo));
     const { result, data, message } = await getBroadcastMemberInfo({ memNo, roomNo });
     if (result === "success") {
@@ -410,6 +410,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   };
 
   useEffect(() => {
+    //console.log(broadcastState.userMemNo, broadcastState.roomInfo)
     fetchProfileData();
   }, [broadcastState.userMemNo, broadcastState.roomInfo]);
 

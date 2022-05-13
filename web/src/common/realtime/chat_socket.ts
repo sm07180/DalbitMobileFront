@@ -5,25 +5,25 @@ import {MediaType, MiniGameType, tabType} from "pages/broadcast/constant";
 import {AuthType} from "constant";
 
 import {getItems, postErrorSave, splash} from "common/api";
-import {GiftActionFormat, NormalMsgFormat, ReqGood, SystemStartMsg} from "pages/broadcast/lib/chat_msg_format";
+import {
+  GiftActionFormat,
+  NormalMsgFormat,
+  ReqGood,
+  SystemEventMsg,
+  SystemStartMsg
+} from "pages/broadcast/lib/chat_msg_format";
 
 // static
 import MicAlarmClose from "common/static/image/mic_alarm_close.png";
 import {getCookie} from "common/utility/cookie";
 import {rtcSessionClear} from "./rtc_socket";
-import {
-  moveVoteListStep,
-  moveVoteStep,
-  setVoteActive,
-  setVoteCallback,
-} from "../../redux/actions/vote";
-import {
-  VoteCallbackPromisePropsType,
-} from "../../redux/types/voteType";
+import {moveVoteListStep, moveVoteStep, setVoteActive, setVoteCallback,} from "../../redux/actions/vote";
+import {VoteCallbackPromisePropsType,} from "../../redux/types/voteType";
 
 import {isDesktop} from "../../lib/agent";
 import {
-  setMailBoxChatListUpdate, setMailBoxImgSliderAddDeleteImg,
+  setMailBoxChatListUpdate,
+  setMailBoxImgSliderAddDeleteImg,
   setMailBoxIsMailBoxNew,
   setMailBoxPushChatInfo,
   setMailBoxUserCount
@@ -31,29 +31,41 @@ import {
 import {
   setBroadcastCtxBoost,
   setBroadcastCtxChatAnimationStart,
-  setBroadcastCtxChatCount, setBroadcastCtxChatFreeze,
+  setBroadcastCtxChatCount,
+  setBroadcastCtxChatFreeze,
   setBroadcastCtxChatLimit,
-  setBroadcastCtxComboAnimationStart, setBroadcastCtxCommonBadgeList,
-  setBroadcastCtxExtendTime, setBroadcastCtxMiniGameInfo, setBroadcastCtxMiniGameResult, setBroadcastCtxNoticeState,
+  setBroadcastCtxComboAnimationStart,
+  setBroadcastCtxCommonBadgeList,
+  setBroadcastCtxExtendTime,
+  setBroadcastCtxMiniGameInfo,
+  setBroadcastCtxMiniGameResult,
+  setBroadcastCtxNoticeState,
   setBroadcastCtxRealTimeValueSetLikeFanRank,
   setBroadcastCtxRightTabType,
   setBroadcastCtxRoomInfoBoosterOn,
   setBroadcastCtxRoomInfoGrantRefresh,
-  setBroadcastCtxRoomInfoIsListenerUpdate, setBroadcastCtxRoomInfoMoonCheck,
-  setBroadcastCtxRoomInfoNewFanCnt, setBroadcastCtxRoomInfoRefresh,
+  setBroadcastCtxRoomInfoIsListenerUpdate,
+  setBroadcastCtxRoomInfoMoonCheck,
+  setBroadcastCtxRoomInfoNewFanCnt,
+  setBroadcastCtxRoomInfoRefresh,
   setBroadcastCtxRoomInfoSettingUpdate,
-  setBroadcastCtxStoryState, setBroadcastCtxUserCount,
+  setBroadcastCtxStoryState,
+  setBroadcastCtxUserCount,
   setBroadcastCtxUserMemNo
 } from "../../redux/actions/broadcastCtx";
 import {
-  setGlobalCtxAlertStatus, setGlobalCtxChatInfoInit,
+  setGlobalCtxAlertStatus,
+  setGlobalCtxChatInfoInit,
   setGlobalCtxCurrentChatDataEmpty,
   setGlobalCtxGuestInfoEmpty,
-  setGlobalCtxIsShowPlayer, setGlobalCtxMailBlockUser,
+  setGlobalCtxIsShowPlayer,
+  setGlobalCtxMailBlockUser,
   setGlobalCtxMoveToAlert,
   setGlobalCtxRealtimeBroadStatus,
   setGlobalCtxRtcInfoEmpty,
-  setGlobalCtxSetToastStatus, setGlobalCtxSplash, setGlobalCtxTooltipStatus
+  setGlobalCtxSetToastStatus,
+  setGlobalCtxSplash,
+  setGlobalCtxTooltipStatus
 } from "../../redux/actions/globalCtx";
 
 // lib
@@ -1132,6 +1144,51 @@ export class ChatSocketHandler {
                       type: "div",
                       text: msg,
                       className: "system-start-msg",
+                    });
+                  }
+                  case "reqEventMsg": {
+                    const {recvMsg} = data;
+                    const message = JSON.parse(recvMsg.msg);
+                    const msg = {
+                      title:message.title,
+                      content:message.content.replace("{nickName}", `<span>${message.nickName}</span>`),
+                      linkTitle:message.linkTitle,
+                      linkUrl:message.linkUrl
+                    }
+                    return SystemEventMsg({
+                      type: "div",
+                      className: "common-event-msg",
+                      children: [
+                        {
+                          type: "div",
+                          className: "content",
+                          children: [
+                            {
+                              type: "div",
+                              className: "title",
+                              text: msg.title,
+                            },
+                            {
+                              type: "div",
+                              className:"text",
+                              text:msg.content,
+                            }
+                          ]
+                        },
+                        {
+                          type: "button",
+                          className: "button",
+                          text: msg.linkTitle,
+                          event: [
+                            {
+                              type: "click",
+                              callback: () => {
+                                this.history.push(msg.linkUrl)
+                              },
+                            }
+                            ]
+                        }
+                      ]
                     });
                   }
                   case "reqChangeCount": {

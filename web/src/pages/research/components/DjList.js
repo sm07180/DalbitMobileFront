@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 // global components
 import Swiper from 'react-id-swiper'
@@ -9,7 +9,7 @@ import '../scss/swiperList.scss'
 import {useHistory} from "react-router-dom";
 
 const DjList = (props) => {
-  const {data, addAction, delAction} = props
+  const {data, addAction, delAction, swiperRefresh, section} = props
 
   const history = useHistory();
 
@@ -26,13 +26,19 @@ const DjList = (props) => {
     }
   };
 
+  useEffect(() => {
+    if(typeof swiperRefresh === 'function') {
+      swiperRefresh(section);
+    }
+  }, [data]);
+
   return (
     <>
       {data.length > 0 &&
       <Swiper {...swiperParams}>
         {data.map((list,index) => {
           return (
-            <div className='listWrap' key={index}>
+            <div className='listWrap' key={list.memNo}>
               <div className="listColumn">
                 <div className="photo" data-mem-no={list.memNo} onClick={goProfile}>
                   <img src={list.profImg.thumb292x292} />

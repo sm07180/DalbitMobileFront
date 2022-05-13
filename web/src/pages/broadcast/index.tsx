@@ -37,12 +37,12 @@ export default function Broadcast() {
       }
     });
   }, [baseData]);
+
   useEffect(()=>{
-    if(!roomInfo){
-      return
-    }
-    dispatch(setBroadcastCtxUserMemNo(roomInfo.bjMemNo));
-  },[roomInfo]);
+    dispatch(setBroadcastCtxUserMemNo(''));
+  }, [roomNo])
+
+  console.log(broadcastState.userMemNo)
   return (
     <BroadcastLayerProvider>
       <GuestProvider>

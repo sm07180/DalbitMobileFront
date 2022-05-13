@@ -21,6 +21,10 @@ export function SystemStartMsg(data: Element) {
   return createElement(data);
 }
 
+export function SystemEventMsg(data: Element) {
+  return createElement(data);
+}
+
 export function ReqGood(data: Element) {
   return createElement(data);
 }

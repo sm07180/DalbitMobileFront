@@ -50,7 +50,10 @@ import PlatformWar from './platformWar'
 import ContentLab from './contentLab'
 import ContentStar from './contentStar'
 import ContentStarSchedule from './contentStarSchedule'
+import KeyboardHero from './keyboardHero'
+import KeyboardTodayWinning from './keyboardHero/content/todayWinning'
 import Wassup from './wassup'
+import BugReport from './bugreport'
 import moment from "moment";
 
 export default (props) => {
@@ -163,6 +166,12 @@ export default (props) => {
         return <ContentStar />
       case 'contentstar_schedule':
         return <ContentStarSchedule />
+      case 'bugreport':
+        return <BugReport />
+      case 'keyboardhero':
+        return <KeyboardHero />
+      case 'keyboardhero_todaywinning':
+        return <KeyboardTodayWinning />
       default:
         return <></>
         break

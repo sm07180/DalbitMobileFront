@@ -1,18 +1,21 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react'
+import React, {useState} from 'react'
 
+import Api from "context/api";
 // global components
-import NoResult from 'components/ui/noResult/NoResult';
+import NoResult from '../../../components/ui/noResult/NoResult';
 // components
-import CheckList from '../../components/CheckList';
-import SocialList from '../../components/SocialList';
-import API from "context/api";
+import CheckList from './CheckList';
+import SocialList from './SocialList';
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {useParams} from 'react-router-dom';
 
 const FanboardSection = (props) => {
-  const { fanBoardData, isMyProfile, deleteContents, profileData, openSlidePop, getFanBoardData, params, profileScrollEvent } = props;
+  const {fanBoardData, isMyProfile, openSlidePop, profileScrollEvent, getFanBoardData, deleteContents} = props;
+  const params = useParams();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const [formState, setFormState] = useState({
     contents: "",
     others: 1,  //topFix 고정여부 [0:고정x, 1: 고정o] / viewOn 비밀글 여부 (등록만 가능, 수정불가 ) [0: 비밀글o, 1: 비밀글x]
@@ -36,11 +39,11 @@ const FanboardSection = (props) => {
     return confirm;
   };
 
-  //팬보드 등록
+  {/* 팬보드 등록 */}
   const contentsAdd = async () => {
     if(!validChecker()) return;
     const {contents, others} = formState;
-    const {data, result, message} = await API.member_fanboard_add({
+    const {result, message} = await Api.member_fanboard_add({
       data: {
         memNo: params.memNo ? params.memNo : globalState.profile.memNo,
         depth: 1,
@@ -58,19 +61,13 @@ const FanboardSection = (props) => {
 
   //팬보드 내용 가져오기
   const onChange = (e) => {
-    setFormState({
-      ...formState,
-      contents: e.target.value
-    })
-  }
+    setFormState({...formState, contents: e.target.value});
+  };
 
   //팬보드 공개, 비공개
   const onClick = () => {
-    setFormState({
-      ...formState,
-      others: formState.others === 1 ? 0 : 1
-    })
-  }
+    setFormState({...formState, others: formState.others === 1 ? 0 : 1});
+  };
 
   return (
     <div className="fanboardSection">
@@ -84,8 +81,12 @@ const FanboardSection = (props) => {
         </div>
       </div>
       {fanBoardData.list.length > 0 ?
-        <SocialList socialList={fanBoardData.list} isMyProfile={isMyProfile} type="fanBoard"
-                    deleteContents={deleteContents} profileData={profileData} openSlidePop={openSlidePop} />
+        <SocialList
+          socialList={fanBoardData.list}
+          isMyProfile={isMyProfile}
+          openSlidePop={openSlidePop}
+          deleteContents={deleteContents}
+          type="fanBoard" />
         :
         <NoResult img={'common/listNone/listNone-profile.png'} ment={'작성된 팬보드가 없습니다.'} />
       }
