@@ -98,7 +98,7 @@ const SocialList = (props) => {
               isMyProfile={isMyProfile}
               openSlidePop={openSlidePop}
               modifyEvent={() => {memNo === globalState.profile.memNo && goProfileDetailPage(modifyParam)}}
-              deleteEvent={() => deleteContents(type, item.reg_no ? item.reg_no : item.replyIdx, globalState.profile.memNo)}
+              deleteEvent={() => deleteContents(type, item.reg_no ? item.reg_no : item.replyIdx, profileData.memNo)}
               photoClick={() => photoClickEvent(item.mem_no)} />
 
             <div className="socialContent">
