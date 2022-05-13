@@ -23,6 +23,9 @@ import {tabType} from "pages/broadcast/constant";
 import {AuthType} from "constant";
 import {MANAGER_TYPE} from "./constant";
 import BadgeList from "../../../../common/badge_list";
+import LayerPopup from "../../../../components/ui/layerPopup/LayerPopup2";
+// import LayerPopup from "../../../../components/ui/layerPopup/LayerPopup2";
+import SpecialHistoryPop from "pages/remypage/components/popup/SpecialHistoryPop";
 import 'asset/scss/module/mypage/index.scss'
 
 import {
@@ -239,28 +242,38 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
       </>
     );
   };
+
+  console.log(profileData);
   const checkSpecialDj = (profileData) => {
-    if (profileData.wasSpecial && profileData.badgeSpecial === 0) {
+    if(profileData.specialDjCnt > 0){
       return (
-        <div
-          className="checkBadge"
-          onClick={() => {
-            viewSpecialList(profileData.memNo);
-          }}
-        >
-          <div className="specialIcon prev" />
+        <div className="badgeGroup">
+          <span id={profileData.memNo} className={`starBdg ${profileData.badgeSpecial === 1 ? "active" : ""}`}>
+            {profileData.specialDjCnt}
+          </span>
         </div>
-      );
-    } else if (profileData.badgeSpecial > 0) {
-      return (
-        <div
-          className="checkBadge"
-          onClick={() => {
-            viewSpecialList(profileData.memNo);
-          }}
-        >
-        </div>
-      );
+        );
+    // if (profileData.wasSpecial && profileData.badgeSpecial === 0) {
+    //   return (     
+    //     <div
+    //       className="checkBadge"
+    //       onClick={() => {
+    //         viewSpecialList(profileData.memNo);
+    //       }}
+    //     >
+    //       <div className="specialIcon prev" />
+    //     </div>
+    //   );
+    // } else if (profileData.badgeSpecial > 0) {
+    //   return (
+    //     <div
+    //       className="checkBadge"
+    //       onClick={() => {
+    //         viewSpecialList(profileData.memNo);
+    //       }}
+    //     >
+    //     </div>
+    //   );
     } else if (profileData.isNew === true) {
       return <span className="newIcon">신입 DJ</span>;
     } else if (profileData.isNewListener === true) {
