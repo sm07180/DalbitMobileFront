@@ -786,7 +786,7 @@ export default function LeftSideAgora(props: {
             animationWrapElem.dataset.story = 'playing';
             setTimeout(() => {
               if (storyText && animationWrapElem) {
-                animationWrapElem.innerHTML = `<div class="storyAni">${storyText.replaceAll('\n', '<br/>')}</div>`;
+                animationWrapElem.innerHTML = `<div class="storyAni">${storyText}</div>`;
               }
               animationWrapElem.dataset.story = '';
 
@@ -1575,6 +1575,8 @@ const LottieDisplayStyled = styled.div`
     font-weight: 400;
     line-height: 28px;
     color: #303030;
+    white-space: pre-wrap;
+    word-break: break-all;
   }
   @keyframes STORY_ANI {
     0% {
