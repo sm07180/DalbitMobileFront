@@ -1146,6 +1146,38 @@
               white-space: pre-wrap;
             }
           }
+          
+        }
+        .common-event-msg{
+          @include flex(center);
+          width: fit-content;
+          color: $white;
+          background-color: rgba($black, 0.4);
+          border-radius: 12px;
+          margin-bottom: 16px;
+          .content{
+            padding: 10px 12px;
+            width: 100%;
+            .title{@include font(14px, $Bold, #FFEE9A);}
+            .text{
+              @include font(14px, $Regular, #fff); 
+              margin-top: 2px;
+              span{
+                max-width: 64px;
+                font-weight: $Bold;
+                @include fontCut;
+                flex: none;
+                float: left;
+              }
+            }
+          }
+          .button{
+            @include flex(center,center);
+            flex: none;
+            width: 70px;
+            height: 82px;
+            @include font(14px, $SemiBold, #ffee9a);
+          }
         }
       }
 

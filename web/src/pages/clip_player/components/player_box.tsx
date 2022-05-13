@@ -10,8 +10,9 @@ import ClipPlayerBarBtn from "./player_bar_btn";
 import ClipPlayerBanner from "./player_banner";
 
 import {useDispatch, useSelector} from "react-redux";
+import {setClipCtxLottie} from "../../../redux/actions/clipCtx";
 
-export default () => {
+const PlayBox = () => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const { clipInfo, clipPlayMode } = globalState;
@@ -33,6 +34,8 @@ export default () => {
     window.scrollTo(0, 0);
     return () => {
       clipAudioTag?.removeEventListener("ended", () => audioEndHandler({history, globalState}));
+      // 클립 페이지 나갈 경우 애니메이션 lottie 정보 초기화
+      dispatch(setClipCtxLottie(null));
     };
   }, []);
 
@@ -70,6 +73,7 @@ export default () => {
   );
 };
 
+export default PlayBox;
 
 export const audioEndHandler = async ({history, globalState}) => {
   const { clipPlayer, clipPlayMode, clipPlayListTab } = globalState;
