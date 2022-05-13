@@ -32,6 +32,7 @@ const SocialContents = (props) => {
 
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const profileData = useSelector(state => state.profile);
   const profileTab = useSelector(state => state.profileTab);
   const feedData = useSelector(state => state.feed);
   const fanBoardData = useSelector(state => state.fanBoard);

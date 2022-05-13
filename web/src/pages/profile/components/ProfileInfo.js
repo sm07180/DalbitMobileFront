@@ -30,38 +30,32 @@ export const InfoBox = (props) => {
   )
 }
 
-export const BroadcastNotice = (props) => {
-  const history = useHistory();
-  const { onClickNotice, swiperParams, swiperRef, noticeFixData, fetchHandleLike, noticeData } = props;
+export const BroadcastNoticeWrap = (props) => {
+  const {broadcastNoticeData, type} = props;
   return (
-    <div className="broadcastNotice">
-      <div className="title" onClick={onClickNotice}>방송공지</div>
-      <Swiper {...swiperParams} ref={swiperRef}>
-        {noticeFixData?.fixedFeedList.map((v, idx) => {
-          const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
-          return (
-            <div key={idx}>
-              <div className="noticeBox">
-                <div className="badge">Notice</div>
-                <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
-                <FeedLike data={v} fetchHandleLike={fetchHandleLike} type={"notice"} likeType={"fix"} detailPageParam={detailPageParam} />
-              </div>
-            </div>
-          )
-        })}
-        {noticeData?.feedList.map((v, idx) => {
-          const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
-          return (
-            <div key={idx}>
-              <div className="noticeBox">
-                <div className="badge">Notice</div>
-                <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
-                <FeedLike data={v} fetchHandleLike={fetchHandleLike} type={"notice"} likeType={"nonFix"} detailPageParam={detailPageParam} />
-              </div>
-            </div>
-          )
-        })}
-      </Swiper>
+    <>
+    {broadcastNoticeData?.map((v, idx) => {
+      const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
+      return (
+        <div className="swiper-slide noticeList" key={idx}>
+          <BroadcastNotice data={v} type={type} detailPageParam={detailPageParam} />
+        </div>
+      )
+    })}
+    </>
+  )
+}
+
+export const BroadcastNotice = (props) => {
+  const {data, type, detailPageParam} = props;
+  return (
+    <div className="noticeBox">
+      <div className="badge">Notice</div>
+      <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{data.contents}</div>
+      <FeedLike data={data} type={"notice"} detailPageParam={detailPageParam} />
+      <i className="fixIcon">
+        <img src={`${IMG_SERVER}/profile/bookmark-${type === "fix" ? 'on' : 'off'}.png`}/>
+      </i>
     </div>
   )
 }
@@ -327,9 +321,13 @@ const ProfileInfo = (props) => {
 
       {/* 방송공지 정보 */}
       {noticeFixData.fixedFeedList.length !== 0 || noticeData.feedList.length !== 0 ?
-      <BroadcastNotice onClickNotice={onClickNotice} swiperParams={swiperParams} swiperRef={swiperRef}
-                       noticeFixData={noticeFixData} noticeData={noticeData}
-      />
+      <div className="broadcastNotice">
+        <div className="title" onClick={onClickNotice}>방송공지</div>
+        <Swiper {...swiperParams} ref={swiperRef}>
+          <BroadcastNoticeWrap broadcastNoticeData={noticeFixData.fixedFeedList} type="fix" />
+          <BroadcastNoticeWrap broadcastNoticeData={noticeData.feedList} />
+        </Swiper>
+      </div>
       : isMyProfile ?
       <BroadcastNoticeNone onClickNotice={onClickNotice} defaultNotice={defaultNotice} />
       :

@@ -24,12 +24,14 @@ const ProfileDetail = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const profileTab = useSelector((state) => state.profileTab);
+  const detailData = useSelector(state => state.detail);
+  const popup = useSelector(state => state.popup);
   const member = useSelector(state => state.member);
   //context
   const {token, profile} = globalState;
   const {memNo, type, index} = useParams();
-  const tmemNo = profile.memNo;
-  //memNo :글이 작성되있는 프로필 주인의 memNo
+  const tmemNo = profile.memNo; //memNo :글이 작성되있는 프로필 주인의 memNo
 
   const replyRef = useRef(null);
   const replyButtonRef = useRef(null);  //button Ref
@@ -55,23 +57,19 @@ const ProfileDetail = () => {
 
   //차단 / 신고하기
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', nickNm: ''});
-  const detailData = useSelector(state => state.detail);
-  const popup = useSelector(state => state.popup);
-  const profileTab = useSelector((state) => state.profileTab);
 
   //내 프로필 여부 (나의 프로필에서 작성한 피드, 팬보드 여부 체크)
   const isMyProfile = (token?.isLogin) && profile?.memNo === memNo;
-
   //내가 작성한 글 여부
   const isMyContents = (token?.isLogin) && item && profile?.memNo?.toString() === ((type === 'notice' || type === 'feed') ? item?.mem_no : item?.writer_mem_no)?.toString();
   const adminChecker = globalState?.adminChecker;
 
-  // 탭 유지 시키기
+  {/* 탭 유지 시키기 */}
   const tabResetBlock = () => {
     dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
   };
 
-  /* 프로필 사진 확대 */
+  {/* 프로필 사진 확대 */}
   const openShowSlide = (data, isList = "y", keyName='profImg') => {
     const getImgList = data => data.map(item => item[keyName])
     let list = [];
@@ -142,7 +140,7 @@ const ProfileDetail = () => {
     }
   }
 
-  //댓글 조회
+  {/* 댓글 조회 */}
   const getReplyList = (_page, records= 10) => {
     if (type === 'notice') {
       Api.getMypageNoticeReply({
@@ -155,7 +153,6 @@ const ProfileDetail = () => {
         if (result === 'success') {
           setReplyList(data?.list);
         }
-
       });
     } else if (type === 'fanBoard') {
       Api.member_fanboard_reply({
@@ -165,12 +162,10 @@ const ProfileDetail = () => {
         }
       }).then((res) => {
         const {data, result, message} = res;
-
         if (result === 'success') {
           setReplyList(data?.list);
         }
       });
-
     } else if(type === "feed") {
       const params = {
         feedNo: index,
@@ -183,7 +178,7 @@ const ProfileDetail = () => {
         }
       }).catch((e) => console.log(e));
     }
-  }
+  };
 
   //전체 조회  (피드, 팬보드)
   const getAllData = (_page, records) => {
@@ -232,13 +227,11 @@ const ProfileDetail = () => {
             delChrgrName: item?.nickName,
           }
         })
-
         if (result === 'success') {
           history.goBack();
         } else {
           dispatch(setGlobalCtxMessage({type:'alert',msg: message}));
         }
-
       } else if (type === 'fanBoard') { //팬보드 글 삭제 (댓글과 같은 프로시져)
         const {data, result, message} = await Api.mypage_fanboard_delete({data: {memNo, replyIdx: index}});
         if (result === 'success') {
@@ -352,7 +345,7 @@ const ProfileDetail = () => {
     setInputModeAction('edit', replyIdx);
   };
 
-  //댓글 수정
+  {/* 댓글 수정 */}
   //replyIdx : 댓글 번호, contents: 수정할 내용
   const replyEdit = async (replyIdx, contents) => {
     if(!validChecker()) return;
@@ -375,7 +368,6 @@ const ProfileDetail = () => {
       } else {
         dispatch(setGlobalCtxMessage({type:'alert',msg: message}));
       }
-
     } else if (type === 'fanBoard') {
       const {data, result, message} = await Api.mypage_board_edit({data: {
           memNo,
@@ -393,7 +385,6 @@ const ProfileDetail = () => {
       }else{
         dispatch(setGlobalCtxMessage({type:'alert',msg: message}));
       }
-
     } else if(type === "feed") {
       Api.myPageFeedReplyUpd({reqBody: true, data: {
           tailNo: replyIdx,
@@ -412,7 +403,7 @@ const ProfileDetail = () => {
     }
   };
 
-  //댓글 삭제
+  {/* 댓글 삭제 */}
   const replyDelete = (replyIdx) => {
     const callback = async (replyIdx) => {
       if (type === 'notice') {
@@ -422,7 +413,6 @@ const ProfileDetail = () => {
         } else {
           //실패
         }
-
       } else if (type === 'fanBoard') {
         const {data, result, message} = await Api.mypage_fanboard_delete({data: {memNo, replyIdx}});
         if (result === 'success') {
@@ -452,21 +442,19 @@ const ProfileDetail = () => {
     }));
   };
 
-  /* 차단/신고 팝업 열기 */
+  {/* 차단/신고 팝업 열기 */}
   const openBlockReport = (memNo, nickNm) => {
     dispatch(setSlidePopupOpen());
     setBlockReportInfo({memNo, nickNm});
   }
 
-  /* 차단/신고 팝업 닫기 */
+  {/* 차단/신고 팝업 닫기 */}
   const closeBlockReport = () => {
     closePopup(dispatch);
     setBlockReportInfo({memNo: '', memNick: ''});
   }
 
-  const photoClickEvent = (memNo) => {
-    history.push(`/profile/${memNo}`)
-  }
+  const photoClickEvent = (memNo) => {history.push(`/profile/${memNo}`)}
 
   return (
     <div id="profileDetail">
@@ -530,6 +518,8 @@ const ProfileDetail = () => {
             )
           })}
         </div>
+
+        {/* 댓글 입력폼 영역 */}
         <div className="bottomWrite">
           <div ref={replyRef} contentEditable="true"
             className={`trickTextarea ${text.length > 0 && "isText"}`} 
