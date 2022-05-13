@@ -1,22 +1,23 @@
-import React, {useContext} from 'react'
+import React from 'react';
 
+import Api from "context/api";
 // global components
-import ListColumn from 'components/ui/listColumn/ListColumn'
-import DataCnt from 'components/ui/dataCnt/DataCnt'
-import NoResult from 'components/ui/noResult/NoResult'
+import ListColumn from '../../../components/ui/listColumn/ListColumn';
+import DataCnt from '../../../components/ui/dataCnt/DataCnt';
+import NoResult from '../../../components/ui/noResult/NoResult';
+
 import {useHistory} from "react-router-dom";
 import {playClip} from "pages/clip/components/clip_play_fn";
-import Api from "context/api";
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ClipSection = (props) => {
-  const { profileData, isMyProfile, webview } = props;
+  const {clipData, isMyProfile, webview} = props;
   const history = useHistory();
 
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const clipData = useSelector(state => state.profileClip);
+  const profileData = useSelector(state => state.profile);
 
   const listenClip = (clipNo,) => {
     const clipParams = {
@@ -26,7 +27,7 @@ const ClipSection = (props) => {
     }
     Api.getUploadList(clipParams).then(res => {
       if (res.result === 'success') {
-        const data= res.data;
+        const data = res.data;
 
         const playListInfoData = {
           myClipType: 1,
@@ -35,7 +36,6 @@ const ClipSection = (props) => {
           memNo: profileData.memNo,
           type: 'setting'
         }
-
         const clipParam = {
           clipNo,
           playList: data.list,
@@ -62,20 +62,18 @@ const ClipSection = (props) => {
       */}
       {clipData.list.length > 0 ?
         <div className="clipContent">
-          {clipData.list.map((item, index) => {
-            return (
-              <ListColumn photo={item.bgImg.thumb500x500} key={index}
-                          onClick={() => listenClip(item.clipNo)}
-                          style={{cursor: 'pointer'}}
-              >
-                <div className="title">{item.title}</div>
-                <div className="info">
-                  <DataCnt type={`goodCnt`} value={item.goodCnt}/>
-                  <DataCnt type={"replyCnt"} value={item.replyCnt}/>
-                </div>
-              </ListColumn>
-            )
-          })}
+        {clipData.list.map((item, index) => {
+          return (
+            <ListColumn photo={item.bgImg.thumb500x500} key={index}
+                        onClick={() => listenClip(item.clipNo)}>
+              <div className="title">{item.title}</div>
+              <div className="info">
+                <DataCnt type="goodCnt" value={item.goodCnt}/>
+                <DataCnt type="replyCnt" value={item.replyCnt}/>
+              </div>
+            </ListColumn>
+          )
+        })}
         </div>
       : clipData.list.length === 0 &&
         <NoResult />
@@ -84,4 +82,4 @@ const ClipSection = (props) => {
   )
 }
 
-export default ClipSection
+export default ClipSection;

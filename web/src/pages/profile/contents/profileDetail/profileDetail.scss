@@ -7,32 +7,9 @@
   height:100%;
   header {
     .buttonGroup {
-      div.moreBtn {
-        position:relative;
-        width:40px;
-        height:40px;
-        cursor: pointer;
-        img {
-          width:100%;
-        }
-        .isMore {
-          @include position-top-right(100%,0);
-          z-index: $MORE-ZINDEX;
-          @include flex($fd:column);
-          width:124px;
-          border-radius:8px;
-          background-color:white;
-          box-shadow: 0 1px 8px rgba(black,.16);
-          button {
-            line-height:40px;
-            text-indent:12px;
-            text-align:left;
-            @include font(13px,400,#303030);
-            + button {
-              border-top:1px solid #F2F2F2;;
-            }
-          }
-        }
+      div#moreBtn {
+        width: 40px;
+        height: 40px;
       }
     }
   }
@@ -83,32 +60,16 @@
         }
       }
       .info {
-        @include flex(center);
-        height:25px;
-        margin-top:auto;
+        @include likeStyle;
         i {
-          display:inline-block;
-          padding-left:28px;
-          line-height:25px;
-          font-style:normal;
-          cursor:pointer;
-          + i {
-            margin-left:10px;
-          }
-          @include font(14px,$Medium,#666);
           &.likeOff {
             position:relative;
-            @include BGIMG("profile/heart_icon-off.png");
-            background-position:left center;
-            background-size:25px;
             .likeTooltip {
               @include position-top-left(33px);
               z-index: 1;
               width:162px;
               height:43px;
               animation: jello-vertical .9s both, hideAni 2s both;
-              // animation: wobble-ver-left .9s both, hideAni 5.9s both;
-              // transform-origin: bottom left;
               @keyframes hideAni {
                 0% {opacity: 1;}
                 99% {opacity:1;width:162px;height:43px;}
@@ -120,35 +81,8 @@
               }
             }
           }
-          &.likeOn {
-            @include BGIMG("profile/heart_icon-on.png");
-            background-position:left center;
-            background-size:25px;
-          }
-          &.cmt {
-            @include BGIMG("profile/comment_icon-notice.png");
-            background-position:left center;
-            background-size:25px;
-          }
         }
       }
-      // .info {
-      //   @include flex(center);
-      //   i {
-      //     display:inline-block;
-      //     width:20px;height:20px;
-      //     margin-right:4px;
-      //     &.like {@include BGIMG('mypage/dalla/icolike-g.png');}
-      //     &.like.active {@include BGIMG('mypage/dalla/icolike-p.png');}
-      //     &.comment {@include BGIMG('mypage/dalla/icocomment-g.png');}
-      //   }
-      //   span {
-      //     height:20px;
-      //     line-height:18px;
-      //     margin-right:8px;
-      //     @include font(13px,400,#6B6B6B);
-      //   }
-      // }
     }
     .listWrap {
       padding:0 16px;
