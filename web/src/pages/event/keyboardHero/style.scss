@@ -210,7 +210,6 @@
           }
           &.disabled{
             background: #C4C4C4;
-            pointer-events: none;
             &::after{
               background-color: #B1B1B1;
             }
