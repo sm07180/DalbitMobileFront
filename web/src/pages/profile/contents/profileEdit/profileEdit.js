@@ -13,10 +13,10 @@ import PopSlide from "components/ui/popSlide/PopSlide";
 import ProfileSwiper from '../../components/ProfileSwiper'
 import PhotoChange from '../../components/popup/PhotoChange'
 // contents
-
-import './profileEdit.scss'
 import PasswordChange from "pages/password";
 import {authReq} from "pages/self_auth";
+// scss
+import "./profileEdit.scss";
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupClose, setCommonPopupOpenData, setSlidePopupOpen, setSlidePopupClose} from "redux/actions/common";

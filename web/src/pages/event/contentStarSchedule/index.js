@@ -142,6 +142,22 @@ const contentStarSchedule = () => {
         memNo:61641048793489,
         offState:false
       },
+      {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_8065.png",
+        title:"빛쀼의 쀼가맨",
+        date:"5월 20일 15:15",
+        endDay : "20220520 181500",
+        memNo:31621777031786,
+        offState:false
+      },
+      {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_8055.png",
+        title:"숲속의 음악스케치",
+        date:"5월 27일 20:00",
+        endDay : "20220527 230000",
+        memNo:31650388124370,
+        offState:false
+      },
     ]
   )
   
@@ -168,7 +184,7 @@ const contentStarSchedule = () => {
         <img src={`${IMG_SERVER}/event/contentStarSchedule/mainTop.png`} alt="콘텐츠 스타 편성표" />
       </section>
       <section className="scheduleWrap">
-        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-5-3.png`} alt="5월 편성표" />
+        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-5-4.png`} alt="5월 편성표" />
       </section>
       <Tabmenu data={submenu} tab={tabType} setTab={setTabType} />
       <section className="contentWrap">
