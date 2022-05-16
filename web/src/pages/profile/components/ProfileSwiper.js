@@ -44,8 +44,10 @@ const ProfileSwiper = (props) => {
     const memNo = e.currentTarget.id;
     e.preventDefault();
     e.stopPropagation();
-    setLayerPopInfo({...layerPopInfo, type:"history", memNo:memNo});
-    dispatch(setCommonPopupOpenData({...commonPopup, layerPopup: true}));
+    if(memNo === globalState.profile.memNo){
+      setLayerPopInfo({...layerPopInfo, type:"history", memNo:memNo});
+      dispatch(setCommonPopupOpenData({...commonPopup, layerPopup: true}));
+    }    
   }
 
   useEffect(() => {

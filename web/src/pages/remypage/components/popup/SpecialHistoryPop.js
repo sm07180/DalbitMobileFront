@@ -9,10 +9,10 @@ import {
   setGlobalCtxMessage
 } from "redux/actions/globalCtx";
 
-const SpecialHistoryPop = (props) => {
-  const {memNo} = props;
+const SpecialHistoryPop = () => {
   const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const starHistoryPopRef = useRef();
   
   const [profileData, setProfileData] = useState([]);
@@ -21,15 +21,15 @@ const SpecialHistoryPop = (props) => {
   let pagePerCnt = 100;
 
   /* 스타DJ 약력 조회 Api */
-  const fetchSpecialHistory = (pageNo, memNo) => {
+  const fetchSpecialHistory = (pageNo) => {
     const param = {
       pageNo: pageNo,
       pagePerCnt: pagePerCnt,
-      memNo: memNo
     }
     Api.getStarDjLog(param).then(res => {
       if (res.result === 'success') {
         setSpecialHistory({cnt: res.data[0], list: specialHistory.list.concat(res.data[1]), isLoading: false, pageNo: pageNo});
+        setProfileData(res.data[1]);
       } else {
         dispatch(setGlobalCtxMessage({type:'alert',
           callback: () => {},
@@ -38,16 +38,6 @@ const SpecialHistoryPop = (props) => {
       }
     });
   }
-  
-  const fetchProfile = (memNo) => {
-    Api.profile({params: {memNo: memNo}}).then((res) => {
-      const {result, data} = res
-      if (result === 'success') {
-        setProfileData(data);        
-        fetchSpecialHistory(1, data.memNo);
-      }
-    })
-  }  
 
   const scrollEvent = () => {
     let scrollHeight = starHistoryPopRef.current?.scrollHeight;
@@ -61,8 +51,8 @@ const SpecialHistoryPop = (props) => {
     }
   }
 
-  useEffect(() => {
-    fetchProfile(memNo);
+  useEffect(() => { 
+    fetchSpecialHistory(1);
 
     if(isAndroid()) {
       dispatch(setGlobalCtxBackState(true))
@@ -90,8 +80,8 @@ const SpecialHistoryPop = (props) => {
   return (
     <section className="honorPopup">
       <div className="title">
-        <span><strong>{profileData.nickNm}</strong>님은</span>
-        <span>{profileData.isSpecial ? "현재 스타DJ입니다." : "현재 스타DJ가 아닙니다."}</span>
+        <span><strong>{globalState.profile.nickNm}</strong>님은</span>
+        <span>{globalState.profile.isSpecial ? "현재 스타DJ입니다." : "현재 스타DJ가 아닙니다."}</span>
       </div>
       <div className='reference'>
         * 60일 이내에 2시간 이상 방송 시간이 없으면<br/>스타DJ 누적 횟수가 초기화 됩니다.

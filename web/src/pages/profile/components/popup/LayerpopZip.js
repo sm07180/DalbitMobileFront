@@ -20,8 +20,7 @@ const LayerpopZip = (props) => {
     case "history":
       return (        
         <LayerPopup>
-          <SpecialHistoryPop
-            memNo={layerPopInfo.memNo}/>
+          <SpecialHistoryPop/>
         </LayerPopup>
       )    
     default :

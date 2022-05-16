@@ -115,8 +115,9 @@ const StarDj = (props) => {
     const memNo = e.currentTarget.id;
     e.preventDefault();
     e.stopPropagation();
-    setTargetMemNo(memNo);
-    dispatch(setCommonPopupOpenData({...commonPopup, commonPopup: true}))
+    if(memNo === globalState.profile.memNo){
+      dispatch(setCommonPopupOpenData({...commonPopup, commonPopup: true}))
+    }
   }
 
   return (
@@ -202,8 +203,7 @@ const StarDj = (props) => {
       {/* 스페셜DJ 약력 팝업 */}
       {commonPopup.layerPopup &&
         <LayerPopup>
-          <SpecialHistoryPop
-            memNo={targetMemNo}/>
+          <SpecialHistoryPop/>
         </LayerPopup>
       }
     </>
