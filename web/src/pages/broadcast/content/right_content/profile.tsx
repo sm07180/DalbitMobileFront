@@ -250,8 +250,11 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
     const memNo = e.currentTarget.id;
     e.preventDefault();
     e.stopPropagation();
-    setLayerPopMemNo(memNo);
-    dispatch(setCommonPopupOpenData({...popup, layerPopup: true}));
+    if(memNo === globalState.profile.memNo){
+      setLayerPopMemNo(memNo);
+      dispatch(setCommonPopupOpenData({...popup, layerPopup: true}));
+    }    
+
   }
 
   const checkSpecialDj = (profileData) => {
