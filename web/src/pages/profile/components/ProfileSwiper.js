@@ -19,7 +19,7 @@ const ProfileSwiper = (props) => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const topSwiperRef = useRef(null);
-
+  console.log(globalState.profile.memNo);
   const swiperPicture = {
     slidesPerView: 'auto',
     autoplay: {
@@ -66,14 +66,24 @@ const ProfileSwiper = (props) => {
         </div>
       </div>
       :
-      <div className="swiper-slide">
-        <div className="photo none" onClick={() => history.push('/myProfile/edit')}>
-          <div>
-            <p>배경사진을 등록해보세요</p>
+      <>
+      {
+        data.memNo === globalState.profile.memNo ?
+        <div className="swiper-slide">
+          <div className="photo none" onClick={() => history.push('/myProfile/edit')}>
+            <div className='mine'>
+              <p>배경사진을 등록해보세요</p>
+            </div>
           </div>
-          {/* <img src={`${IMG_SERVER}/profile/photoNone.png`} /> */}
         </div>
-      </div>
+        :
+        <div className="swiper-slide">
+          <div className="photo none">
+            <div/>
+          </div>
+        </div>
+      }
+      </>
     }
     {!disabledBadge &&
       <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
