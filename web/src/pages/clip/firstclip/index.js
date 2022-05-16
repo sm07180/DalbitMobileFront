@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHistory} from "react-router-dom";
 
 // global components
 import Header from 'components/ui/header/Header';
@@ -9,6 +10,8 @@ import '../scss/firstClipUpload.scss';
 import {IMG_SERVER} from 'context/config'
 
 const firstClip = () => {
+  const history = useHistory();
+
   return (
     <div id="firstClipPage">
       <Header type="back"/>
@@ -18,15 +21,15 @@ const firstClip = () => {
       </section>
       <section className='contentWrap'>
         <img src={`${IMG_SERVER}/clip/dalla/firstClipUpload.png`} />
-        <p>- 1분 이상 청취해야 청취로 인정됩니다.</p>
-        <p>- 비공개로 전환되거나 저작권을 침해하는 클립에는 지급되지 않습니다.</p>
+        <p>1분 이상 청취해야 청취로 인정됩니다.</p>
+        <p>비공개로 전환되거나 저작권을 침해하는 클립에는 지급되지 않습니다.</p>
       </section>
       <section className='bottomWrap'>
-        <div>
+        <div className='recodeBox'>
           <span>준비된 파일이 없나요?</span>
-          <button>녹음해서 올리기</button>
+          <button onClick={()=>{history.push('/clip_recoding')}}>녹음해서 올리기</button>
         </div>
-        <SubmitBtn text="클립 올리기"/>
+        <SubmitBtn text="클립 올리기" onClick={()=>{history.push('/clip_upload')}}/>
       </section>
     </div>
   );
