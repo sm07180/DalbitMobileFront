@@ -633,10 +633,10 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                       return (
                         <div
                           key={idx + "defalutRankList"}
-                          className={`rankingList__item ${idx === 1 ? "silver" : idx === 2 ? "bronze" : "gold"}`}
+                          className={`rankingList__item`}
                         >
                           <img
-                            src="https://image.dalbitlive.com/svg/ico_defalitprofile.svg"
+                            src="https://image.dalbitlive.com/common/photoNone-bgGray.png"
                             className="rankingList__item--img"
                             alt={`defalutrankProfileImg` + idx}
                           />
@@ -663,7 +663,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     </button>
                     <div className={`rankingList__item `}>
                       <img
-                        src="https://image.dalbitlive.com/svg/ico_defalitprofile.svg"
+                        src="https://image.dalbitlive.com/common/photoNone-bgGray.png"
                         className="rankingList__item--img"
                         alt={`defalutrankProfileImg`}
                       />
