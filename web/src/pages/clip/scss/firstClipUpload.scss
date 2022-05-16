@@ -1,0 +1,28 @@
+@import "components/ui/_mixin.scss";
+
+#firstClipPage{
+  width: 100%;
+  position: relative;
+  img{width: 100%;}
+  section{
+    padding: 0 24px;
+    margin-bottom: 20px;
+  }
+  .titleWrap{
+    width: 100%;
+    text-align: center;
+    h1{
+      @include font(24px, $SemiBold, #202020);
+      margin-bottom: 6px
+    }
+    p{
+      @include font(15px, $Medium, #303030);
+    }
+  }
+  .contentWrap{
+    img{margin-bottom: 20px;}
+    p{
+      @include font(14px, $Regular, #303030);
+    }
+  }
+}

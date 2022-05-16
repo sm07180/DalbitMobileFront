@@ -19,6 +19,7 @@ import NowClip from "pages/clip/components/NowClip";
 
 import './scss/clipPage.scss';
 import {playClip} from "pages/clip/components/clip_play_fn";
+import {IMG_SERVER} from 'context/config'
 
 const ClipPage = () => {
   const history = useHistory();
@@ -211,6 +212,9 @@ const ClipPage = () => {
     <>
       <div id="clipPage" >
         <Header title={'클립'} />
+        <section className="firstClipWrap">
+          <img src={`${IMG_SERVER}/clip/dalla/firstClipUploadBanner.png`} alt='첫 클립 올리기 받을 수 있는 5달 발견' onClick={() => history.push('/clip/firstclip')} />
+        </section>
         <section className='hotClipWrap'>
           <CntTitle title={'🌟 지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
           {hotClipInfo.list.length > 0 ?
