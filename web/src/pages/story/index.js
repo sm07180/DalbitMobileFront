@@ -73,7 +73,7 @@ export default () => {
           msg: "사연을 삭제했습니다.",
           callback: () => {
             // getList();
-            dispatch(setData(story.list.concat([]).filter((v)=> v.idx !== storyIdx)));
+            dispatch(setData({list: story.list.concat([]).filter((v)=> v.idx !== storyIdx)}));
           }
         }))
       } else {
