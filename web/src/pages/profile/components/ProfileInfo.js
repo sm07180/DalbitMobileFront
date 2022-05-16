@@ -30,37 +30,33 @@ export const InfoBox = (props) => {
   )
 }
 
-export const BroadcastNotice = (props) => {
-  const { onClickNotice, swiperParams, swiperRef, noticeFixData, fetchHandleLike, noticeData } = props;
+export const BroadcastNoticeWrap = (props) => {
+  const {broadcastNoticeData, type} = props;
+  const history = useHistory();
   return (
-    <div className="broadcastNotice">
-      <div className="title" onClick={onClickNotice}>방송공지</div>
-      <Swiper {...swiperParams} ref={swiperRef}>
-        {noticeFixData?.fixedFeedList.map((v, idx) => {
-          const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
-          return (
-            <div key={idx}>
-              <div className="noticeBox">
-                <div className="badge">Notice</div>
-                <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
-                <FeedLike data={v} fetchHandleLike={fetchHandleLike} type={"notice"} likeType={"fix"} detailPageParam={detailPageParam} />
-              </div>
-            </div>
-          )
-        })}
-        {noticeData?.feedList.map((v, idx) => {
-          const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
-          return (
-            <div key={idx}>
-              <div className="noticeBox">
-                <div className="badge">Notice</div>
-                <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
-                <FeedLike data={v} fetchHandleLike={fetchHandleLike} type={"notice"} likeType={"nonFix"} detailPageParam={detailPageParam} />
-              </div>
-            </div>
-          )
-        })}
-      </Swiper>
+    <>
+    {broadcastNoticeData?.map((v, idx) => {
+      const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
+      return (
+        <div className="swiper-slide noticeList" key={idx}>
+          <BroadcastNotice data={v} type={type} detailPageParam={detailPageParam} />
+        </div>
+      )
+    })}
+    </>
+  )
+}
+
+export const BroadcastNotice = (props) => {
+  const {data, type, detailPageParam} = props;
+  return (
+    <div className="noticeBox">
+      <div className="badge">Notice</div>
+      <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{data.contents}</div>
+      <FeedLike data={data} type={"notice"} detailPageParam={detailPageParam} />
+      <i className="fixIcon">
+        <img src={`${IMG_SERVER}/profile/bookmark-${type === "fix" ? 'on' : 'off'}.png`}/>
+      </i>
     </div>
   )
 }
@@ -166,52 +162,6 @@ const ProfileInfo = (props) => {
         dispatch(setGlobalCtxMessage({type:'alert',msg: res.message}));
       }
     }).catch((e) => console.log(e));
-  };
-
-  {/* 방송공지 좋아요 */}
-  const fetchHandleLike = async (regNo, mMemNo, like, likeType, index) => {
-    const params = {
-      regNo: regNo,
-      mMemNo: mMemNo,
-      vMemNo: globalState.profile.memNo
-    };
-    if(like === "n") {
-      await Api.profileFeedLike(params).then((res) => {
-        if(res.result === "success") {
-          if(likeType === "fix") {
-            let tempIndex = noticeFixData.fixedFeedList.findIndex(value => value.noticeIdx === parseInt(index));
-            let temp = noticeFixData.fixedFeedList.concat([]);
-            temp[tempIndex].like_yn = "y";
-            temp[tempIndex].rcv_like_cnt++;
-            dispatch(setProfileNoticeFixData({...noticeFixData, fixedFeedList: temp}))
-          } else {
-            let tempIndex = noticeData.feedList.findIndex(value => value.noticeIdx === parseInt(index));
-            let temp = noticeData.feedList.concat([]);
-            temp[tempIndex].like_yn = "y";
-            temp[tempIndex].rcv_like_cnt++;
-            dispatch(setProfileNoticeData({...noticeData, feedList: temp}))
-          }
-        }
-      }).catch((e) => console.log(e));
-    } else if(like === "y") {
-      await Api.profileFeedLikeCancel(params).then((res) => {
-        if(res.result === "success") {
-          if(likeType === "fix") {
-            let tempIndex = noticeFixData.fixedFeedList.findIndex(value => value.noticeIdx === parseInt(index));
-            let temp = noticeFixData.fixedFeedList.concat([]);
-            temp[tempIndex].like_yn = "n";
-            temp[tempIndex].rcv_like_cnt--;
-            dispatch(setProfileNoticeFixData({...noticeFixData, fixedFeedList: temp}))
-          } else {
-            let tempIndex = noticeData.feedList.findIndex(value => value.noticeIdx === parseInt(index));
-            let temp = noticeData.feedList.concat([]);
-            temp[tempIndex].like_yn = "n";
-            temp[tempIndex].rcv_like_cnt--;
-            dispatch(setProfileNoticeData({...noticeData, feedList: temp}))
-          }
-        }
-      }).catch((e) => console.log(e));
-    }
   };
 
   useEffect(() => {
@@ -361,16 +311,24 @@ const ProfileInfo = (props) => {
         {getTeamJoinBtnVisibleYn() && <button data-team-no={data.teamInfo.team_no} onClick={reqTeamJoin}>가입신청</button> }
       </div>
       }
+
+      {/* 코맨트 정보 */}
       {data.profMsg &&
       <div className="comment">
         <div className="title">코멘트</div>
         <div className="text" dangerouslySetInnerHTML={{__html: Utility.nl2br(data.profMsg)}} />
       </div>
       }
+
+      {/* 방송공지 정보 */}
       {noticeFixData.fixedFeedList.length !== 0 || noticeData.feedList.length !== 0 ?
-      <BroadcastNotice onClickNotice={onClickNotice} swiperParams={swiperParams} swiperRef={swiperRef}
-                       noticeFixData={noticeFixData} fetchHandleLike={fetchHandleLike} noticeData={noticeData}
-      />
+      <div className="broadcastNotice">
+        <div className="title" onClick={onClickNotice}>방송공지</div>
+        <Swiper {...swiperParams} ref={swiperRef}>
+          <BroadcastNoticeWrap broadcastNoticeData={noticeFixData.fixedFeedList} type="fix" />
+          <BroadcastNoticeWrap broadcastNoticeData={noticeData.feedList} />
+        </Swiper>
+      </div>
       : isMyProfile ?
       <BroadcastNoticeNone onClickNotice={onClickNotice} defaultNotice={defaultNotice} />
       :

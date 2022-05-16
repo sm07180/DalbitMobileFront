@@ -11,6 +11,8 @@ import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
 
 import Header from 'components/ui/header/Header'
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {useDispatch} from "react-redux";
 
 export default () => {
   const history = useHistory()
@@ -19,7 +21,7 @@ export default () => {
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {tab} = eventAttendState
   const {webview, type} = qs.parse(location.search)
-
+  const dispatch = useDispatch();
   const commonTopRef = useRef()
   const tabRef = useRef()
 
@@ -93,14 +95,25 @@ export default () => {
         ) : (
           <button
             type="button"
-            onClick={() => eventAttendAction.setTab('roulette')}
+            onClick={()=>{
+              dispatch(setGlobalCtxMessage({
+                type: "alert",
+                msg: ` 키보드 히어로 31 이벤트가 진행 되는 동안에는 룰렛이벤트가 키보드히어로 31로 대체됩니다.`,
+                callback: () => {
+                  history.push(`/event/keyboardhero`)
+                }
+              }));
+            }}
+            //todo: 6월 12일
+            // onClick={() => eventAttendAction.setTab('roulette')}
             className={`btnRoul ${tab === 'roulette' ? 'active' : ''}`}>
             <img src={`${IMG_SERVER}/event/attend/201019/tab_text_02@2x.png`} alt="룰렛 이벤트" />
           </button>
         )}
       </div>
-
-      <div className={`tabContent ${tabFixed ? 'isTop' : ''}`}>{tab === 'attend' ? <AttendPage /> : <RoulettePage />}</div>
+      {/*todo: 6월 12일*/}
+      {/*<div className={`tabContent ${tabFixed ? 'isTop' : ''}`}>{tab === 'attend' ? <AttendPage /> : <RoulettePage />}</div>*/}
+      <div className={`tabContent ${tabFixed ? 'isTop' : ''}`}> <AttendPage /></div>
     </div>
   )
 }
