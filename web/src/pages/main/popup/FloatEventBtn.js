@@ -32,6 +32,7 @@ const FloatEventBtn = (props) => {
           } catch (e) {
           }
 
+          // todo: 6월 12일
           if(attendCheck===2) {
             dispatch(setGlobalCtxMessage({
               type: "alert",

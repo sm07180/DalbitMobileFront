@@ -32,6 +32,7 @@ export const InfoBox = (props) => {
 
 export const BroadcastNoticeWrap = (props) => {
   const {broadcastNoticeData, type} = props;
+  const history = useHistory();
   return (
     <>
     {broadcastNoticeData?.map((v, idx) => {
