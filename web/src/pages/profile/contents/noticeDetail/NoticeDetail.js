@@ -6,6 +6,7 @@ import Header from '../../../../components/ui/header/Header';
 import NoResult from "../../../../components/ui/noResult/NoResult";
 // components
 import {BroadcastNoticeWrap} from "../../components/ProfileInfo";
+import {goProfileDetailPage} from "../../contents/profileDetail/profileDetail";
 // scss
 import './noticeDetail.scss';
 import {useHistory, useLocation} from 'react-router-dom';
@@ -13,7 +14,6 @@ import {IMG_SERVER} from 'context/config';
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileNoticeData, setProfileNoticeFixData} from "redux/actions/profile";
-import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {profilePagingDefault} from "redux/types/profileType";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
@@ -78,7 +78,7 @@ const NoticeDetail = () => {
 
   const onClick = () => {
     goProfileDetailPage({history, action: 'write', type: 'notice', memNo: data.memNo});
-  }
+  };
 
   useEffect(() => {
     if(!token.isLogin) {
@@ -101,9 +101,9 @@ const NoticeDetail = () => {
       </Header>
       <section className="detailWrap">
         {noticeFixData.fixedFeedList.length !== 0 &&
-        <BroadcastNoticeWrap  broadcastNoticeData={noticeFixData.fixedFeedList} type="fix" />}
+        <BroadcastNoticeWrap broadcastNoticeData={noticeFixData.fixedFeedList} type="fix" />}
         {noticeData.feedList.length !== 0 &&
-        <BroadcastNoticeWrap  broadcastNoticeData={noticeData.feedList} />}
+        <BroadcastNoticeWrap broadcastNoticeData={noticeData.feedList} />}
         {noticeFixData.fixedFeedList.length === 0 && noticeData.feedList.length === 0 &&
         <NoResult />
         }
