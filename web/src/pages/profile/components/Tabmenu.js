@@ -9,6 +9,7 @@ const Tabmenu = (props) => {
         const tabClick = (e) => {
           const {targetTab} = e.currentTarget.dataset;
           setTab(targetTab);
+          if (typeof tabChangeAction === 'function') tabChangeAction(targetTab);
         }
 
         return (
