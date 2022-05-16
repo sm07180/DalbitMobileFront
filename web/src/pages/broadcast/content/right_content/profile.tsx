@@ -607,6 +607,13 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                         </div>
                       );
                     })}
+                    {[...Array(3 - profileData.fanRank.length)].map((rankItem, index) => {
+                      return (
+                        <div className={`rankingList__item`} key={index}>
+                          <img className="rankingList__item--img" src={`https://image.dalbitlive.com/common/photoNone-bgGray.png`} alt="기본 이미지" />
+                        </div>
+                      )
+                    })}
                     {globalState.baseData.memNo !== profileData.memNo && (
                       <button
                         className="rankingList__goFanboardBtn"
