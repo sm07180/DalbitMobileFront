@@ -140,7 +140,7 @@ const Remypage = () => {
       {commonPopup.layerPopup &&
         <LayerPopup>
           <SpecialHistoryPop
-            profileData={profileData}/>
+            memNo={profileData.memNo}/>
         </LayerPopup>
       }
     </div>
