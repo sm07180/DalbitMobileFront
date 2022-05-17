@@ -10,7 +10,7 @@
   .titleWrap{
     width: 100%;
     text-align: center;
-    margin-bottom: 20px;
+    margin: 16px 0 20px 0;
     h1{
       @include font(24px, $SemiBold, #202020);
       margin-bottom: 6px

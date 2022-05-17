@@ -175,9 +175,9 @@ const ClipPage = () => {
         for(let i = 0; i < noneEle.length; i++){
           setTimeout(() => {
             if(noneEle[i].classList.contains("swiper-slide-active") || noneEle[i].classList.contains("swiper-slide-duplicate-active")) {
-              document.getElementById('firstClipWrap').remove();
+              document.getElementById('firstClipWrap').className += 'remove';
             }
-          }, 500)
+          }, 200)
         }
       }
     }
@@ -229,10 +229,16 @@ const ClipPage = () => {
     <>
       <div id="clipPage" >
         <Header title={'클립'} />
-        <section className="firstClipWrap" id='firstClipWrap'>
+        <section className="firstClipWrap " id='firstClipWrap'>
           <Swiper {...firstClipSwiper}>
             <div className='noneEle'></div>
-            <img src={`${IMG_SERVER}/clip/dalla/firstClipUploadBanner.png`} alt='첫 클립 올리기 받을 수 있는 5달 발견' onClick={() => history.push('/clip/firstclip')} />
+            <div className="bannerBox" onClick={() => history.push('/clip/firstclip')}>
+              <div className="content">
+                <p>첫 클립 올리기</p>
+                <p className="hightlight">받을 수 있는 5달 발견!</p>
+              </div>
+              <img src={`${IMG_SERVER}/clip/dalla/firstClipUploadPresent.png`} />
+            </div>
             <div className='noneEle'></div>
           </Swiper>
         </section>
