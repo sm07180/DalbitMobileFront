@@ -88,7 +88,7 @@ const FanboardSection = (props) => {
           deleteContents={deleteContents}
           type="fanBoard" />
         :
-        <NoResult />
+        <NoResult img={'common/listNone/listNone-profile.png'} ment={'작성된 팬보드가 없습니다.'} />
       }
     </div>
   )
