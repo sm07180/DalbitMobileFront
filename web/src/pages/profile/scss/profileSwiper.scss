@@ -13,6 +13,16 @@
       &.none {
         height:100%;
         background-color:#eee;
+        div{
+          width: 100%;
+          padding-bottom: 100%;
+          cursor: pointer;
+          p{
+            @include position-top-left(50%,50%);
+            transform: translate(-50%,-50%);
+            @include font(15px,$Medium, #999);
+          }
+        }
       }
       img {
         width:100%;
