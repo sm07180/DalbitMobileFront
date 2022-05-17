@@ -189,7 +189,7 @@ export default function ChatHeaderWrap(prop: any) {
           }}>
             <div className="image-background" style={{backgroundImage: `url(${roomInfo.bjProfImg["thumb150x150"]})`,}}/>
             {
-              roomInfo.badgeFrame.frameAni !== "" ?
+              roomInfo.badgeFrame.frameTop !== "" ?
                 <>
                   <div className="dj-holder" style={{backgroundImage: `url(${roomInfo.badgeFrame.frameTop})`,}}/>
                   <div className="dj-holder" style={{backgroundImage: `url(${roomInfo.badgeFrame.frameAni})`,}}/>
