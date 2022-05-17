@@ -4,11 +4,14 @@ import * as actions from "../../actions/story";
 export type StoryActions = ActionType<typeof actions>;
 
 export interface IStoryState {
-  list: Array<any>
-  pageInfo: { pageNo: number, pagePerCnt: number }
+  tabType: string;
+  list: Array<any>;
+  pageInfo: { pageNo: number, pagePerCnt: number };
+  backFlag: boolean;
 };
 
 export const initialState = {
+  tabType: '받은 사연',
   list: [],
   pageInfo: {pageNo: 1, pagePerCnt: 100},
   backFlag: false

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react'
+import React, {useState, useEffect, useLayoutEffect, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 import Utility, {isHitBottom} from 'components/lib/utility'
 import {setInit, setData}  from "redux/actions/story";
@@ -20,9 +20,11 @@ export default () => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const story = useSelector(({story}) => story);
-  
-  const storyTabMenu = ['받은 사연', '사연 플러스'];  
-  const [tabType, setTabType] = useState(storyTabMenu[0])
+  const reduxClearFlagRef = useRef();
+
+  // const [tabType, setTabType] = useState(storyTabMenu[0])
+  const storyTabMenu = ['받은 사연', '사연 플러스'];
+  const tabType = story?.tabType || storyTabMenu[0];
   const [storyList, setStoryList] = useState([])
   const [plusList, setPlusList] = useState([])
 
@@ -73,6 +75,13 @@ export default () => {
     }
   }
 
+  // 프로필 이동
+  const goLink = (memNo) => {
+    reduxClearFlagRef.current = true;
+    dispatch(setData({backFlag : true}));
+    history.push(`/profile/${memNo}`)
+  }
+
   useLayoutEffect(() => {
     window.addEventListener('scroll', scrollEvtHdr)
     return () => {
@@ -113,14 +122,18 @@ export default () => {
     };
   }, [])
 
+  const changeTab = (data) => {
+    dispatch(setData({tabType: data}));
+  };
+
   return (
     <div id="storyPage">
       <Header position={'sticky'} title="사연 보관함" type={'back'}/>
-      <Tabmenu data={storyTabMenu} tab={tabType} setTab={setTabType} />
+      <Tabmenu data={storyTabMenu} tab={tabType} setTab={changeTab} />
       {tabType === storyTabMenu[0] ?
-        <Story data={storyList}/>
+        <Story data={storyList} goLink={goLink}/>
       :
-        <Story data={plusList}/>
+        <Story data={plusList} goLink={goLink}/>
       }      
     </div>
   )

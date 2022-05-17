@@ -10,12 +10,10 @@ import Api from 'context/api'
 import moment from "moment";
 
 export default (props) => {
-  const {data} = props;
+  const {data, goLink} = props;
   const dispatch = useDispatch();
   const story = useSelector(({story}) => story);
   const nowDay = moment();
-  const reduxClearFlagRef = useRef(false);
-  const history = useHistory()
 
   function delList(roomNo, storyIdx) {
     Api.getStoryBoxDel({roomNo, storyIdx}).then((res) => {
@@ -42,14 +40,6 @@ export default (props) => {
     const TypeChangeRoomNo = String(roomNo);
     const TypeChangeStoryIdx = parseInt(storyIdx);
     delList(TypeChangeRoomNo, TypeChangeStoryIdx);
-  }
-
-  
-  // 프로필 이동
-  const goLink = (memNo) => {
-    reduxClearFlagRef.current = true;
-    dispatch(setData({backFlag : true}));
-    history.push(`/profile/${memNo}`)
   }
 
   return (
