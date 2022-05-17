@@ -12,12 +12,18 @@ import Lottie from 'react-lottie'
 import DetailView from '../components/DetailView'
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {setCommonPopupOpenData} from "redux/actions/common";
+
+import LayerPopup from "../../../components/ui/layerPopup/LayerPopup2";
+import SpecialHistoryPop from "../../remypage/components/popup/SpecialHistoryPop";
 
 const StarDj = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const commonPopup = useSelector(state => state.popup);
   const [specialList, setSpecialList] = useState([]);
+  const [targetMemNo, setTargetMemNo] = useState("");
 
   let date = new Date();
 
@@ -105,6 +111,15 @@ const StarDj = (props) => {
     setSpecialList(editFan);
   }
 
+  const historyPopupOpen = (e) => {
+    const memNo = e.currentTarget.id;
+    e.preventDefault();
+    e.stopPropagation();
+    if(memNo === globalState.profile.memNo){
+      dispatch(setCommonPopupOpenData({...commonPopup, commonPopup: true}))
+    }
+  }
+
   return (
     <>
       <div className='starDjInfo'>
@@ -128,7 +143,7 @@ const StarDj = (props) => {
                 <div className='starDjList' key={index} onClick={() => {golink(`/profile/${list.memNo}`)}}>
                   <div className='photoWrap'>
                     <div className='thumbnail'>
-                      <img src={`${list.profImg.thumb150x150}`} alt={`${list.nickNm}님의 프로필 이미지`}/>
+                      <img src={`${list.profImg.url}`} alt={`${list.nickNm}님의 프로필 이미지`}/>
                     </div>
                     {
                       typeof list.roomNo === "undefined" || list.roomNo === null || list.roomNo !== "" ?
@@ -179,11 +194,18 @@ const StarDj = (props) => {
                       </div>
                     </div>
                   </div>
+                  <span className={`countTag ${list.specialdj_badge === 1 ? "active" : ""}`} onClick={historyPopupOpen} id={list.memNo}>{list.specialCnt}회</span>
                 </div>
               )
             })
         }
       </div>
+      {/* 스페셜DJ 약력 팝업 */}
+      {commonPopup.layerPopup &&
+        <LayerPopup>
+          <SpecialHistoryPop/>
+        </LayerPopup>
+      }
     </>
   )
 }
