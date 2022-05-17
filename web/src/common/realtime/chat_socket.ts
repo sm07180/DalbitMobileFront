@@ -2104,6 +2104,10 @@ export class ChatSocketHandler {
 
                   case "reqPlayCoin": { // 달나라 동전 생성
                     const {reqPlayCoin} = data;
+
+                    //달나라 이벤트 진행중 여부
+                    if(!this.roomInfo?.moonLandEvent) return null;
+
                     /* 일반코인은 누적선물달을 체크 하지 않음 ( 그 외 보너스코인은 모두 10달 이상이여야 화면에 노출 ) */
                     const isNormalCoin = reqPlayCoin?.normal?.score > 0 && reqPlayCoin?.character?.score === 0 && reqPlayCoin?.gold?.score === 0;
 
