@@ -168,15 +168,17 @@ const ClipPage = () => {
 
   const firstClipSwiper = {
     slidesPerView: 'auto',
-    loop: true,
+    initialSlide: 1,
     on: {
       activeIndexChange: function () {
-        const noneEle = document.getElementById('noneEle');
-        setTimeout(() => {
-          if(noneEle.classList.contains("swiper-slide-active") || noneEle.classList.contains("swiper-slide-duplicate-active")) {
-            document.getElementById('firstClipWrap').remove();
-          }
-        }, 500)
+        const noneEle = document.getElementsByClassName('noneEle');
+        for(let i = 0; i < noneEle.length; i++){
+          setTimeout(() => {
+            if(noneEle[i].classList.contains("swiper-slide-active") || noneEle[i].classList.contains("swiper-slide-duplicate-active")) {
+              document.getElementById('firstClipWrap').remove();
+            }
+          }, 500)
+        }
       }
     }
   }
@@ -229,8 +231,9 @@ const ClipPage = () => {
         <Header title={'클립'} />
         <section className="firstClipWrap" id='firstClipWrap'>
           <Swiper {...firstClipSwiper}>
+            <div className='noneEle'></div>
             <img src={`${IMG_SERVER}/clip/dalla/firstClipUploadBanner.png`} alt='첫 클립 올리기 받을 수 있는 5달 발견' onClick={() => history.push('/clip/firstclip')} />
-            <div id='noneEle'></div>
+            <div className='noneEle'></div>
           </Swiper>
         </section>
         <section className='hotClipWrap'>
