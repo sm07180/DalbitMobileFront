@@ -166,6 +166,21 @@ const ClipPage = () => {
     spaceBetween: 16,
   }
 
+  const firstClipSwiper = {
+    slidesPerView: 'auto',
+    loop: true,
+    on: {
+      activeIndexChange: function () {
+        const noneEle = document.getElementById('noneEle');
+        setTimeout(() => {
+          if(noneEle.classList.contains("swiper-slide-active") || noneEle.classList.contains("swiper-slide-duplicate-active")) {
+            document.getElementById('firstClipWrap').remove();
+          }
+        }, 500)
+      }
+    }
+  }
+
   // 링크 다시 눌렀을때, 액션
   const refreshActions = () => {
     window.scrollTo(0, 0);
@@ -212,8 +227,11 @@ const ClipPage = () => {
     <>
       <div id="clipPage" >
         <Header title={'클립'} />
-        <section className="firstClipWrap">
-          <img src={`${IMG_SERVER}/clip/dalla/firstClipUploadBanner.png`} alt='첫 클립 올리기 받을 수 있는 5달 발견' onClick={() => history.push('/clip/firstclip')} />
+        <section className="firstClipWrap" id='firstClipWrap'>
+          <Swiper {...firstClipSwiper}>
+            <img src={`${IMG_SERVER}/clip/dalla/firstClipUploadBanner.png`} alt='첫 클립 올리기 받을 수 있는 5달 발견' onClick={() => history.push('/clip/firstclip')} />
+            <div id='noneEle'></div>
+          </Swiper>
         </section>
         <section className='hotClipWrap'>
           <CntTitle title={'🌟 지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
