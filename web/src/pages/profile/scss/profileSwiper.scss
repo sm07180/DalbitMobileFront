@@ -42,6 +42,7 @@
       line-height:12px;
       border-radius:100px;
       background-color: #666666;
+      @include font(12px,$Regular,#FFF);
       cursor: pointer;
       &::before {
         content: "";
@@ -58,7 +59,6 @@
       }
       &.active {
         background-color:#8865FF;
-        @include font(12px,$Regular,#FFF);
         &::before {
           background-image: url("https://image.dalbitlive.com/badge/dalla/badge_starDJ-profileOn.png");
         }
