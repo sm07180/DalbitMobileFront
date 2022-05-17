@@ -44,7 +44,7 @@ export default (props) => {
   return (
     <div className='content'>
       {
-        data.length > 0 ?
+        data.length > 100 ?
           <>
             <p className='reference'>※ 최근 3개월 내역만 볼 수 있습니다.</p>
             <div className='storyWrap'>
@@ -85,8 +85,9 @@ export default (props) => {
           </>
         :
           <div className='listNone'>
-            <p className='mainText'>받은 사연이 없어요</p>
-            <p className='subText'>최근 3개월 내역만 볼 수 있어요</p>
+            <img src='https://image.dalbitlive.com/common/listNone/listNone-new.png' className='listNoneImg' alt="받은 사연이 없어요."/>
+            <p className='mainText'>받은 사연이 없어요.</p>
+            <p className='subText'>최근 3개월 내역만 볼 수 있어요.</p>
           </div>
       }
     </div>

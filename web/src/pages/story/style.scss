@@ -130,6 +130,11 @@
       @include flex(center, center, column);
       width: 100%;
       padding: 100px 0;
+      .listNoneImg {
+        display: inline-block;
+        width: 110px; height: 110px;
+        margin-bottom: 3px;
+      }
       .mainText {
         @include font(15px, $Medium, #303030);
         margin-bottom: 6px;
