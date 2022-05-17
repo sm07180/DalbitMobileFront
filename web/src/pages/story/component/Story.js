@@ -44,7 +44,7 @@ export default (props) => {
   return (
     <div className='content'>
       {
-        data.length > 100 ?
+        data.length > 0 ?
           <>
             <p className='reference'>※ 최근 3개월 내역만 볼 수 있습니다.</p>
             <div className='storyWrap'>
