@@ -85,17 +85,13 @@ const ProfileSwiper = (props) => {
           {
             data.memNo === globalState.profile.memNo ?
               <div className="swiper-slide">
-                <div className="photo none" onClick={() => history.push('/myProfile/edit')}>
-                  <div className='mine'>
-                    <p>배경사진을 등록해보세요</p>
-                  </div>
+                <div className="photo none mine" onClick={() => history.push('/myProfile/edit')}>
+                  <p>배경사진을 등록해보세요</p>
                 </div>
               </div>
           :
             <div className="swiper-slide">
-              <div className="photo none">
-                <div/>
-              </div>
+              <div className="photo none"/>
             </div>
           }
         </>

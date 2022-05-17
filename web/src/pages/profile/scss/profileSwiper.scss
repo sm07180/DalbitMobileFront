@@ -11,12 +11,11 @@
       max-height:480px;
       &.none {
         height:100%;
+        padding-bottom: 100%;
         background-color:#eee;
-        div{
-          width: 100%;
-          padding-bottom: 100%;
-          &.mine{cursor: pointer;}
-          p{
+        &.mine{
+          cursor: pointer;
+          p {
             @include position-top-left(50%,50%);
             transform: translate(-50%,-50%);
             @include font(15px,$Medium, #999);
