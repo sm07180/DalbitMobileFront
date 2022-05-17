@@ -100,7 +100,11 @@ const ProfileSwiper = (props) => {
         <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
           {
             data.specialDjCnt > 0 &&
-              <span id={data.memNo} className={`starBdg ${data.badgeSpecial === 1 ? "active" : ""}`} onClick={historyPopupOpen}>{data.specialDjCnt}</span>
+              <span id={data.memNo}
+               className={`starBdg ${data.badgeSpecial === 1 ? "active" : ""} ${data.memNo === globalState.profile.memNo ? "cursor" : ""}`}
+               onClick={historyPopupOpen}>
+                 {data.specialDjCnt}
+              </span>
           }
           {type === 'profile' && webview === '' && data.roomNo !== "" && !data.listenRoomNo &&
             <div className='badgeLive' onClick={()=>{
