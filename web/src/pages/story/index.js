@@ -1,5 +1,5 @@
-import React, {useState, useContext, useEffect, useCallback, useLayoutEffect, useRef} from 'react'
-import {useParams, useHistory} from 'react-router-dom'
+import React, {useState, useEffect, useLayoutEffect} from 'react'
+import {useHistory} from 'react-router-dom'
 import Utility, {isHitBottom} from 'components/lib/utility'
 import {setInit, setData}  from "redux/actions/story";
 import {useDispatch, useSelector} from "react-redux";
@@ -20,7 +20,6 @@ export default () => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const story = useSelector(({story}) => story);
-  const reduxClearFlagRef = useRef(false);
   
   const storyTabMenu = ['받은 사연', '사연 플러스'];  
   const [tabType, setTabType] = useState(storyTabMenu[0])
@@ -74,13 +73,6 @@ export default () => {
     }
   }
 
-  // 프로필 이동
-  const goLink = (memNo) => {
-    reduxClearFlagRef.current = true;
-    dispatch(setData({backFlag : true}));
-    history.push(`/profile/${memNo}`)
-  }
-
   useLayoutEffect(() => {
     window.addEventListener('scroll', scrollEvtHdr)
     return () => {
@@ -113,7 +105,6 @@ export default () => {
     } else {
       getList(1);
     }
-
     return () => {
       if(!reduxClearFlagRef.current){
         // 리덕스 데이터를 초기화 하는 경우 (프로필 이동만 초기화 제외)
