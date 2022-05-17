@@ -22,7 +22,6 @@ const ProfileSwiper = (props) => {
   const commonPopup = useSelector(state => state.popup);
   const topSwiperRef = useRef(null);
 
-
   const swiperPicture = {
     slidesPerView: 'auto',
     autoplay: {
@@ -70,21 +69,36 @@ const ProfileSwiper = (props) => {
                   <img src={item.profImg.thumb500x500} />
                 </div>
               </div>
-            )
-          })}
+              )
+            })
+          }
         </Swiper>
-        : data.profImgList.length === 1 ?
-        <div className="swiper-slide" onClick={() => openShowSlide(data.profImgList, 'y', 'profImg', topSwiperRef.current?.activeIndex)}>
-          <div className="photo cursor">
-            <img src={data.profImgList[0].profImg.thumb500x500} />
+      :
+        data.profImgList.length === 1 ?
+          <div className="swiper-slide" onClick={() => openShowSlide(data.profImgList, 'y', 'profImg', topSwiperRef.current?.activeIndex)}>
+            <div className="photo cursor">
+              <img src={data.profImgList[0].profImg.thumb500x500} />
+            </div>
           </div>
-        </div>
-        :
-        <div className="swiper-slide">
-          <div className="photo none">
-            <img src={`${IMG_SERVER}/profile/photoNone.png`} />
-          </div>
-        </div>
+      :
+        <>
+          {
+            data.memNo === globalState.profile.memNo ?
+              <div className="swiper-slide">
+                <div className="photo none" onClick={() => history.push('/myProfile/edit')}>
+                  <div className='mine'>
+                    <p>배경사진을 등록해보세요</p>
+                  </div>
+                </div>
+              </div>
+          :
+            <div className="swiper-slide">
+              <div className="photo none">
+                <div/>
+              </div>
+            </div>
+          }
+        </>
       }
       {!disabledBadge &&
         <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>

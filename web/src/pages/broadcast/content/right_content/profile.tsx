@@ -576,7 +576,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                   <span className="subIconWrap">
                     {/* {<span className="nationIcon"></span>} */}
                     {profileData.gender !== "" && (
-                      <em className={`icon_wrap ${profileData.gender === "m" ? "icon_male" : "icon_female"}`}>
+                      <em className={`icon_wrap ${profileData.gender === "n" ? "" : profileData.gender === "m" ? "icon_male" : "icon_female"}`}>
                         <span className="blind">성별</span>
                       </em>
                     )}
@@ -637,6 +637,13 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                         </div>
                       );
                     })}
+                    {[...Array(3 - profileData.fanRank.length)].map((rankItem, index) => {
+                      return (
+                        <div className={`rankingList__item`} key={index}>
+                          <img className="rankingList__item--img" src={`https://image.dalbitlive.com/common/photoNone-bgGray.png`} alt="기본 이미지" />
+                        </div>
+                      )
+                    })}
                     {globalState.baseData.memNo !== profileData.memNo && (
                       <button
                         className="rankingList__goFanboardBtn"
@@ -663,10 +670,10 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                       return (
                         <div
                           key={idx + "defalutRankList"}
-                          className={`rankingList__item ${idx === 1 ? "silver" : idx === 2 ? "bronze" : "gold"}`}
+                          className={`rankingList__item`}
                         >
                           <img
-                            src="https://image.dalbitlive.com/svg/ico_defalitprofile.svg"
+                            src="https://image.dalbitlive.com/common/photoNone-bgGray.png"
                             className="rankingList__item--img"
                             alt={`defalutrankProfileImg` + idx}
                           />
@@ -693,7 +700,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     </button>
                     <div className={`rankingList__item `}>
                       <img
-                        src="https://image.dalbitlive.com/svg/ico_defalitprofile.svg"
+                        src="https://image.dalbitlive.com/common/photoNone-bgGray.png"
                         className="rankingList__item--img"
                         alt={`defalutrankProfileImg`}
                       />

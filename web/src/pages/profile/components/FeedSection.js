@@ -45,7 +45,10 @@ const FeedSection = (props) => {
           deleteContents={deleteContents}
           type="feed" />
         :
-        <NoResult />
+        <NoResult 
+          img={'common/listNone/listNone-profile.png'}
+          ment={'팬들과 나누고싶은 이야기를\n적어보세요!'}
+        />
       }
     </div>
 

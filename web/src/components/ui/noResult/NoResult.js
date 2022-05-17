@@ -7,7 +7,7 @@ import NoResultIcon from '../ic_noResult.svg'
 import './noResult.scss'
 
 const NoResult = (props) => {
-  const {msg, ment} = props
+  const {img, msg, ment} = props
   const [text, setText] = useState('조회 된 결과가')
   const [brText, setBrText] = useState('없습니다.')
 
@@ -24,7 +24,13 @@ const NoResult = (props) => {
         msg
       ) : (
         <>
-          <img src={NoResultIcon} alt="" />
+          {
+            img ? 
+            <img src={`${IMG_SERVER}/${img}`} alt="" />
+            :
+            <img src={NoResultIcon} alt="" />
+          }
+          
            {
              ment ? 
               ment.split('\n').map((line, index) => {
