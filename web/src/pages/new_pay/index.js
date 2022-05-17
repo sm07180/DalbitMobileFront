@@ -18,7 +18,6 @@ import StoreCharge from './content/store_charge'
 import BankDeposit from './content/charge/bank_deposit'
 import BankWait from './content/charge/bank_deposit_wait'
 import BankInfo from './content/charge/bank_info'
-import GganbuReward from '../event/gganbu/content/gganbuReward';
 
 ////---------------------------------------------------------------------
 export default () => {
@@ -26,16 +25,6 @@ export default () => {
   const location = useLocation()
 
   const {webview, canceltype, tabType} = qs.parse(location.search)
-  const [rewardPop, setRewardPop] = useState(false)
-  const [getMarble, setGetMarble] = useState({
-    rmarbleCnt : 0,
-    ymarbleCnt : 0,
-    bmarbleCnt : 0,
-    vmarbleCnt : 0,
-    totalmarbleCnt : 0,
-  });
-
-  const [chargeContent, setChargeContent] = useState("");
 
   const [selected, setSelected] = useState({
     num: 1,
@@ -64,7 +53,7 @@ export default () => {
       case 'charge':
         return <Charge roomSelected={selected} setRoomSelected={setSelected} />
       case 'result':
-        return <Result selected={selected} setRewardPop={setRewardPop} setGetMarble={setGetMarble} setChargeContent={setChargeContent} />
+        return <Result selected={selected} />
       case 'room':
         return <RoomCharge tabType={tabType} setRoomSelected={setSelected} />
       case 'store':
@@ -84,8 +73,5 @@ export default () => {
   return <Layout status="no_gnb">
     {createContent()}
 
-    {rewardPop &&
-     <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} androidClosePopup={androidClosePopup}
-    />}
     </Layout>
 }

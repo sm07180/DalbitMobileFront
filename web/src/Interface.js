@@ -477,10 +477,6 @@ export default () => {
           case '7': //------------------공지사항 페이지 [board_idx](미정)
             dispatch(setGlobalCtxMessage({type:"alert",msg: pushMsg.contents}))
             break
-          case '65': // 깐부 수락 / 신청
-            history.push('/event/gganbu');
-            // window.location.href = '/event/gganbu';
-            break;
           default:
             //------------------기본값
             //window.location.href = `/`
@@ -1115,10 +1111,6 @@ export default () => {
           })
         }
         break
-      case '65': // 깐부 수락 / 신청
-        history.push('/event/gganbu');
-        // window.location.href = '/event/gganbu';
-        break;
       default:
         //------------------기본값
         //window.location.href = `/`
