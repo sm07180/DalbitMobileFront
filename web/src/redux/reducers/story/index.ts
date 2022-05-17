@@ -13,7 +13,7 @@ export interface IStoryState {
 export const initialState = {
   tabType: '받은 사연',
   list: [],
-  pageInfo: {pageNo: 1, pagePerCnt: 100},
+  pageInfo: {pageNo: 1, pagePerCnt: 500},
   backFlag: false
 };
 

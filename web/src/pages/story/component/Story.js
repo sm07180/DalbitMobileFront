@@ -20,6 +20,7 @@ export default (props) => {
       const {result, message} = res
       if (result === 'success') {
         dispatch(setGlobalCtxMessage({type:"alert",
+          title: '',
           msg: "사연을 삭제했습니다.",
           callback: () => {
             // getList();
