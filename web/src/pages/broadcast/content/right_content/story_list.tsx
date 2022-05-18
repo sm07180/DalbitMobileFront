@@ -16,7 +16,7 @@ export default function StoryList(props: any) {
 
   return (
     <div className="storyWrap">
-      <StoryTab storyTab={storyTab} setStoryTab={setStoryTab} />
+      <StoryTab storyTab={storyTab} setStoryTab={setStoryTab} roomOwner={roomOwner}/>
       {roomOwner === true ?
         <>
           {storyTab === 'receive' ?
@@ -39,13 +39,13 @@ export default function StoryList(props: any) {
   );
 }
 
-const StoryTab = ({ storyTab, setStoryTab }) => {
+const StoryTab = ({ storyTab, setStoryTab, roomOwner }) => {
   return (
     <div className="storyTabWrap">
       <div className={`storyTabMenu ${storyTab === 'receive' ? 'active' : ''}`}
            onClick={() => setStoryTab('receive')}
       >
-        받은 사연
+        {roomOwner? '받은 사연': '사연'}
       </div>
       <div className={`storyTabMenu ${storyTab === 'plus' ? 'active' : ''}`}
            onClick={() => setStoryTab('plus')}
