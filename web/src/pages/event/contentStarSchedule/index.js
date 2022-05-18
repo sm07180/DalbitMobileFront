@@ -151,6 +151,46 @@ const contentStarSchedule = () => {
         offState:false
       },
       {
+        bannerImg: "https://image.dalbitlive.com/event/contentStarSchedule/contentStar_220522-11651057290469.jpg",
+        title:"채리의 누가알아 채리!",
+        date:"5월 22일 17:00",
+        endDay: "20220522 200000",
+        memNo:11651057290469,
+        offState:false
+      },
+      {
+        bannerImg: "https://image.dalbitlive.com/event/contentStarSchedule/contentStar_220522-41647626846382.jpg",
+        title:"토리의 Thank you, Dalla People",
+        date:"5월 22일 20:00",
+        endDay: "20220522 230000",
+        memNo:41647626846382,
+        offState:false
+      },
+      {
+        bannerImg: "https://image.dalbitlive.com/event/contentStarSchedule/contentStar_220524-31639546917221.png",
+        title:"말쑤의 냉혈의 말쑤 2탄 N행시 편",
+        date:"5월 24일 22:00",
+        endDay: "20220525 010000",
+        memNo:31639546917221,
+        offState:false
+      },
+      {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_220525-31623768115793.png",
+        title:"기유의 STAR DJ 애장품 경매!",
+        date:"5월 25일 21:00",
+        endDay: "20220526 000000",
+        memNo:31623768115793,
+        offState:false
+      },
+      {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_220526-11592380122241.png",
+        title:"빠기의 말빨 디펜스게임",
+        date:"5월 26일 22:00",
+        endDay: "20220527 010000",
+        memNo:11592380122241,
+        offState:false
+      },
+      {
         bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_8055.png",
         title:"숲속의 음악스케치",
         date:"5월 27일 20:00",
@@ -184,7 +224,7 @@ const contentStarSchedule = () => {
         <img src={`${IMG_SERVER}/event/contentStarSchedule/mainTop.png`} alt="콘텐츠 스타 편성표" />
       </section>
       <section className="scheduleWrap">
-        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-5-4.png`} alt="5월 편성표" />
+        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-5-5.png`} alt="5월 편성표" />
       </section>
       <Tabmenu data={submenu} tab={tabType} setTab={setTabType} />
       <section className="contentWrap">
