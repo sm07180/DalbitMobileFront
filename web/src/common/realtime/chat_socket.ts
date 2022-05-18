@@ -2766,7 +2766,7 @@ export class ReConnectChat {
       this.lastRetryTime = now;
       if (this.isRetry == true && this.reTryCnt < 21) {
         this.reTryCnt++;
-        const chatInfo = new ChatSocketHandler(this.chatUserInfo, this);
+        const chatInfo = new ChatSocketHandler(this.chatUserInfo, this, this.dispatch);
         this.dispatch(setGlobalCtxChatInfoInit(chatInfo))
       } else {
         if (this.isRetryFinish == false) {
