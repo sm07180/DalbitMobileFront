@@ -304,7 +304,7 @@ const ProfileInfo = (props) => {
       {(data.teamInfo !== undefined && data.teamInfo.team_no !== 0) &&
       <div className="teamInfo" data-team-no={data.teamInfo.team_no} onClick={goTeamDetailPage}>
         <InfoBox type="team" openSlidePop={openSlidePop}>
-          <TeamSymbol data={data.teamInfo} />
+          <TeamSymbol bgCode={data.teamInfo.team_bg_code} edgeCode={data.teamInfo.team_edge_code} medalCode={data.teamInfo.team_medal_code} />
           <div className="teamName">{data.teamInfo.team_name}</div>
         </InfoBox>
         {/* 자신이 가입된 팀이 없고, 상대방 팀과 같지 않다면 가입 신청 버튼 출력 */}

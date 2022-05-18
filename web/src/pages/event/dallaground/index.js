@@ -5,13 +5,41 @@ import Header from 'components/ui/header/Header'
 import DallaGroundRanking from './rankingtab/dallagroundranking';
 
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setDallaGroundListSet, setDallaGroundMyTeamInfoSet, setDallaGroundTabSet} from "redux/actions/event";
+import API from "context/api";
+import {useHistory} from "react-router-dom";
 
 const DallaGround = () => {
   const mainTopRef = useRef()
   const tabRef = useRef()
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const { dallaGroundTabType, rankingListInfo, myTeamInfo } = useSelector(state => state.event);
 
   const [tabFixed, setTabFixed] = useState(false)
-  const [tabType, setTabType] = useState(0);
+
+  /* 랭킹 리스트 api */
+  const getRankingList = () => {
+    API.getDallaGroundRankingList().then(res => {
+      const { result, data } = res;
+      if(result === 'success') {
+        dispatch(setDallaGroundListSet({ list: data.list, cnt: data.cnt }));
+      }
+    });
+  }
+
+  /* 나의 팀 랭킹 정보 api */
+  const getMyTeamRankingInfo = (teamNo) => {
+    API.getDallaGroundMyRankingList({teamNo}).then(res => {
+      const { result, data } = res;
+      if(result === 'success') {
+        dispatch(setDallaGroundMyTeamInfoSet(data));
+      }
+    })
+  }
 
   const windowScrollEvent = () => {
     let scroll = window.scrollY || window.pageYOffset
@@ -22,41 +50,70 @@ const DallaGround = () => {
       setTabFixed(false)
     }
   }
+
+  // change tabState
+  const tabChange = (tabType) => {
+    window.scrollTo(0, 0);
+    dispatch(setDallaGroundTabSet(tabType))
+  }
+
+  // 팀 상세 페이지 이동
+  const goTeamDetailPage = (teamNo) => {
+    if (!globalState.baseData.isLogin) {
+      history.push('/login');
+    } else if (teamNo) {
+      history.push(`/team/detail/${teamNo}`);
+    }
+  };
+
+  useEffect(() => {
+    if(dallaGroundTabType === 1) {
+      getRankingList();
+
+      if(globalState.token.isLogin) {
+        const teamNo = globalState.profile.teamNo;
+        teamNo && getMyTeamRankingInfo(teamNo);
+      }
+    }
+  }, [dallaGroundTabType]);
+
   useEffect(() => {
     window.addEventListener('scroll', windowScrollEvent)
+
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
     }
   }, [])
+
   return (
     <div id="dallaGround">
       <Header type='back' title='이벤트'/>
       <section className="topWrap" ref={mainTopRef}>
         {
-          tabType === 0 ?
+          dallaGroundTabType === 0 ?
             <img src={`${IMG_SERVER}/event/dallaground/mainTop-1.png`}/>
             :
             <img src={`${IMG_SERVER}/event/dallaground/mainTop-2.png`}/>
         }
       </section>
-      <section className={`tabWrap ${tabType === 1 && 'bgGray'} ${tabFixed ? 'fixed' : ''}`} ref={tabRef}>
+      <section className={`tabWrap ${dallaGroundTabType === 1 && 'bgGray'} ${tabFixed ? 'fixed' : ''}`} ref={tabRef}>
         <div className="tabBox">
-          <button className={tabType === 0 ? 'active' : ''} onClick={() => {
-            setTabType(0);
+          <button className={dallaGroundTabType === 0 ? 'active' : ''} onClick={() => {
+            tabChange(0);
           }}>
             {
-              tabType === 0 ?
+              dallaGroundTabType === 0 ?
                 <img src={`${IMG_SERVER}/event/dallaground/tab-1-on.png`} alt="이벤트 내용" />
                 :
                 <img src={`${IMG_SERVER}/event/dallaground/tab-1-off.png`} alt="이벤트 내용" />
             }
            
           </button>
-          <button className={tabType === 1 ? 'active' : ''} onClick={() => {
-            setTabType(1);
+          <button className={dallaGroundTabType === 1 ? 'active' : ''} onClick={() => {
+            tabChange(1);
           }}>
             {
-              tabType === 1 ?
+              dallaGroundTabType === 1 ?
                 <img src={`${IMG_SERVER}/event/dallaground/tab-2-on.png`} alt="이벤트 내용" />
                 :
                 <img src={`${IMG_SERVER}/event/dallaground/tab-2-off.png`} alt="이벤트 내용" />
@@ -67,10 +124,10 @@ const DallaGround = () => {
       </section>
       <section className="content">
         {
-          tabType === 0 ?
+          dallaGroundTabType === 0 ?
             <img src={`${IMG_SERVER}/event/dallaground/content.png`} alt="이벤트 기간 동안 배틀 포인트를 쌓아 회식비를 쟁탈하라" />
             :
-            <DallaGroundRanking/>
+            <DallaGroundRanking rankingListInfo={rankingListInfo} myTeamInfo={myTeamInfo} goTeamDetailPage={goTeamDetailPage} />
         }
       </section>
       <section className="noticeWrap">

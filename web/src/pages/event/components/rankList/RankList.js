@@ -12,19 +12,28 @@ const EventRankList = (props) => {
     rankList,
     photoSize,
 		listNum,
-		index
+		index,
+    teamClickAction,
+    teamNo,
   } = props
   const history = useHistory()
   const globalState = useSelector(({globalCtx}) => globalCtx);
   // 프로필 이동
-  const goProfile = (memNo) => {
-    if (memNo !== undefined && memNo > 0) {
+  const rankListClickAction = () => {
+    const memNo = rankList.mem_no;
+    if(typeof teamClickAction === 'function') {
+      teamClickAction(teamNo)
+    }else if (memNo !== undefined && memNo > 0) {
       history.push(`/profile/${memNo}`)
     }
   }
 
   return (
-		<div className={`eventRankList ${type === 'my' && globalState.token.isLogin ? 'my' : ''}`} key={index} onClick={() => {goProfile(rankList.mem_no)}}>
+		<div
+      key={index}
+      className={`eventRankList ${type === 'my' && globalState.token.isLogin ? 'my' : ''}`}
+      onClick={rankListClickAction}
+    >
 			<div className="rankNum">
 				{type === 'my' && globalState.token.isLogin ? <span className='tit'>내순위</span> : <></>}
 				{type === 'my' ?

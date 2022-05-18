@@ -24,6 +24,7 @@ import payStore from './payStore';
 import post from "./notice/post";
 import story from './story/index';
 import search from "./search";
+import event from "./event";
 
 /* 기존 context */
 import rankCtx from "./rankCtx"
@@ -60,6 +61,7 @@ const rootReducer = combineReducers({
   , post
   , story
   , search
+  , event
 
   , rankCtx
   , broadcastCtx
