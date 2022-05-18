@@ -76,7 +76,13 @@ const StorePage = ()=>{
     }else{
       const otherPageLocation = {
         pathname: '/store/dalcharge',
-        search: `?itemNm=${encodeURIComponent(item.itemNm)}&price=${item.itemPrice}&itemNo=${item.itemNo}&dal=${item.givenDal}`
+        // search: `?itemNm=${encodeURIComponent(item.itemNm)}&price=${item.itemPrice}&itemNo=${item.itemNo}&dal=${item.givenDal}`,
+        state: {
+          itemNm : item.itemNm,
+          price : item.itemPrice,
+          itemNo : item.itemNo,
+          dal : item.givenDal
+        }
       }
       history.push(otherPageLocation);
     }
