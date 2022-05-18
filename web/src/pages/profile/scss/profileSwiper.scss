@@ -51,7 +51,6 @@
       border-radius:100px;
       background-color: #666666;
       @include font(12px,$Regular,#FFF);
-      cursor: pointer;
       &::before {
         content: "";
         display: inline-block;
@@ -64,6 +63,9 @@
       }
       &::after {
         content: "회";
+      }
+      &.cursor {
+        cursor: pointer;
       }
       &.active {
         background-color:#8865FF;
