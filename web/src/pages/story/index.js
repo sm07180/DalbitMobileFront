@@ -1,15 +1,14 @@
-import React, {useState, useContext, useEffect, useCallback, useLayoutEffect, useRef} from 'react'
-import {useParams, useHistory} from 'react-router-dom'
-import Utility, {isHitBottom, addComma} from 'components/lib/utility'
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import React, {useState, useEffect, useLayoutEffect, useRef} from 'react'
+import {useHistory} from 'react-router-dom'
+import Utility, {isHitBottom} from 'components/lib/utility'
 import {setInit, setData}  from "redux/actions/story";
 import {useDispatch, useSelector} from "react-redux";
-import {PHOTO_SERVER} from 'context/config.js'
 
 import Api from "context/api";
-import moment from "moment";
 
 import Header from 'components/ui/header/Header'
+import Tabmenu from "./component/Tabmenu";
+import Story from "./component/Story";
 
 import './style.scss'
 import {initialState} from "redux/reducers/story";
@@ -21,9 +20,14 @@ export default () => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const story = useSelector(({story}) => story);
-  const reduxClearFlagRef = useRef(false);
+  const reduxClearFlagRef = useRef();
 
-  const nowDay = moment();
+  // const [tabType, setTabType] = useState(storyTabMenu[0])
+  const storyTabMenu = ['받은 사연', '사연 플러스'];
+  const tabType = story?.tabType || storyTabMenu[0];
+  const [storyList, setStoryList] = useState([])
+  const [plusList, setPlusList] = useState([])
+
 
   const getList = async (pageNo) => {
     if(story.backFlag){
@@ -65,33 +69,6 @@ export default () => {
     }
   };
 
-  function delList(roomNo, storyIdx) {
-    Api.getStoryBoxDel({roomNo, storyIdx}).then((res) => {
-      const {result, message} = res
-      if (result === 'success') {
-        dispatch(setGlobalCtxMessage({type:"alert",
-          msg: "사연을 삭제했습니다.",
-          callback: () => {
-            // getList();
-            dispatch(setData({list: story.list.concat([]).filter((v)=> v.idx !== storyIdx) }));
-          }
-        }))
-      } else {
-        
-        dispatch(setGlobalCtxMessage({type:"alert",
-          title: 'Error',
-          msg: message
-        }))
-      }
-    })
-  }
-
-  const delAction = (roomNo, storyIdx) => {
-    const TypeChangeRoomNo = String(roomNo);
-    const TypeChangeStoryIdx = parseInt(storyIdx);
-    delList(TypeChangeRoomNo, TypeChangeStoryIdx);
-  }
-
   const scrollEvtHdr = () => {
     if (!fetching && totalPage > story.pageInfo.pageNo && Utility.isHitBottom()) {
       getList(story.pageInfo.pageNo + 1);
@@ -116,6 +93,18 @@ export default () => {
     if(fetching){
       fetching = false;
     }
+    let receiveStoryList =  [];
+    let plusStoryList =  [];
+
+    for(let i = 0; i < story.list.length; i++) {
+      if(story.list[i].plus_yn === "y"){
+        plusStoryList.push(story.list[i]);
+      } else {
+        receiveStoryList.push(story.list[i]);
+      }
+    }
+    setPlusList(plusStoryList);
+    setStoryList(receiveStoryList);
   },[story.list])
 
 
@@ -125,7 +114,6 @@ export default () => {
     } else {
       getList(1);
     }
-
     return () => {
       if(!reduxClearFlagRef.current){
         // 리덕스 데이터를 초기화 하는 경우 (프로필 이동만 초기화 제외)
@@ -134,55 +122,19 @@ export default () => {
     };
   }, [])
 
+  const changeTab = (data) => {
+    dispatch(setData({tabType: data}));
+  };
+
   return (
     <div id="storyPage">
       <Header position={'sticky'} title="사연 보관함" type={'back'}/>
-      <div className='content'>
-        {
-          // storyList.length > 0 ?
-          story.list.length > 0 ?
-            <>
-              <p className='reference'>※ 최근 3개월 내역만 볼 수 있습니다.</p>
-              <div className='storyWrap'>
-                {
-                  story.list.map((story, index) => {
-                    const {writer_mem_id, writer_mem_profile, writer_mem_nick, write_date, room_no, writer_no, contents, idx} = story;
-                    const ago3Months =  moment(nowDay).subtract(3, 'months');
-                    const writeDate =  moment(write_date);
-                    if(moment(writeDate).isAfter(ago3Months)) {
-                      return (
-                        <div className='storyList' key={index}>
-                          <div className='thumbnail' onClick={() => {goLink(`${writer_no}`)}}>
-                            <img src={`${PHOTO_SERVER}${writer_mem_profile}`} alt=""/>
-                          </div>
-                          <div className='listContent'>
-                            <div className='dataInfo'>
-                              <div className='infoWrap'>
-                                <div className='userNick' onClick={() => {goLink(`${writer_no}`)}}>{writer_mem_nick}</div>
-                                <div className='writeTime'>{moment(write_date).format('YYYY.MM.DD HH:mm')}</div>
-                              </div>
-                              <div className='delBtnWrap'>
-                                <span className='delBtn' onClick={() => {delAction(room_no, idx)}}>삭제</span>
-                              </div>
-                            </div>
-                            <div className='messageWrap'>
-                              {contents}
-                            </div>
-                          </div>
-                        </div>
-                      )
-                    }
-                  })
-                }
-              </div>
-            </>
-           :
-            <div className='listNone'>
-              <p className='mainText'>받은 사연이 없어요</p>
-              <p className='subText'>최근 3개월 내역만 볼 수 있어요</p>
-            </div>
-        }
-      </div>
+      <Tabmenu data={storyTabMenu} tab={tabType} setTab={changeTab} />
+      {tabType === storyTabMenu[0] ?
+        <Story data={storyList} goLink={goLink}/>
+      :
+        <Story data={plusList} goLink={goLink}/>
+      }      
     </div>
   )
 }
