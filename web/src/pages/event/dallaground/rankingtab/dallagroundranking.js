@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {useHistory} from 'react-router-dom'
+import {useSelector} from "react-redux";
 import {IMG_SERVER} from 'context/config'
 
 // components
@@ -11,18 +13,37 @@ import '../scss/dallagroundranking.scss'
 const data = [1,2,3,4,5,6,7,8,9,10,11]
 
 const DallaGroundRanking = () => {
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const history = useHistory();
+
+  const [team, setTeam] = useState(false);
+
   return (
     <div id="dallaGroundRanking">
-      <div className="myRankWrap">
-        <div className='myRankBox'>
-          <p>내 팀 순위</p>
-          <div>24</div>
+      {globalState.token.isLogin ?
+        (team === true ?
+          <div className="myRankWrap">
+            <div className='myRankBox'>
+              <p>내 팀 순위</p>
+              <div>24</div>
+            </div>
+            <div className="myRankBox">
+              <p>배틀 포인트</p>
+              <div>99,999</div>
+            </div>
+          </div>
+          :
+          <div className="myRankWrap noTeam">
+            <p>팀을 만들어 달라그라운드에 참여해보세요!</p>
+          </div>
+        )
+        :
+        <div className="myRankWrap noLogin">
+          <p>로그인하고 달라그라운드에 참여해보세요!</p>
+          <button onClick={() => history.push('/login')}>로그인 하기</button>
         </div>
-        <div className="myRankBox">
-          <p>배틀 포인트</p>
-          <div>99,999</div>
-        </div>
-      </div>
+      }
+      
       <div className="rankingWrap">
         <div className="titleBox">
           <div className="rankNum">
