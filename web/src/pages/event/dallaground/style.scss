@@ -1,0 +1,108 @@
+@import 'components/ui/_mixin.scss';
+
+.mobileType {
+  #dallaGround {
+    .tabWrap.fixed {
+      position: sticky;
+      top: #{$HEADER-HEIGHT};
+      z-index: 2;
+    }
+  }
+}
+
+#dallaGround{
+  position: relative;
+  img{width: 100%;}
+  .tabWrap{
+    position: relative;
+    padding: 0 20px;
+    background-color: #AB493A;
+    &.fixed{
+      position: fixed;
+      width: 100%;
+      max-width: 480px;
+      margin: 0;
+      padding: 0;
+      z-index: 10;
+      .tabBox{
+        border-radius: 0;
+        .buttonBack{
+          border-radius: 0;
+        }
+      }
+    }
+    &.bgGray{background-color: #323639;}
+    .tabBox{
+      @include flex(center, center);
+      position: relative;
+      width: 100%;
+      height: 50px;
+      overflow: hidden;
+      @include border(#000, 10px, 2px);
+      background-color: #707070;
+      >button{
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        overflow: hidden;
+        @for $i from 1 through 2{
+          &:nth-child(#{$i}){
+            &.active{
+              &~.buttonBack{
+                @if $i == 1{
+                  left: -2px;
+                } @else {
+                  left: calc(50% + 2px);
+                }
+                
+              }
+            }
+          }
+        }
+        img{
+          width: auto;
+          height: 22px;
+        }
+      }
+      .buttonBack{
+        @include position-top-left;
+        top: -2px;
+        width: 50%;
+        height: 50px;
+        background: #FFC400;
+        @include border(#000, 10px, 2px);
+        transition:all .1s ease-in-out;
+      }
+    }
+  }
+  .content{
+  }
+  .noticeWrap{
+    padding: 27px 20px 0;
+    background-color: #2C2B27;
+    p{@include font(15px, $Bold, #fff);}
+    ul{
+      margin-top: 10px;
+      li{
+        position: relative;
+        padding-left: 13px;
+        @include font(12px, $Regular, #fff);
+        word-break: keep-all;
+        &::after{
+          content:"●";
+          @include position-top-left;
+          top:1px;
+          font-size: 7px;
+        }
+      }
+    }
+    .logoBox{
+      @include flex(center, center);
+      width: 100%;
+      img{
+        width: 55px;
+        margin: 40px 0;
+      }
+    }
+  }
+}
