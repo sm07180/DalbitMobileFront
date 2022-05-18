@@ -5,7 +5,26 @@
   background: #323639;
   .myRankWrap{
     @include flex(center, center);
-    padding: 25px 20px;
+    height: 127px;
+    padding: 0 20px;
+    &.noTeam{
+      p{
+        @include font(16px, $Regular, #fff);
+      }
+    }
+    &.noLogin{
+      flex-direction: column;
+      p{
+        @include font(16px, $Regular, #fff);
+      }
+      button{
+        width: 89px;
+        line-height: 36px;
+        margin-top: 10px;
+        @include border(#d6d6d6, 18px);
+        @include font(12px, $Medium, #fff);
+      }
+    }
     .myRankBox{
       @include flex(center,center, column);
       width: 100%;
