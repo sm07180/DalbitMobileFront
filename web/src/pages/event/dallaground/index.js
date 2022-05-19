@@ -59,7 +59,6 @@ const DallaGround = () => {
 
   // change tabState
   const tabChange = (tabType) => {
-    window.scrollTo(0, 0);
     dispatch(setDallaGroundTabSet(tabType))
   }
 
