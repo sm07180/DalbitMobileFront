@@ -24,12 +24,12 @@ const EventRankList = (props) => {
   }
 
   return (
-		<div className={`eventRankList ${type === 'my' && globalState.token.isLogin ? 'my' : ''}`} key={index} onClick={() => {goProfile(rankList.mem_no)}}>
+		<div className={`eventRankList ${type === 'my' ? 'my' : ''}`} key={index} onClick={() => {goProfile(rankList.mem_no)}}>
 			<div className="rankNum">
-				{type === 'my' && globalState.token.isLogin ? <span className='tit'>내순위</span> : <></>}
+				{type === 'my' && <span className='tit'>내순위</span>}
 				{type === 'my' ?
 					<span className="num">
-						{rankList && rankList.my_rank_no != 0 ? rankList.my_rank_no : '-'}
+						{rankList && rankList.my_rank_no != 0 && rankList.my_rank_no !== undefined ? rankList.my_rank_no : '-'}
 						{rankList && rankList.rankNo != 0 ? rankList.rankNo : '-'}
 					</span>
 					:

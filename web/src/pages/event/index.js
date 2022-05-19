@@ -55,6 +55,7 @@ import KeyboardTodayWinning from './keyboardHero/content/todayWinning'
 import Wassup from './wassup'
 import BugReport from './bugreport'
 import ContentBroadcast from './contentBroadcast'
+import Billboard from './billboard'
 
 
 import moment from "moment";
@@ -177,6 +178,8 @@ export default (props) => {
         return <KeyboardTodayWinning />
       case 'contentBroadcast':
         return <ContentBroadcast />
+      case 'billboard':
+        return <Billboard />
       default:
         return <></>
         break
