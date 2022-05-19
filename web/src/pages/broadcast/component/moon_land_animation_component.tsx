@@ -18,9 +18,6 @@ type aniQueueReturnType = {
 const MoonLandAnimationComponent = (props: any) => {
   const {roomInfo, chatInfo, roomOwner} = props;
 
-  //달나라 이벤트 진행중 여부
-  const moonLandEventBool = roomInfo && roomInfo.hasOwnProperty('moonLandEvent') && roomInfo.moonLandEvent;
-
   //receiveSocket -> component
   const [pointAnimate, setPointAnimate] = useState<any>(null);
 
@@ -68,7 +65,7 @@ const MoonLandAnimationComponent = (props: any) => {
 
   // chat_socket -> "reqPlayCoin" 패킷을 받으면 실행할 콜백함수 전달
   useEffect(() => {
-    if (chatInfo && moonLandEventBool) {
+    if (chatInfo) {
       chatInfo.setBroadcastStateChange('moonLandStateFn', (state) => {
         setPointAnimate(state);
       });

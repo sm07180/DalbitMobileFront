@@ -389,7 +389,7 @@ export default function RightSide(props: {
         return <NoticeList roomOwner={roomOwner} roomNo={roomNo} />;
       }
       case tabType.STORY: {
-        return <StoryList roomOwner={roomOwner} roomNo={roomNo} />;
+        return <StoryList roomOwner={roomOwner} roomNo={roomNo} roomInfo={roomInfo} />;
       }
       case tabType.SPECIALDJLIST: {
         return <SpecialDjList />;
