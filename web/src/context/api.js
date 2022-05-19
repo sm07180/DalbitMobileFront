@@ -4201,14 +4201,14 @@ export default class API {
   }
 
   // 달라 그라운드 이벤트
-  // 랭킹 리스트
+  // 랭킹 리스트 (파라미터는 api 에서 고정 해둠 - 추후에 필요하면 수정)
   static getDallaGroundRankingList = async () => {
     return ajax({url: '/event/ground/ranking/list', method: 'GET', params: {}})
   }
 
   // 내 랭킹
-  static getDallaGroundMyRankingList = async ({teamNo}) => {
-    return ajax({url: '/event/ground/ranking/my', method: 'GET', params: {teamNo}})
+  static getDallaGroundMyRankingList = async () => {
+    return ajax({url: '/event/ground/ranking/my', method: 'GET', params: {}})
   }
 }
 

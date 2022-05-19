@@ -1,7 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useHistory} from 'react-router-dom'
-import {useSelector} from "react-redux";
-import {IMG_SERVER} from 'context/config'
 
 // components
 import TeamSymbol from 'components/ui/teamSymbol/TeamSymbol';
@@ -10,41 +8,41 @@ import RankList from '../../components/rankList/RankList'
 import '../scss/dallagroundranking.scss'
 import Utility from "components/lib/utility";
 
+const MyTeamComponent = ({ isLogin, myTeamInfo, history }) => {
+  if(isLogin) {
+    return (myTeamInfo.isMyTeamExist ?
+        <div className="myRankWrap">
+          <div className='myRankBox'>
+            <p>내 팀 순위</p>
+            <div>{myTeamInfo.my_rank_no ? Utility.addComma(myTeamInfo.my_rank_no) : '-'}</div>
+          </div>
+          <div className="myRankBox">
+            <p>배틀 포인트</p>
+            <div>{Utility.addComma(myTeamInfo.rank_pt)}</div>
+          </div>
+        </div>
+        :
+        <div className="myRankWrap noTeam">
+          <p>팀을 만들어 달라그라운드에 참여해보세요!</p>
+        </div>
+    )
+  }else {
+    return (
+      <div className="myRankWrap noLogin">
+        <p>로그인하고 달라그라운드에 참여해보세요!</p>
+        <button onClick={() => history.push('/login')}>로그인 하기</button>
+      </div>
+    )
+  }
+}
+
 const DallaGroundRanking = (props) => {
-  const { rankingListInfo, myTeamInfo, goTeamDetailPage } = props;
-
-const DallaGroundRanking = () => {
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const { rankingListInfo, myTeamInfo, goTeamDetailPage, isLogin } = props;
   const history = useHistory();
-
-  const [team, setTeam] = useState(false);
 
   return (
     <div id="dallaGroundRanking">
-      {globalState.token.isLogin ?
-        (team === true ?
-          <div className="myRankWrap">
-            <div className='myRankBox'>
-              <p>내 팀 순위</p>
-              <div>{Utility.addComma(myTeamInfo.my_rank_no)}</div>
-            </div>
-            <div className="myRankBox">
-              <p>배틀 포인트</p>
-              <div>{Utility.addComma(myTeamInfo.rank_pt)}</div>
-            </div>
-          </div>
-          :
-          <div className="myRankWrap noTeam">
-            <p>팀을 만들어 달라그라운드에 참여해보세요!</p>
-          </div>
-        )
-        :
-        <div className="myRankWrap noLogin">
-          <p>로그인하고 달라그라운드에 참여해보세요!</p>
-          <button onClick={() => history.push('/login')}>로그인 하기</button>
-        </div>
-      }
-
+      <MyTeamComponent isLogin={isLogin} myTeamInfo={myTeamInfo} history={history} />
       <div className="rankingWrap">
         <div className="titleBox">
           <div className="rankNum">

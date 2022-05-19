@@ -32,11 +32,17 @@ const DallaGround = () => {
   }
 
   /* 나의 팀 랭킹 정보 api */
-  const getMyTeamRankingInfo = (teamNo) => {
-    API.getDallaGroundMyRankingList({teamNo}).then(res => {
-      const { result, data } = res;
-      if(result === 'success') {
-        dispatch(setDallaGroundMyTeamInfoSet(data));
+  const getMyTeamRankingInfo = () => {
+    API.getDallaGroundMyRankingList().then(res => {
+      const { code, data } = res;
+      if(code === '1') {
+        if(data.team_no) {
+          dispatch(setDallaGroundMyTeamInfoSet({...data, isMyTeamExist: true}));
+        }else {
+          dispatch(setDallaGroundMyTeamInfoSet({...myTeamInfo, isMyTeamExist: true}));
+        }
+      }else if(code === '-2') {
+        dispatch(setDallaGroundMyTeamInfoSet({...myTeamInfo, isMyTeamExist: false}));
       }
     })
   }
@@ -44,7 +50,7 @@ const DallaGround = () => {
   const windowScrollEvent = () => {
     let scroll = window.scrollY || window.pageYOffset
 
-    if (scroll >= mainTopRef.current.clientHeight) {
+    if (scroll >= mainTopRef.current?.clientHeight) {
       setTabFixed(true)
     } else {
       setTabFixed(false)
@@ -71,8 +77,7 @@ const DallaGround = () => {
       getRankingList();
 
       if(globalState.token.isLogin) {
-        const teamNo = globalState.profile.teamNo;
-        teamNo && getMyTeamRankingInfo(teamNo);
+        getMyTeamRankingInfo();
       }
     }
   }, [dallaGroundTabType]);
@@ -127,7 +132,9 @@ const DallaGround = () => {
           dallaGroundTabType === 0 ?
             <img src={`${IMG_SERVER}/event/dallaground/content.png`} alt="이벤트 기간 동안 배틀 포인트를 쌓아 회식비를 쟁탈하라" />
             :
-            <DallaGroundRanking rankingListInfo={rankingListInfo} myTeamInfo={myTeamInfo} goTeamDetailPage={goTeamDetailPage} />
+            <DallaGroundRanking rankingListInfo={rankingListInfo} myTeamInfo={myTeamInfo} goTeamDetailPage={goTeamDetailPage}
+                                isLogin={globalState.token.isLogin}
+            />
         }
       </section>
       <section className="noticeWrap">

@@ -10,11 +10,14 @@ import Utility from 'components/lib/utility'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // style
 import 'styles/layerpopup.scss'
+import {useDispatch} from "react-redux";
+import {setDallaGroundTabSet} from "redux/actions/event";
 
 export default function LayerPopupWrap({data, setData}) {
   const history = useHistory();
   const contentRef = useRef();
   const scrollRef = useRef();
+  const dispatch = useDispatch();
   const [scroll, setScroll] = useState(false);
   const [bottomHit, setBottomHit] = useState(false);
   const [checked, setChecked] = useState({
@@ -122,6 +125,9 @@ export default function LayerPopupWrap({data, setData}) {
                 pathname: linkUrl,
                 state: linkUrl.split('/')[2]
               })
+            }else if(linkUrl.includes('/event/dallaground')) { // 달라 그라운드 이벤트 팝업
+              dispatch(setDallaGroundTabSet(0));
+              history.push(linkUrl)
             }else {
               history.push(linkUrl)
             }

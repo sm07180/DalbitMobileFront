@@ -1,5 +1,5 @@
 import { createAction } from "typesafe-actions";
-import {IDallaGroundState, IRankingListType, ITeamType} from "../types/eventType";
+import {IRankingListType, ITeamType} from "../types/eventType";
 
 export const SET_DALL_GROUND_TAB_SET = 'event/SET_DALLA_GROUND_TAB_SET';
 export const setDallaGroundTabSet = createAction(SET_DALL_GROUND_TAB_SET)<number>();

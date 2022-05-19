@@ -4,8 +4,8 @@ import * as actions from '../actions/event';
 export type EventActions = ActionType<typeof actions>;
 
 export const teamStateDefault = {
-  ground_no: '',
-  team_no: '',
+  ground_no: 0,
+  team_no: 0,
   team_name: '',
   team_medal_code: '',
   team_edge_code: '',
@@ -20,11 +20,13 @@ export const teamStateDefault = {
   ins_date: '',
   upd_date: '',
   my_rank_no: '',
+
+  isMyTeamExist: false,
 }
 
 export interface ITeamType {
-  ground_no: string;       // 회차번호
-  team_no: string;         // 팀번호
+  ground_no: number;       // 회차번호
+  team_no: number;         // 팀번호
   team_name: string;       // 팀이름
   team_medal_code: string; // 팀 메달 코드(m000 형식)
   team_edge_code: string;  // 팀 테두리 코드(e000 형식)
@@ -39,6 +41,7 @@ export interface ITeamType {
   ins_date: string;        // 등록일자
   upd_date: string;        // 수정일자
   my_rank_no?: string;     // 내 순위
+  isMyTeamExist?: boolean; // 내 팀 존재 여부
 }
 
 export interface IRankingListType {
