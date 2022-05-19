@@ -26,12 +26,14 @@ const OtherCharge = ()=>{
   const isDesktop = useSelector((state)=> state.common.isDesktop);
   const payStoreRdx = useSelector(({payStore})=> payStore);
 
-
   const nowDay = moment().format('YYYYMMDD');
 
   const [selectPayment, setSelectPayment] = useState(-1);
   const formTag = useRef<any>();
-  const { itemNm, dal, price, itemNo, webview} = qs.parse(location.search);
+  const { webview } = qs.parse(location.search);
+  // @ts-ignore
+  const { itemNm, dal, price, itemNo } = location.state;
+
   const commonPopup = useSelector(state => state.popup);
   const [buyItemInfo, setBuyItemInfo] = useState({
     dal: Number(dal),
