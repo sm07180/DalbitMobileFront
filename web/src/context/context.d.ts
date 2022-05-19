@@ -60,6 +60,7 @@ type chatAnimationType = {
   ttsItemInfo?: any;
   isTTSItem?: boolean;
   soundOffLocationFlag?: string | null;
+  storyText?: string | null;
 };
 
 type realTimeType = {

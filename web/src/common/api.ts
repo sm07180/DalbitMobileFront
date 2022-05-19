@@ -449,17 +449,11 @@ export async function deleteNoticeWrite(data: {
 export async function postStory(data: {
   roomNo: string;
   contents: string;
+  djMemNo?: string;
+  plusYn?: string;
 }): Promise<responseType> {
   return await ajax(Method.POST, "/broad/story", data);
 }
-// export async function postStoryNew(data: {
-//   roomNo: string;
-//   contents: string;
-//   djMemNo?: string;
-//   plusYn: string;
-// }): Promise<responseType> {
-//   return await ajax(Method.POST, "/broad/story/new", data);
-// }
 export async function deleteStory(data: {
   roomNo: string;
   storyIdx: number;
@@ -470,6 +464,7 @@ export async function getStory(data: {
   roomNo: string;
   page?: number;
   records?: number;
+  plusYn?: string;
 }): Promise<responseType> {
   return await ajax(Method.GET, "/broad/story", data);
 }

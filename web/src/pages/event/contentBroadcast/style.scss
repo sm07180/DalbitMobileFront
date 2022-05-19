@@ -1,0 +1,11 @@
+@import 'components/ui/_mixin.scss';
+
+#contentBroadcast{
+  position: relative;
+  .content{
+    position: relative;
+    img{
+      width: 100%;
+    }
+  }
+}

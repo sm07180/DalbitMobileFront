@@ -54,6 +54,9 @@ import KeyboardTodayWinning from './keyboardHero/content/todayWinning'
 import Wassup from './wassup'
 import DallaGround from './dallaground'
 import BugReport from './bugreport'
+import ContentBroadcast from './contentBroadcast'
+
+
 import moment from "moment";
 
 export default (props) => {
@@ -164,6 +167,8 @@ export default (props) => {
         return <KeyboardHero />
       case 'keyboardhero_todaywinning':
         return <KeyboardTodayWinning />
+      case 'contentBroadcast':
+        return <ContentBroadcast />
       case 'dallaground':
         return <DallaGround />
       default:

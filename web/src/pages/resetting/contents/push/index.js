@@ -17,7 +17,7 @@ const SettingPush = () => {
   const globalState = useSelector(({globalCtx}) => globalCtx);
 
   let isSelect = false;
-  const [myAlimType, setMyAlimType] = useState(-1); //무음, 소리, 진동
+  const [myAlimType, setMyAlimType] = useState(""); //무음, 소리, 진동
   const [toast, setToast] = useState({state : false, msg : ""});
   //푸쉬 알림 설정 리스트
   const [alarmArray, setAlarmArray] = useState([
@@ -99,13 +99,9 @@ const SettingPush = () => {
     //전체 알림 수신 클릭시
     if(e.target.name === "switchAll") {
       if(e.target.checked) {
-        setAlarmArray(alarmArray.map((v) => {
-          v.value = 1; v.path = true; return v;
-        }))
+        setAlarmArray(alarmArray.map((v) => {v.value = 1; v.path = true; return v;}))
       } else {
-        setAlarmArray(alarmArray.map((v) => {
-          v.value = 0; v.path = false; return v;
-        }))
+        setAlarmArray(alarmArray.map((v) => {v.value = 0; v.path = false; return v;}))
       }
       postAlarmData();
       if(e.target.checked){
@@ -143,7 +139,7 @@ const SettingPush = () => {
   }, []);
 
   useEffect(() => {
-    if(myAlimType !== -1) {
+    if(myAlimType !== "" && myAlimType.length < 2) {
       postAlarmData();
     }
     if(!first) {
