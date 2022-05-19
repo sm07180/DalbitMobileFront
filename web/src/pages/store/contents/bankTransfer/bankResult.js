@@ -55,7 +55,7 @@ const BankResult = () => {
         </div>
         <div className="receiptList">
           <span>예금주</span>
-          <p>(주)여보야</p>
+          <p>여보야(달라라이브)</p>
         </div>
         <div className="receiptList">
           <span>입금은행</span>
