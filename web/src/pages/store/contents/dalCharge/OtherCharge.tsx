@@ -112,7 +112,6 @@ const OtherCharge = ()=>{
   }
 
   const callPGForm = (payment) => {
-    console.log(payment);
     Api[payment.fetch]({
       data: {
         Prdtnm: itemNm,
