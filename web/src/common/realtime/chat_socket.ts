@@ -833,7 +833,7 @@ export class ChatSocketHandler {
                     // }
                   }
                   case "reqGiftImg": {
-                    let { items, levelUp, boost } = this.splashData;
+                    let { items, levelUp, boost, story } = this.splashData;
                     // items : 시그니처 아이템 추가
                     items = items.concat(this.roomInfo?.signatureItem?.items || []);
 
@@ -850,6 +850,7 @@ export class ChatSocketHandler {
                       dalCnt,
                       isSecret,
                       repeatCnt,
+                      storyText
                     } = reqGiftImg;
                     const count = itemCnt;
                     const userNickname = nk;
@@ -862,7 +863,10 @@ export class ChatSocketHandler {
                         return levelUp.find((item: any) => item.itemNo === itemNo);
                       } else if (itemType === "boost") {
                         return boost.find((item: any) => item.itemNo === itemNo);
+                      } else if(itemType === 'story'){
+                        return story.find((item: any)=> item.itemNo === itemNo);
                       }
+
                     })();
                     let isTTSItem = typeof reqGiftImg.ttsText !== 'undefined' && reqGiftImg.ttsText !== "";
                     let isSoundItem = true;
@@ -921,12 +925,13 @@ export class ChatSocketHandler {
                           userNickname,
                         }))
                       } else {
+                        // 사연 플러스 아이템 추가
                         this.dispatch(setBroadcastCtxChatAnimationStart({
                           url: lottieUrl,
                           width,
                           height,
                           duration: duration * 1000 * repeatCnt,
-                          location,
+                          location : storyText? 'center': location,
                           soundOffLocationFlag: soundFileUrl? (!isSoundItem? 'soundOffLocation': '') : '',
                           count,
                           isCombo,
@@ -938,6 +943,7 @@ export class ChatSocketHandler {
                           memNo,
                           ttsItemInfo,
                           isTTSItem,
+                          storyText
                           // repeatCnt,
                         }))
                       }
@@ -2098,6 +2104,10 @@ export class ChatSocketHandler {
 
                   case "reqPlayCoin": { // 달나라 동전 생성
                     const {reqPlayCoin} = data;
+
+                    //달나라 이벤트 진행중 여부
+                    if(!this.roomInfo?.moonLandEvent) return null;
+
                     /* 일반코인은 누적선물달을 체크 하지 않음 ( 그 외 보너스코인은 모두 10달 이상이여야 화면에 노출 ) */
                     const isNormalCoin = reqPlayCoin?.normal?.score > 0 && reqPlayCoin?.character?.score === 0 && reqPlayCoin?.gold?.score === 0;
 
@@ -2766,7 +2776,7 @@ export class ReConnectChat {
       this.lastRetryTime = now;
       if (this.isRetry == true && this.reTryCnt < 21) {
         this.reTryCnt++;
-        const chatInfo = new ChatSocketHandler(this.chatUserInfo, this);
+        const chatInfo = new ChatSocketHandler(this.chatUserInfo, this, this.dispatch);
         this.dispatch(setGlobalCtxChatInfoInit(chatInfo))
       } else {
         if (this.isRetryFinish == false) {

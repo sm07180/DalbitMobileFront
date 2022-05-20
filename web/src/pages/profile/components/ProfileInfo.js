@@ -32,6 +32,7 @@ export const InfoBox = (props) => {
 
 export const BroadcastNoticeWrap = (props) => {
   const {broadcastNoticeData, type} = props;
+  const history = useHistory();
   return (
     <>
     {broadcastNoticeData?.map((v, idx) => {
@@ -282,7 +283,7 @@ const ProfileInfo = (props) => {
           {[...Array(3 - data.fanRank.length)].map((item, index) => {
             return (
               <div className="photo" key={index}>
-                <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
+                <img src={`${IMG_SERVER}/common/photoNone-bgGray.png`} alt="기본 이미지" />
               </div>
             )
           })}
@@ -293,7 +294,7 @@ const ProfileInfo = (props) => {
           {data.cupidProfImg && data.cupidProfImg.path ?
             <img src={data.cupidProfImg.thumb62x62} alt="BEST CUPID"/>
             :
-            <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
+            <img src={`${IMG_SERVER}/common/photoNone-bgGray.png`} alt="기본 이미지" />
           }
           </div>
         </InfoBox>
@@ -303,7 +304,7 @@ const ProfileInfo = (props) => {
       {(data.teamInfo !== undefined && data.teamInfo.team_no !== 0) &&
       <div className="teamInfo" data-team-no={data.teamInfo.team_no} onClick={goTeamDetailPage}>
         <InfoBox type="team" openSlidePop={openSlidePop}>
-          <TeamSymbol data={data.teamInfo} />
+          <TeamSymbol bgCode={data.teamInfo.team_bg_code} edgeCode={data.teamInfo.team_edge_code} medalCode={data.teamInfo.team_medal_code} />
           <div className="teamName">{data.teamInfo.team_name}</div>
         </InfoBox>
         {/* 자신이 가입된 팀이 없고, 상대방 팀과 같지 않다면 가입 신청 버튼 출력 */}

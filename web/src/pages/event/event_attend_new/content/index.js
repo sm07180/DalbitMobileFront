@@ -102,7 +102,7 @@ export default () => {
                 callback: () => {
                   history.push(`/event/keyboardhero`)
                 }
-              }))
+              }));
             }}
             //todo: 6월 12일
             // onClick={() => eventAttendAction.setTab('roulette')}
@@ -111,8 +111,9 @@ export default () => {
           </button>
         )}
       </div>
-
-      <div className={`tabContent ${tabFixed ? 'isTop' : ''}`}>{tab === 'attend' ? <AttendPage /> : <RoulettePage />}</div>
+      {/*todo: 6월 12일*/}
+      {/*<div className={`tabContent ${tabFixed ? 'isTop' : ''}`}>{tab === 'attend' ? <AttendPage /> : <RoulettePage />}</div>*/}
+      <div className={`tabContent ${tabFixed ? 'isTop' : ''}`}> <AttendPage /></div>
     </div>
   )
 }

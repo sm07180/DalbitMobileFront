@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Tabmenu = (props) => {
-  const {data,tab,setTab,count} = props;
+  const {data,tab,setTab,tabChangeAction,count} = props;
 
   return (
     <ul className="tabmenu">

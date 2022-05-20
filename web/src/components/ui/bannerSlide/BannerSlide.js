@@ -8,6 +8,7 @@ import './bannerSlide.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setHonorTab} from "redux/actions/honor";
 import UtilityCommon from "common/utility/utilityCommon";
+import {setDallaGroundTabSet} from "redux/actions/event";
 
 const BannerSlide = (props) => {
   const { type } = props;
@@ -63,6 +64,9 @@ const BannerSlide = (props) => {
         pathname: value,
         state: value.split('/')[2]
       })
+    }else if(value.includes('/event/dallaground')) { // 달라 그라운드 이벤트
+      dispatch(setDallaGroundTabSet(0));
+      history.push(value);
     }else {
       history.push(value)
     }

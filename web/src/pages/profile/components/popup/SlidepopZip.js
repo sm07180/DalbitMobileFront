@@ -11,7 +11,7 @@ import Present from "./Present";
 import {useDispatch} from "react-redux";
 
 const SlidepopZip = (props) => {
-  const {slideData, goProfile, openSlidePop, isMyProfile} = props;
+  const {slideData, goProfile, openSlidePop, isMyProfile, layerPopInfo, setLayerPopInfo} = props;
   const dispatch = useDispatch();
   
   const closeSlidePop = () => {
@@ -59,7 +59,9 @@ const SlidepopZip = (props) => {
             goProfile={goProfile}
             myMemNo={slideData.memNo}
             likePopTabState={slideData.likeType}
-            closePopupAction={closeSlidePop} />
+            closePopupAction={closeSlidePop}
+            layerPopInfo={layerPopInfo}
+            setLayerPopInfo={setLayerPopInfo} />
         </PopSlide>
       )
     case "present":

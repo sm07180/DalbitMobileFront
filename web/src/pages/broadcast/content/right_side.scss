@@ -366,6 +366,7 @@
     //방송방 받은 선물내역 별도 스타일 적용
     .tabTitle {
       padding-top: 16px;
+      padding-bottom: 10px;
       text-align: center;
       font-size: 16px;
     }
@@ -851,10 +852,9 @@
       box-sizing: border-box;
     }
     .receivedGiftItem {
+      @include flex(center);
       width: 100%;
       padding: 5px 0;
-      display: flex;
-      flex-direction: row;
       box-sizing: border-box;
       .thumb {
         width: 40px;
@@ -869,7 +869,7 @@
         flex: 1;
         width: 100%;
         margin: 0;
-        padding-left: 8px;
+        margin-left: 8px;
         color: $greishBrown;
 
         .nickNm {
@@ -877,9 +877,8 @@
           @include multi-ellipsis(1);
           white-space: normal;
         }
-        em {
-          display: block;
-          color: $mediumGray;
+        .itemNm {
+          @include font(14px, $Regular, #999);
         }
       }
       .ico {
@@ -895,6 +894,7 @@
         border-radius: 20px;
       }
       .item {
+        @include flex($fd:column);
         width: 80px;
         text-align: right;
         color: $mediumGray;
@@ -903,9 +903,12 @@
           @include multi-ellipsis(1);
         }
         em {
-          display: block;
-          font-size: 14px;
-          color: $greishBrown;
+          &:first-child {
+            @include font(12px, $Medium, #aaa);
+          }
+          &:last-child {
+            @include font(14px, $Medium, #303030);            
+          }
         }
       }
     }
@@ -2067,10 +2070,9 @@
   .storyForm {
     position: relative;
     width: 100%;
-    padding: 0 3%;
     box-sizing: border-box;
 
-    &__explain {
+    .infoText {
       margin: 18px auto;
       text-align: center;
       font-size: 14px;
@@ -2078,41 +2080,46 @@
       letter-spacing: -0.35px;
       color: #616161;
     }
-    &__textArea {
+    .textAreaWrap {
+      position: relative;
       width: 100%;
-      min-height: 180px;
-      padding: 20px 76px 20px 20px;
-      box-sizing: border-box;
-      background-color: #f5f5f5;
-      border-radius: 10px;
-      font-size: 16px;
-      line-height: 1.25;
-      letter-spacing: -0.4px;
-      text-align: left;
-      font-family: inherit;
-      color: $greishBrown;
-      outline: none;
-      border: none;
-      resize: none;
-      &::placeholder {
+      .textArea {
+        width: 100%;
+        min-height: 200px;
+        padding: 20px 20px 40px 20px;
+        box-sizing: border-box;
+        background-color: #f5f5f5;
+        border-radius: 10px;
         font-size: 16px;
         line-height: 1.25;
         letter-spacing: -0.4px;
         text-align: left;
+        font-family: inherit;
+        color: $greishBrown;
+        outline: none;
+        border: none;
+        resize: none;
+        &::placeholder {
+          font-size: 16px;
+          line-height: 1.25;
+          letter-spacing: -0.4px;
+          text-align: left;
+          color: $mediumGray;
+        }
+      }
+      .msgCount {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        font-size: 14px;
+        line-height: 1.43;
+        letter-spacing: -0.35px;
+        text-align: left;
         color: $mediumGray;
       }
-    }
-    &__msgCount {
-      position: absolute;
-      right: 20px;
-      bottom: 78px;
-      font-size: 14px;
-      line-height: 1.43;
-      letter-spacing: -0.35px;
-      text-align: left;
-      color: $mediumGray;
-    }
-    &__registBtn {
+    }    
+    .registBtn {
+      @include flex(center, center);
       width: 100%;
       height: 48px;
       margin-top: 16px;
@@ -2122,106 +2129,169 @@
       font-size: 16px;
       letter-spacing: -0.4px;
       text-align: center;
+      .iconDal {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-image: url("https://image.dalbitlive.com/mypage/dalla/icon_dal.png");
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
     }
   }
   .storyWrap {
+    @include flex($fd:column);
     width: 100%;
     height: 100%;
-    padding: 0px 10px;
+    padding: 10px;
     box-sizing: border-box;
-    .scroll-wrap {
-      width: 100% !important;
-      height: calc(100% - 105px);
-    }
-    &__list {
-      width: 100%;
-      margin-top: 8px;
-    }
-    &__innerList {
-      margin-bottom: 12px;
-      border-bottom: 1px solid #eee;
-    }
-    &__header {
-      display: flex;
-      align-items: center;
-      height: 40px;
-      flex-direction: row;
-    }
-    &__profImg {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-    }
-    &__title {
-      flex: 1;
-      overflow: hidden;
-      word-break: break-all;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      margin-left: 8px;
-      font-size: 16px;
-      font-weight: $bold;
-      text-align: left;
-      color: $greishBrown;
-    }
-    &__deleteWrap {
-      margin-left: 4px;
-      &__dater {
-        margin-right: 8px;
-        font-size: 14px;
-        text-align: right;
-        color: #9e9e9e;
-      }
-      &__cancel {
-        width: 44px;
-        height: 24px;
-        color:  $MAINCOLOR;
-        border-radius: 10px;
-        border: solid 1px  $MAINCOLOR;
-      }
-    }
-    &__contentsBox {
-      width: 100%;
-      padding: 18px 70px 18px 18px;
-      box-sizing: border-box;
-      border-radius: 10px;
-      background-color: #f5f5f5;
-      min-height: 114px;
-      font-size: 14px;
-      letter-spacing: -0.35px;
-      text-align: left;
-      font-family: inherit;
-      word-break: break-all;
-      white-space: pre-line;
-    }
-    &__timer {
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
-      margin-top: 8px;
-      width: 100%;
-      height: 40px;
-      box-sizing: border-box;
-      border-radius: 20px;
-      background-color: #f5f5f5;
-      &__count {
-        margin-left: auto;
-        font-size: 14px;
-        font-weight: $bold;
-        color: #ec455f;
-      }
-      &__refresh {
-        width: 18px;
-        height: 18px;
-        background: url(../static/ic_refresh.svg);
+    .storyTabWrap {
+      @include flex(center);
+      .storyTabMenu {
+        flex: 1;
+        @include flex(center, center);
+        height: 48px;
+        border-bottom: 2px solid #F2F2F2;
+        @include font(16px, $Medium, #ACACAC);
         cursor: pointer;
+        &.active {
+          border-bottom: 2px solid #202020;
+          @include font(16px, $SemiBold, #202020);
+        }
       }
-      &__date {
-        margin-left: 6px;
-        font-size: 14px;
-        letter-spacing: -0.35px;
-        text-align: left;
-        color: $mediumGray;
+    }
+    .receiveListWrap {
+      flex: 1;
+      width: 100%;
+      margin-top: 20px;
+      overflow: auto;
+
+      .storyList {
+        @include flex($fd: column);
+        width: 100%;
+        margin-bottom: 16px;
+        &:last-child {
+          margin-bottom: 0px;
+        }
+        .listHeader {
+          @include flex(center);
+          .photo {
+            flex: none;
+            display: hidden;
+            @include photoStyle(40px, 40px, 50%);
+            margin-right: 10px;
+            overflow: hidden;
+            img {
+              width: 100%;
+            }
+          }
+          .infoWrap {
+            flex: 1;
+            @include flex($fd: column);
+            .userNick {
+              @include font(14px, $Medium, #202020);
+              margin-bottom: 4px;
+            }
+            .writeDate {
+              @include font(12px, $Regular, #757575);
+            }
+          }
+          .deleteWrap {
+            flex: none;
+            .deleteBtn {
+              @include flex(center, center);
+              width: 46px; height: 26px;
+              border: 1px solid #E3E3E3;
+              border-radius: 100px;
+              @include font(12px, $Medium, #303030);
+            }
+          }
+        }
+        .listContent {
+          width: 100%;
+          padding: 15px 20px;
+          margin-top: 12px;
+          border-radius: 10px;
+          background-color: #F9F9F9;
+          box-sizing: border-box;
+          .storyContent {
+            @include font(14px, $Regular, #000000);
+            word-break: break-all;
+            white-space: pre-line;
+          }
+        }
+      }
+    }
+    .plusListWrap {
+      flex: 1;
+      width: 100%;
+      margin-top: 20px;
+      overflow: auto;
+      .storyList {
+        @include flex($fd: column);
+        width: 100%;
+        margin-bottom: 16px;
+        &:last-child {
+          margin-bottom: 0px;
+        }
+        .listHeader {
+          @include flex(center);
+          .photo {
+            flex: none;
+            display: hidden;
+            @include photoStyle(40px, 40px, 50%);
+            margin-right: 10px;
+            overflow: hidden;
+            img {
+              width: 100%;
+            }
+          }
+          .infoWrap {
+            flex: 1;
+            @include flex($fd: column);
+            .userNick {
+              @include font(14px, $Medium, #202020);
+              margin-bottom: 4px;
+            }
+            .writeDate {
+              @include flex(center);
+              @include font(12px, $Regular, #757575);
+              &::before {
+                content: "Plus";
+                @include flex(center, center);
+                width: 26px; height: 15px;
+                margin-right: 4px;
+                border-radius: 4px;
+                @include font(10px, $SemiBold, #FFFFFF);
+                background-color: #ACACAC;
+              }
+            }
+          }
+          .deleteWrap {
+            flex: none;
+            .deleteBtn {
+              @include flex(center, center);
+              width: 46px; height: 26px;
+              border: 1px solid #E3E3E3;
+              border-radius: 100px;
+              @include font(12px, $Medium, #303030);
+            }
+          }
+        }
+        .listContent {
+          width: 100%;
+          padding: 15px 20px;
+          margin-top: 12px;
+          border-radius: 10px;
+          background-color: #F2FBFF;
+          box-sizing: border-box;
+          .storyContent {
+            @include font(14px, $Regular, #000000);
+            word-break: break-all;
+            white-space: pre-line;
+          }
+        }
       }
     }
   }
@@ -2976,6 +3046,76 @@
       }
       p{
         @include font(12px,$Regular,#666);
+      }
+    }
+  }
+
+
+  
+    
+  #layerPop {
+    .popContainer {
+      padding:0;
+    }
+    .honorPopup {
+      width:100%;
+      height:440px;
+      padding: 20px 0 0;
+      .title {
+        @include flex(center,center,column);
+        height:72px;
+        @include font(16px,$Medium,#202020);
+        strong {
+          display: inline-block;
+          max-width: 200px;
+          @include font(16px,$Bold,$MAINCOLOR);
+          @include fontCut;
+        }
+        span {
+          @include flex(center);
+        }
+      }
+      .reference {
+        margin: 4px 0 23px;
+        @include font(12px,$Regular,#666666);
+        text-align: center;
+      }
+      .table {
+        width: 100%;
+        margin-top: 10px;
+        .summary {
+          @include flex(center, space-between);
+          margin-bottom: 8px;
+          padding: 0 22px;
+          @include font(12px,$Medium,$MAINCOLOR);
+        }
+        .tableInfo {
+          .thead {
+            @include flex(center);
+            line-height:26px;
+            margin: 0 22px;
+            border-top: 1px solid $MAINCOLOR;
+            border-bottom: 1px solid $MAINCOLOR;
+            @include font(12px,$Medium,$MAINCOLOR);
+          }
+          .tbody {
+            max-height: 280px;
+            @include font(13px,$Regular,#202020);
+            overflow-y: auto;
+            .tbodyList {
+              @include flex(center);
+              margin: 0 22px;
+              line-height:26px;
+              + .tbodyList {
+                border-top: 1px solid #F2F2F2;
+              }
+            }
+          }
+          span {
+            flex:1;
+            text-align:center;
+          }
+        }
       }
     }
   }

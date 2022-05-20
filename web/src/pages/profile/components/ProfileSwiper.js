@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 
 import Lottie from 'react-lottie';
 import Swiper from 'react-id-swiper';
@@ -10,14 +10,16 @@ import {
 import {IMG_SERVER} from 'context/config';
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+import {setCommonPopupOpenData} from "redux/actions/common";
+
 
 const ProfileSwiper = (props) => {
-  const {data, openShowSlide, webview,
-    disabledBadge, type, listenOpen} = props; //listenOpen = 회원 방송 청취 정보 공개 여부(0 = 공개-따라가기X,1 = 공개-따라가기ㅇ, 2 = 비공개) -> liveBag 보여주는 여부
+  const {data, openShowSlide, webview, disabledBadge, type, listenOpen, layerPopInfo, setLayerPopInfo} = props; //listenOpen = 회원 방송 청취 정보 공개 여부(0 = 공개-따라가기X,1 = 공개-따라가기ㅇ, 2 = 비공개) -> liveBag 보여주는 여부
 
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const commonPopup = useSelector(state => state.popup);
   const topSwiperRef = useRef(null);
 
   const swiperPicture = {
@@ -37,6 +39,16 @@ const ProfileSwiper = (props) => {
     }
   }
 
+  const historyPopupOpen = (e) => {
+    const memNo = e.currentTarget.id;
+    e.preventDefault();
+    e.stopPropagation();
+    if(memNo === globalState.profile.memNo){
+      setLayerPopInfo({...layerPopInfo, type:"history", memNo:memNo});
+      dispatch(setCommonPopupOpenData({...commonPopup, layerPopup: true}));
+    }    
+  }
+
   useEffect(() => {
     if (data.profImgList.length > 1) {
       const swiper = document.querySelector('.profileTopSwiper>.swiper-container')?.swiper;
@@ -45,73 +57,93 @@ const ProfileSwiper = (props) => {
     }
   }, [data]);
 
+
   return (
     <section className="profileSwiper">
-    {data.profImgList.length > 1 ?
-      <Swiper {...swiperPicture}>
-        {data.profImgList.map((item, index) => {
-          return (
-            <div key={index} onClick={() => openShowSlide(data.profImgList, 'y', 'profImg', topSwiperRef.current?.activeIndex)}>
-              <div className="photo cursor">
-                <img src={item.profImg.thumb500x500} />
+      {data.profImgList.length > 1 ?
+        <Swiper {...swiperPicture}>
+          {data.profImgList.map((item, index) => {
+            return (
+              <div key={index} onClick={() => openShowSlide(data.profImgList, 'y', 'profImg', topSwiperRef.current?.activeIndex)}>
+                <div className="photo cursor">
+                  <img src={item.profImg.thumb500x500} />
+                </div>
               </div>
-            </div>
-          )
-        })}
-      </Swiper>
-      : data.profImgList.length === 1 ?
-      <div className="swiper-slide" onClick={() => openShowSlide(data.profImgList, 'y', 'profImg', topSwiperRef.current?.activeIndex)}>
-        <div className="photo cursor">
-          <img src={data.profImgList[0].profImg.thumb500x500} />
-        </div>
-      </div>
+              )
+            })
+          }
+        </Swiper>
       :
-      <div className="swiper-slide">
-        <div className="photo none">
-          <img src={`${IMG_SERVER}/profile/photoNone.png`} />
-        </div>
-      </div>
-    }
-    {!disabledBadge &&
-      <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
-        {type === 'profile' && webview === '' && data.roomNo !== "" && !data.listenRoomNo &&
-          <div className='badgeLive' onClick={()=>{
-            RoomValidateFromProfile({
-              memNo:data.memNo, history, globalState, dispatch, nickNm:data.nickNm, roomNo:data.roomNo, webview
-            });
-          }}>
-            <span className='equalizer'>
-              <Lottie
-                options={{
-                  loop: true,
-                  autoPlay: true,
-                  path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json`
-                }}
-              />
-            </span>
-            <span className='liveText'>LIVE</span>
+        data.profImgList.length === 1 ?
+          <div className="swiper-slide" onClick={() => openShowSlide(data.profImgList, 'y', 'profImg', topSwiperRef.current?.activeIndex)}>
+            <div className="photo cursor">
+              <img src={data.profImgList[0].profImg.thumb500x500} />
+            </div>
           </div>
-        }
-        {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 && !data.roomNo &&
-          <div className='badgeListener' onClick={()=>{
-            RoomValidateFromListenerFollow({
-              memNo:data.memNo, history, globalState, dispatch, nickNm:data.nickNm, listenRoomNo:data.listenRoomNo
-            });
-          }}>
-            <span className='headset'>
-              <Lottie
+      :
+        <>
+          {
+            data.memNo === globalState.profile.memNo ?
+              <div className="swiper-slide">
+                <div className="photo none mine" onClick={() => history.push('/myProfile/edit')}>
+                  <p>배경사진을 등록해보세요</p>
+                </div>
+              </div>
+          :
+            <div className="swiper-slide">
+              <div className="photo none"/>
+            </div>
+          }
+        </>
+      }
+      {!disabledBadge &&
+        <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
+          {
+            data.specialDjCnt > 0 &&
+              <span id={data.memNo}
+               className={`starBdg ${data.badgeSpecial === 1 ? "active" : ""} ${data.memNo === globalState.profile.memNo ? "cursor" : ""}`}
+               onClick={historyPopupOpen}>
+                 {data.specialDjCnt}
+              </span>
+          }
+          {type === 'profile' && webview === '' && data.roomNo !== "" && !data.listenRoomNo &&
+            <div className='badgeLive' onClick={()=>{
+              RoomValidateFromProfile({
+                memNo:data.memNo, history, globalState, dispatch, nickNm:data.nickNm, roomNo:data.roomNo, webview
+              });
+            }}>
+              <span className='equalizer'>
+                <Lottie
                   options={{
                     loop: true,
                     autoPlay: true,
-                    path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
+                    path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json`
                   }}
                 />
-            </span>
-            <span className='ListenerText'>LIVE</span>
-          </div>
-        }
-      </div>
-    }
+              </span>
+              <span className='liveText'>LIVE</span>
+            </div>
+          }
+          {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 && !data.roomNo &&
+            <div className='badgeListener' onClick={()=>{
+              RoomValidateFromListenerFollow({
+                memNo:data.memNo, history, globalState, dispatch, nickNm:data.nickNm, listenRoomNo:data.listenRoomNo
+              });
+            }}>
+              <span className='headset'>
+                <Lottie
+                    options={{
+                      loop: true,
+                      autoPlay: true,
+                      path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
+                    }}
+                  />
+              </span>
+              <span className='ListenerText'>LIVE</span>
+            </div>
+          }
+        </div>
+      }
     </section>
   )
 }
