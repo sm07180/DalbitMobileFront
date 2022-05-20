@@ -309,11 +309,7 @@ const mailBox = createReducer<BroadcastCtxStateType, BroadcastCtxActions>(initia
     return {...state, roomInfo: {...state.roomInfo, isVideo: payload}};
   },
   "broadcast/ctx/SET_ROOM_INFO_NEW_FAN_CNT": (state, {payload}) => {
-    return {...state, roomInfo: {...state.roomInfo, newFanCnt: payload}};if (state.roomInfo) {
-
-    } else {
-      return state;
-    }
+    return {...state, roomInfo: {...state.roomInfo, newFanCnt: payload}};
   },
   "broadcast/ctx/SET_ROOM_INFO_RESET": (state, {payload}) => {
     return {...state, roomInfo: payload};
