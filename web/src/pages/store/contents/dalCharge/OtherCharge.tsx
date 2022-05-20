@@ -11,7 +11,6 @@ import Utility from "../../../../components/lib/utility";
 import SubmitBtn from "../../../../components/ui/submitBtn/SubmitBtn";
 import qs from 'query-string'
 import {PAYMENT_LIST} from "../../../../redux/types/pay/storeType";
-import {Hybrid} from "../../../../context/hybrid";
 import {setStateHeaderVisible} from "../../../../redux/actions/payStore";
 import {OS_TYPE} from 'context/config.js'
 
@@ -113,6 +112,7 @@ const OtherCharge = ()=>{
   }
 
   const callPGForm = (payment) => {
+    console.log(payment);
     Api[payment.fetch]({
       data: {
         Prdtnm: itemNm,
@@ -243,7 +243,7 @@ const OtherCharge = ()=>{
         </section>
       }
       <section className="purchaseInfo">
-        <CntTitle title="구매내역" />
+        <CntTitle title="상품수량 선택" />
         <div className="infoBox">
           <div className="infoList">
             <div className="title">구매상품</div>
@@ -281,7 +281,7 @@ const OtherCharge = ()=>{
         </div>
       </section>
       <section className="paymentMethod">
-        <CntTitle title="결제수단" />
+        <CntTitle title="결제수단 선택" />
         <div className="selectWrap">
           {PAYMENT_LIST.map((data,index) => {
             return (
