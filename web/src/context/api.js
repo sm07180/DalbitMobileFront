@@ -4418,6 +4418,43 @@ export default class API {
   static getStoryBoxDel = async ({roomNo, storyIdx}) => {
     return ajax({url: '/broad/story', method: 'DELETE', params: {roomNo:roomNo, storyIdx:storyIdx}})
   }
+
+  // 전광판 이벤트 DJ 조회
+  static getElectricSignDJList = async (param) => {
+    return await ajax({
+      url: '/event/electric/djList',
+      method: 'GET',
+      params: param
+    })
+  }
+
+  // 전광판 이벤트 DJ 회원 정보
+  static getElectricSignDJSel = async (param) => {
+    return await ajax({
+      url: '/event/electric/djSel',
+      method: 'GET',
+      params: param
+    })
+  }
+
+  // 전광판 이벤트 시청자 조회
+  static getElectricSignFanList = async (param) => {
+    return await ajax({
+      url: '/event/electric/fanList',
+      method: 'GET',
+      params: param
+    })
+  }
+
+  // 전광판 이벤트 시청자 회원 정보
+  static getElectricSignFanSel = async (param) => {
+    return await ajax({
+      url: '/event/electric/fanSel',
+      method: 'GET',
+      params: param
+    })
+  }
+
 }
 
 API.customHeader = null
