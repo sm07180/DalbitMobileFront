@@ -13,7 +13,6 @@ import _ from 'lodash'
 
 import NoResult from 'components/ui/noResult'
 import Popup from './auto_exchange_pop'
-import GganbuReward from '../../event/gganbu/content/gganbuReward'
 import ic_notice from '../static/ic_notice.svg'
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
@@ -31,15 +30,6 @@ export default (props) => {
   const [autoState, setAutoState] = useState(0)
   const [popState, setPopState] = useState(1)
   const [popup, setPopup] = useState(0)
-  const [rewardPop, setRewardPop] = useState(false)
-  const [getMarble, setGetMarble] = useState({
-    rmarbleCnt : 0,
-    ymarbleCnt : 0,
-    bmarbleCnt : 0,
-    vmarbleCnt : 0,
-    totalmarbleCnt : 0,
-  });
-  const [chargeContent, setChargeContent] = useState("");
 
   //---------------------------------------------------------------------
 
@@ -115,32 +105,6 @@ export default (props) => {
       }
     }
 
-    async function fetchPayComplete() {
-      console.log(selected.byeol);
-      if(selected.byeol >= 300){
-        marbleTotleCtn = Math.floor((Number(selected.byeol) / 100));
-        const param = {
-          insSlct: "e",
-          marbleCnt : marbleTotleCtn,
-        };
-        const {data} = await Api.getGganbuObtainMarble(param)
-        if (data.s_return === 1) {
-          setChargeContent(`별 ${selected.byeol}개 교환으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
-          setRewardPop(true);
-          setGetMarble({
-            rmarbleCnt : data.rmarbleCnt,
-            ymarbleCnt : data.ymarbleCnt,
-            bmarbleCnt : data.bmarbleCnt,
-            vmarbleCnt : data.vmarbleCnt,
-            totalmarbleCnt : data.marbleCnt,
-          })
-        }
-      } else {
-
-      }
-    }
-
-
     if (selected.byeol > mydal) {
       return dispatch(setGlobalCtxMessage({
         type: "confirm",
@@ -153,7 +117,6 @@ export default (props) => {
       msg: `별 ${selected.byeol}을 달 ${selected.dal}으로 \n 교환하시겠습니까?`,
       callback: () => {
         postChange()
-        fetchPayComplete()
       }
     }))
   }
@@ -245,7 +208,6 @@ export default (props) => {
       {creatResult()}
 
       {popup === 1 && <Popup setPopup={setPopup} />}
-      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} />}
     </Content>
   )
 }
