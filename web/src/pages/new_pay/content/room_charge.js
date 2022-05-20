@@ -20,7 +20,6 @@ import dalIcon from '../static/ic_moon_s.svg'
 import starIcon from '../static/ic_star_s.svg'
 import notiIcon from '../static/ic_notice.svg'
 
-import GganbuReward from '../../event/gganbu/content/gganbuReward'
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
@@ -63,15 +62,6 @@ export const RoomChargePage = (props)=>{
   const [selectedItem, setSelectedItem] = useState(tabType)
   const [myDal, setMyDal] = useState('')
   const [myByeol, setMyByeol] = useState('')
-  const [rewardPop, setRewardPop] = useState(false)
-  const [getMarble, setGetMarble] = useState({
-    rmarbleCnt : 0,
-    ymarbleCnt : 0,
-    bmarbleCnt : 0,
-    vmarbleCnt : 0,
-    totalmarbleCnt : 0,
-  });
-  const [chargeContent, setChargeContent] = useState("");
 
   //---------------------------------------------------------------------
 
@@ -182,40 +172,10 @@ export const RoomChargePage = (props)=>{
         setMyByeol(Utility.addComma(res.data.byeolCnt))
         setMyDal(Utility.addComma(res.data.dalCnt))
 
-        let gganbuData;
-        let marbleTotleCtn;
-
-        if(selected.byeol >= 300){
-          marbleTotleCtn = Math.floor((Number(selected.byeol) / 100));
-          const param = {
-            insSlct: "e",
-            marbleCnt : marbleTotleCtn,
-          };
-          gganbuData = await Api.getGganbuObtainMarble(param)
-        }
-
         dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message,
           callback: () => {
-            if(gganbuData) {
-              const data = gganbuData.data;
-
-              if (data.s_return === 1) {
-                setChargeContent(`별 ${selected.byeol}개 교환으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
-                setRewardPop(true);
-                setGetMarble({
-                  rmarbleCnt : data.rmarbleCnt,
-                  ymarbleCnt : data.ymarbleCnt,
-                  bmarbleCnt : data.bmarbleCnt,
-                  vmarbleCnt : data.vmarbleCnt,
-                  totalmarbleCnt : data.marbleCnt,
-                })
-              }else{
-                Hybrid('CloseLayerPopup');
-              }
-            }else {
-              Hybrid('CloseLayerPopup')
-            }
+            Hybrid('CloseLayerPopup')
           }
         }))
       } else {
@@ -313,7 +273,6 @@ export const RoomChargePage = (props)=>{
           )}
         </>
       )}
-      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} androidClosePopup={androidClosePopup}/>}
     </Content>
   )
 }

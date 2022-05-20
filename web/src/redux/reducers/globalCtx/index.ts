@@ -204,8 +204,6 @@ const initialState: GlobalCtxStateType = {
     pocketCnt: 0,
     showState: false,
   },
-  globalGganbuState: -1,
-  gganbuTab: "collect",
   goToMoonTab: "info",
   walletData:initWalletData,
   popup:[],
@@ -345,9 +343,6 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
   },
   "global/ctx/SET_EXIT_MARBLE_INFO": (state, {payload}) => {
     return {...state, exitMarbleInfo: payload}
-  },
-  "global/ctx/SET_GLOBAL_GGANBU_STATE": (state, {payload}) => {
-    return {...state, globalGganbuState: payload}
   },
   "global/ctx/SET_NEWS": (state, {payload}) => {
     return {...state, news: payload}
@@ -524,9 +519,6 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
   },
   "global/ctx/SET_BEST_DJ_DATA": (state, {payload}) => {
     return {...state, bestDjData: payload}
-  },
-  "global/ctx/SET_GGANBU_TAB": (state, {payload}) => {
-    return {...state, gganbuTab: payload}
   },
   "global/ctx/SET_GO_TO_MOON_TAB": (state, {payload}) => {
     return {...state, goToMoonTab: payload}

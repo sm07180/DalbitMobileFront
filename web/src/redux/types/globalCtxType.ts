@@ -124,8 +124,6 @@ export type GlobalCtxStateType = {
   noServiceInfo: NoServiceInfoType
   userReportInfo: UserReportInfoType
   exitMarbleInfo: ExitMarbleInfoType
-  globalGganbuState: number
-  gganbuTab: "" | "collect" | "betting"
   goToMoonTab: "" | "info" | "rank"
   walletData: WalletDataType
   backEventCallback: any
