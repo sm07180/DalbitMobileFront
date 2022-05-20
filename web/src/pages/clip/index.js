@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { setIsRefresh } from "redux/actions/common";
+import React, {useEffect, useState} from 'react'
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {setIsRefresh} from "redux/actions/common";
 import Api from 'context/api';
 import moment from 'moment';
 import Swiper from 'react-id-swiper';
@@ -42,6 +42,9 @@ const ClipPage = () => {
   const [subClipAllInfo, setSubClipAllInfo] = useState([]);
   const [subClipInfo, setSubClipInfo] = useState({ list: [], paging: {} }); // 아래 카테고리별 리스트
   const [subSearchInfo, setSubSearchInfo] = useState(subjectType[1]); // 아래 카테고리별 검색 조건
+
+  const [regBannerState, setRegBannerState] = useState(false);
+  let today = moment(new Date).format("YYYY-MM-DD");
 
   // 조회 Api
   /* 핫 클립 */
@@ -176,6 +179,7 @@ const ClipPage = () => {
           setTimeout(() => {
             if(noneEle[i].classList.contains("swiper-slide-active") || noneEle[i].classList.contains("swiper-slide-duplicate-active")) {
               document.getElementById('firstClipWrap').className += 'remove';
+              window.localStorage.setItem("regBanner", today);
             }
           }, 200)
         }
@@ -208,11 +212,22 @@ const ClipPage = () => {
     playClip(playClipParams);
   }
 
+  const bannerCheck = () => {
+    Api.getMyClipData().then(res => {
+      if (res.result === "success"){
+        if (!res.data.isReg && window.localStorage.getItem("regBanner") !== today){
+          setRegBannerState(true);
+        }
+      }
+    });
+  }
+
   useEffect(() => {
     getHotClipInfo();
     getClipLastList();
     getClipLikeList();
     getClipListenList();
+    bannerCheck();
   }, []);
 
   useEffect(() => {
@@ -229,19 +244,21 @@ const ClipPage = () => {
     <>
       <div id="clipPage" >
         <Header title={'클립'} />
-        <section className="firstClipWrap " id='firstClipWrap'>
-          <Swiper {...firstClipSwiper}>
-            <div className='noneEle'></div>
-            <div className="bannerBox" onClick={() => history.push('/clip/firstclip')}>
-              <div className="content">
-                <p>첫 클립 올리기</p>
-                <p className="hightlight">받을 수 있는 5달 발견!</p>
+        {regBannerState &&
+          <section className="firstClipWrap " id='firstClipWrap'>
+            <Swiper {...firstClipSwiper}>
+              <div className='noneEle'></div>
+              <div className="bannerBox" onClick={() => history.push('/clip/firstclip')}>
+                <div className="content">
+                  <p>첫 클립 올리기</p>
+                  <p className="hightlight">받을 수 있는 5달 발견!</p>
+                </div>
+                <img src={`${IMG_SERVER}/clip/dalla/firstClipUploadPresent.png`}/>
               </div>
-              <img src={`${IMG_SERVER}/clip/dalla/firstClipUploadPresent.png`} />
-            </div>
-            <div className='noneEle'></div>
-          </Swiper>
-        </section>
+              <div className='noneEle'></div>
+            </Swiper>
+          </section>
+        }
         <section className='hotClipWrap'>
           <CntTitle title={'🌟 지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
           {hotClipInfo.list.length > 0 ?
