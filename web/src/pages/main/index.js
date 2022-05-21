@@ -367,8 +367,8 @@ const MainPage = () => {
           records: 10,
           rankingDate: convertDateTimeForamt(new Date() , "-")
         }).then(res => {
-          if (res.result === "success") {;
-            setRankingList(res.data.list)
+          if (res.result === "success") {
+            setRankingList(res.data.list);
           }
         });
       }else {

@@ -1,16 +1,16 @@
 /**
  * @title 방송방입장 및 퇴장 (하이브리드앱전용)
- * @code 
- 
-    import Room, {RoomJoin} from 'context/room'
+ * @code
 
-    //function
-    RoomJoin(roomNo + '', () => {
+ import Room, {RoomJoin} from 'context/room'
+
+ //function
+ RoomJoin(roomNo + '', () => {
         clicked = false
     })
 
-    //render추가
-    return (   <Room />   )
+ //render추가
+ return (   <Room />   )
  */
 import React, {useEffect, useState, useContext} from 'react'
 

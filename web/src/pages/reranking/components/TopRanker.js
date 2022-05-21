@@ -18,7 +18,6 @@ const TopRanker = (props) => {
 
   const history = useHistory();
   const context = useContext(Context);
-  const gtx = useContext(GlobalContext);
 
   const [popup, setPopup] = useState(false);
   const [rankSetting, setRankSetting] = useState();
@@ -49,7 +48,7 @@ const TopRanker = (props) => {
       }
     });
   };
-  
+
   // 랭킹 버튼 액션
   const fetchRankSetting = (set) => {
     const params = {
@@ -75,47 +74,6 @@ const TopRanker = (props) => {
     });
   };
 
-  const goLive = (roomNo, memNo, nickNm, listenRoomNo) => {
-    if (context.token.isLogin === false) {
-      context.action.alert({
-        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-        callback: () => {
-          history.push('/login')
-        }
-      })
-    } else {
-      if (getDeviceOSTypeChk() === 3){
-        if(listenRoomNo){
-          RoomValidateFromClipMemNo(listenRoomNo,memNo, gtx, history, nickNm);
-        } else {
-          RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
-        }
-      } else {
-        if (roomNo !== '') {
-          RoomJoin({roomNo: roomNo, memNo:memNo,nickNm: nickNm})
-        } else {
-          let alertMsg
-          if (isNaN(listenRoomNo)) {
-            alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-            context.action.alert({
-              type: 'alert',
-              msg: alertMsg
-            })
-          } else {
-            alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
-            context.action.confirm({
-              type: 'confirm',
-              msg: alertMsg,
-              callback: () => {
-                return RoomJoin({roomNo: listenRoomNo,memNo:memNo, listener: 'listener'})
-              }
-            })
-          }
-        }
-      }
-    }
-  };
-
   useEffect(() => {
     if (rankSlct === "FAN") fetchRankApply();
   },[rankSlct]);
@@ -128,7 +86,7 @@ const TopRanker = (props) => {
         }
         <span className='questionMark' onClick={() => setPopup(true)}></span>
       </div>
-      {data && data.length > 0 &&    
+      {data && data.length > 0 &&
         <Swiper {...swiperParams}>
           {data.map((list, index) => {
             return (
@@ -194,8 +152,8 @@ const TopRanker = (props) => {
                                 data.roomNo &&
                                   <div className='badgeLive' onClick={(e) => {
                                     e.stopPropagation();
-                                    goLive(data.roomNo, data.memNo, data.nickNm, data.listenRoomNo);
-                                  }}>                                    
+                                    RoomValidateFromClipMemNo(data.roomNo, data.memNo, context, history, data.nickNm);
+                                  }}>
                                     <span className='equalizer'>
                                       <Lottie
                                         options={{
@@ -208,13 +166,13 @@ const TopRanker = (props) => {
                                     <span className='liveText'>LIVE</span>
                                   </div>
                               }
-                              {/* {
-                                data.listenRoomNo !== "" &&
+                              {
+                                data.listenRoomNo && (data.listenOpen === 0 || data.listenOpen === 1) &&
                                   <div className='badgeListener' onClick={(e) => {
                                     e.stopPropagation();
-                                    goLive(data.roomNo, data.memNo, data.nickNm, data.listenRoomNo);
-                                  }}>                     
-                                    <span className='headset'>                          
+                                    RoomValidateFromClipMemNo(data.listenRoomNo, data.memNo, context, history, data.nickNm);
+                                  }}>
+                                    <span className='headset'>
                                       <Lottie
                                           options={{
                                             loop: true,
@@ -222,10 +180,10 @@ const TopRanker = (props) => {
                                             path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
                                           }}
                                         />
-                                    </span>      
+                                    </span>
                                     <span className='ListenerText'>LIVE</span>
-                                  </div>                                  
-                              } */}
+                                  </div>
+                              }
                             </>
                           }
                         </div>

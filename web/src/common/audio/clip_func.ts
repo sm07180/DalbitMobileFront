@@ -288,7 +288,7 @@ export const RoomValidateFromProfile = ({roomNo, memNo, history, context, nickNm
   }
 }
 
-export function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, listener?) {
+export async function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, listener?) {
   const {globalState, globalAction} = gtx;
   if (isDesktop()) {
     if (!globalState.baseData.isLogin) {
@@ -332,11 +332,33 @@ export function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, l
               },
             });
           } else {
+            if(!listenRoomNo){
+              history.push(`/broadcast/${roomNo}`);
+              return;
+            }
             if(listenRoomNo !== roomNo) {
+              const ownerSel = await Api.roomOwnerSel(roomNo, memNo);
+              if(ownerSel.data.listenOpen !== '1'){
+                if(history.location.pathname.startsWith("/profile")){
+                  return;
+                }
+
+                history.push(`/profile/${memNo}`);
+                return;
+              }
+              if(!ownerSel.data.memNo){
+                globalAction.callSetToastStatus!({
+                  status: true,
+                  message: "종료된 방송입니다.",
+                });
+                return;
+              }
               globalAction.setAlertStatus({
                 status: true,
                 type: "confirm",
-                content: `${nickNm ? `${nickNm}님의 ` : ''}방송방에 입장하시겠습니까?`,
+                content: memNo !== ownerSel.data.memNo ?
+                  `${nickNm}님이 참여중인 방송방에 입장하시겠습니까?`
+                  : `${ownerSel.data.memNick ? `${ownerSel.data.memNick}님의 ` : ''}방송방에 입장하시겠습니까?`,
                 callback: () => {
                   history.push(`/broadcast/${roomNo}`);
                 },
@@ -363,6 +385,7 @@ export function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, l
       return history.push('/login');
     }
   } else {
+
     RoomJoin({roomNo: roomNo,  memNo:memNo, nickNm: nickNm === "noName" ? "" : nickNm})
   }
 }
