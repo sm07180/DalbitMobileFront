@@ -12,7 +12,7 @@
   .buttonPosition {
     @include position-horizon($top: 18%);
     @include flex(center, center);
-    width: 70%;
+    width: calc(100% - 32px);
     .buttonOuter {
       position: relative;
       width: 100%;

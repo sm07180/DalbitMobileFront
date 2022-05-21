@@ -269,7 +269,7 @@ const DalCharge = () => {
         결제문의 <span>1522-0251</span>
       </section>
       <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"/>
-      {commonPopup.slidePopup &&
+      {commonPopup.commonPopup &&
       <PopSlide>
         <div className='title'>인증 정보를 확인해주세요!</div>
         <p className='text'>

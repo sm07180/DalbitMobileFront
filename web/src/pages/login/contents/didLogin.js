@@ -256,7 +256,7 @@ const DidLogin = (props) => {
           <div className="linkText" onClick={()=>props.history.push("/password")}>비밀번호 찾기</div>
         </div>
       </section>
-      {commonPopup.slidePopup &&
+      {commonPopup.commonPopup &&
       <PopSlide>
         <div className='title'>이용약관동의</div>
         <div className="agreeWrap">
