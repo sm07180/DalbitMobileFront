@@ -10,11 +10,13 @@ import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 // components
 import Tabmenu from './components/tabmenu'
 import MainSlide from './components/MainSlide'
+import PrevMainSlide from './components/PrevMainSlide'
 import SwiperList from './components/SwiperList'
 import FavoriteSwiper from './components/FavoriteSwiper'
 import LiveView from './components/LiveView'
 
 import AttendEventBtn from './component/AttendEventBtn'
+import UtilityCommon from "common/utility/utilityCommon";
 
 import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
@@ -25,7 +27,7 @@ import moment from "moment";
 // popup
 import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
-import {Hybrid, isHybrid, isIos} from "context/hybrid";
+import {isHybrid, isIos} from "context/hybrid";
 import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
 import {useHistory} from "react-router-dom";
 
@@ -493,7 +495,9 @@ const MainPage = () => {
         <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} titleClick={fixedHeaderLogoClick} />
       </div>
       <section className={`topSwiper`} ref={overRef}>
-        <MainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} />
+        {UtilityCommon.eventDateCheck("20220501") ? <MainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} /> :
+          <PrevMainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} />
+        }
       </section>
       <section className='favorites'>
         <FavoriteSwiper data={mainState.myStar} myStarCnt={mainState.myStarCnt} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
