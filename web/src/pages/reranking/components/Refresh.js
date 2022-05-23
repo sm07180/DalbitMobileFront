@@ -1,56 +1,57 @@
-import React, {useState, useEffect} from 'react'
-
-import Lottie from 'react-lottie'
-// global components
-import Swiper from 'react-id-swiper'
-import {useHistory} from "react-router-dom";
-import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
-import {IMG_SERVER} from 'context/config'
+import React, {useEffect, useState} from 'react'
 
 const Refresh = (props) => {
-  const {select, setSelect} = props;
+  const {period, setPeriod} = props;
+  const [refresh, setRefresh] = useState({
+    text: "",
+    num: 0
+  })
 
-  const [refreshText, setRefreshText] = useState("");
-  const [refreshNum, setRefreshNum] = useState(0);
+  useEffect(() => {
+    switch (period) {
+      case "time":
+        setRefresh({text: "일간 랭킹", num: 1})
+        break;
+      case "today":
+        setRefresh({text: "주간 랭킹", num: 2})
+        break;
+      case "week":
+        setRefresh({text: "월간 랭킹", num: 3})
+        break;
+      case "month":
+        setRefresh({text: "연간 랭킹", num: 4})
+        break;
+      case "year":
+        setRefresh({text: "타임 랭킹", num: 5})
+        break;
+    }
+  }, [period])
 
   const chartSelect = () => {
-    if(refreshText === "일간 랭킹"){
-      setSelect("today")
-    } else if(refreshText === "주간 랭킹") {
-      setSelect("thisweek")
-    } else if(refreshText === "월간 랭킹") {
-      setSelect("thismonth")
-    } else if(refreshText === "연간 랭킹") {
-      setSelect("thisyear")
-    } else if(refreshText === "타임 랭킹") {
-      setSelect("time")
+    switch (refresh.text) {
+      case "일간 랭킹":
+        setPeriod("today")
+        break;
+      case "주간 랭킹":
+        setPeriod("week")
+        break;
+      case "월간 랭킹":
+        setPeriod("month")
+        break;
+      case "연간 랭킹":
+        setPeriod("year")
+        break;
+      case "타임 랭킹":
+        setPeriod("time")
+        break;
     }
   }
 
-  useEffect(() => {
-    if(select === "time") {
-      setRefreshText("일간 랭킹");
-      setRefreshNum(1);
-    } else if(select === "today") {
-      setRefreshText("주간 랭킹");
-      setRefreshNum(2);
-    } else if(select === "thisweek") {
-      setRefreshText("월간 랭킹");
-      setRefreshNum(3);
-    } else if(select === "thismonth") {
-      setRefreshText("연간 랭킹");
-      setRefreshNum(4);
-    } else if(select === "thisyear") {
-      setRefreshText("타임 랭킹");
-      setRefreshNum(5);
-    }
-  }, [select])
-
   return (
     <div className='refreshWrap' onClick={chartSelect}>
-      <span className='refreshIcon'></span>
-      <p className='refreshText'><strong>{refreshText}</strong>이 궁금하다면?</p>
-      <span className='refreshNum'><span>{refreshNum}</span>/5</span>
+      <span className='refreshIcon'/>
+      <p className='refreshText'><strong>{refresh.text}</strong>이 궁금하다면?</p>
+      <span className='refreshNum'><span>{refresh.num}</span>/5</span>
     </div>
   )
 }
