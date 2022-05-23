@@ -1,6 +1,6 @@
 //userAgent 체크후 os 값 반환
 import {OS_TYPE} from "context/config";
-import {isHybrid} from "context/hybrid";
+import {isDesktop} from "lib/agent";
 
 const getDeviceOSTypeChk = () => {
   if(typeof window ==='undefined') return;
@@ -26,9 +26,8 @@ const getDeviceConfig = () => {
 
   osName = osName? osName[0] : 'Windows'; // null이면 Desktop으로 세팅
   return osName === 'android webview' ? OS_TYPE['Android'] :
-      osName === 'ios webview' ? OS_TYPE['IOS'] :
-      isHybrid() ? 4 :
-      osName === 'Windows' ? OS_TYPE['Desktop'] : OS_TYPE['Desktop'];
+        osName === 'ios webview' ? OS_TYPE['IOS'] :
+        isDesktop() ? OS_TYPE['Desktop'] : 4;
 };
 
 
