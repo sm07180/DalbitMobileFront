@@ -20,12 +20,15 @@ import {
   setGlobalCtxAlertStatus,
   setGlobalCtxBroadClipDim,
   setGlobalCtxRtcInfoEmpty,
-  setGlobalCtxRtcInfoInit
+  setGlobalCtxRtcInfoInit,
+  setGlobalCtxUpdatePopup
 } from "redux/actions/globalCtx";
 import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 import {authReq} from 'pages/self_auth'
 import {useDispatch, useSelector} from "react-redux";
 import {MediaType} from "pages/broadcast/constant";
+import {getDeviceConfig} from "common/DeviceCommon";
+import {Hybrid, isHybrid} from "context/hybrid";
 
 const firstClip = () => {
   const history = useHistory();
@@ -99,7 +102,7 @@ const firstClip = () => {
                     checkBroadcast(category);
                   } else {
                     dispatch(setGlobalCtxBroadClipDim(false));
-                    history.push(`/${category}`);
+                    clipCallBack(category);
                   }
                 },
               })
@@ -117,7 +120,7 @@ const firstClip = () => {
                     checkBroadcast(category);
                   } else {
                     dispatch(setGlobalCtxBroadClipDim(false));
-                    history.push(`/${category}`);
+                    clipCallBack(category);
                   }
                 },
               })
@@ -128,7 +131,7 @@ const firstClip = () => {
           checkBroadcast(category);
         } else {
           dispatch(setGlobalCtxBroadClipDim(false));
-          history.push(`/${category}`);
+          clipCallBack(category);
         }
       }
     }
@@ -277,6 +280,21 @@ const firstClip = () => {
       }));
     }
   };
+
+  const clipCallBack = (category) => {
+    console.log(isHybrid());
+    if (getDeviceConfig() == 1 || getDeviceConfig() == 2){
+      if (category === "clip_recoding"){
+        Hybrid("EnterClipRecord");
+      } else {
+        Hybrid("ClipUploadJoin");
+      }
+    } else if (getDeviceConfig() == 3) {
+      history.push(`/${category}`);
+    } else {
+      dispatch(setGlobalCtxUpdatePopup({popup:['APPDOWN', 'appDownAlrt', 3]}));
+    }
+  }
 
   return (
     <div id="firstClipPage">
