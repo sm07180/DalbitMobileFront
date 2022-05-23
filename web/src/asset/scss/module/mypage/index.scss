@@ -476,7 +476,6 @@
           box-sizing: border-box;
         }
         &__wrapper {
-          margin-top:10px;
           border-radius:15px;
           overflow:hidden;
         }
@@ -1434,6 +1433,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    margin-bottom: 10px;
     .swiper-container {
       overflow: hidden;
     }
