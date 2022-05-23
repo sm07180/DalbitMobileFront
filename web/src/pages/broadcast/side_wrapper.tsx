@@ -444,7 +444,7 @@ export default function SideWrapper() {
   // console.log("broadcastState====>",broadcastState.roomInfo)
   return (
     <>
-      {roomOwner !== null && broadcastState.roomInfo !== null && (
+      {roomOwner !== null && broadcastState.roomInfo !== null && splashData &&(
         <RightSide
           splashData={splashData}
           roomOwner={roomOwner}

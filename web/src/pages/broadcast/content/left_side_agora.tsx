@@ -1337,13 +1337,16 @@ export default function LeftSideAgora(props: {
           />
         )}
 
-        <ChatHeaderWrap
-          roomOwner={roomOwner}
-          roomNo={roomNo}
-          roomInfo={roomInfo}
-          guestConnectStatus={guestConnectStatus}
-          displayWrapRef={displayWrapRef}
-        />
+        {
+          roomInfo &&
+          <ChatHeaderWrap
+            roomOwner={roomOwner}
+            roomNo={roomNo}
+            roomInfo={roomInfo}
+            guestConnectStatus={guestConnectStatus}
+            displayWrapRef={displayWrapRef}
+          />
+        }
         {broadcastState.roomInfo?.mediaType === MediaType.AUDIO && (
           <ChatListWrap
             roomInfo={roomInfo}
