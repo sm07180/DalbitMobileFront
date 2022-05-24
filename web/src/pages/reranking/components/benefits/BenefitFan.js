@@ -2,11 +2,9 @@ import React, {useEffect, useState} from 'react'
 
 import {IMG_SERVER} from 'context/config'
 
-import './benefit.scss'
+import '../../scss/Benefit.scss'
 
-let wepbSrc
 export default () => {
-  const [effectPop, setEffectPop] = useState(false)
   return (
     <>
       <div className="benefitTop">

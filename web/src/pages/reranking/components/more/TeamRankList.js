@@ -1,32 +1,24 @@
-import React, {useContext} from 'react'
+import React from 'react'
 
-// global components
 import {IMG_SERVER} from 'context/config'
 import {useHistory, withRouter} from "react-router-dom";
 import DataCnt from "components/ui/dataCnt/DataCnt";
-
-// components
-
-// css
-import '../scss/TeamRankList.scss';
+import '../../scss/TeamRankList.scss';
 import {useSelector} from "react-redux";
 
 const TeamRankList = (props) => {
+
   const {data, breakNo} = props;
-
   const globalState = useSelector(({globalCtx}) => globalCtx);
-
   const history = useHistory();
 
   const goTeamDetailPage = (e) => {
     const { teamNo } = e.currentTarget.dataset;
-
     if (!globalState.token.isLogin) {
       history.push('/login');
     } else if (teamNo !== undefined) {
       history.push(`/team/detail/${teamNo}`);
     }
-
   }
 
   return (

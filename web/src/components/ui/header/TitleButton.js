@@ -117,7 +117,7 @@ const TitleButton = (props) => {
     case '랭킹':
       return (
         <div className='buttonGroup'>
-          <button className='benefits' onClick={() => history.push("/rankBenefit")}>
+          <button className='benefits' onClick={() => history.push("/rank/benefit/dj")}>
             혜택
           </button>
         </div>

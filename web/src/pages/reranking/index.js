@@ -7,10 +7,10 @@ import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
-import ChartSwiper from './components/ChartSwiper'
+import DjChatSwiper from './components/DjChatSwiper'
 import MyRanking from './components/MyRanking'
 import Refresh from './components/Refresh'
-import RankingList from './components/rankingList'
+import RankingList from './components/more/RankList'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup';
 
 import './style.scss'
@@ -33,7 +33,7 @@ const RankPage = () => {
   const [count, setCount] = useState() //DJ 차트기간 표시
   const [djRank, setDjRank] = useState([]); // DJ 차트랭킹
   const [myRank, setMyRank] = useState({dj:0, fan:0, cupid: 0, team:0})  //MY 랭킹
-  const [dayTabType, setDayTabType] = useState("FAN") // 하단 [FAN, CUPID]
+  const [dayTabType, setDayTabType] = useState("fan") // 하단 [FAN, CUPID]
   const [etcRank, setEtcRank] = useState({  // FAN,CUPID 랭킹
     fan: [],
     cupid: [],
@@ -47,11 +47,11 @@ const RankPage = () => {
     fetchDjRank();
     fetchRank();
 
-    if (rankState.subTab === "FAN") {
-      setDayTabType("FAN");
+    if (rankState.subTab === "fan") {
+      setDayTabType("fan");
     } else {
-      setDayTabType("CUPID");
-      dispatch(setSubTab("FAN"));
+      setDayTabType("cupid");
+      dispatch(setSubTab("fan"));
     }
   }, []);
 
@@ -192,7 +192,6 @@ const RankPage = () => {
     fetchRank()
   }, [dayTabType]);
 
-
   // DJ 랭킹 가져오기
   const fetchDjRank = () => {
     if(period==="time"){
@@ -232,7 +231,7 @@ const RankPage = () => {
   const fetchRank = () => {
     API.get_ranking({
       param: {
-        rankSlct: dayTabType === "FAN" ?  2 : 3, // [FAN=2, CUPID=3]
+        rankSlct: dayTabType === "fan" ?  2 : 3, // [FAN=2, CUPID=3]
         rankType: 1,  // [today=1, week=2, thismoth=3, year=4]
         rankingDate: moment(new Date()).format("YYYY-MM-DD"),
         page: 1,
@@ -240,7 +239,7 @@ const RankPage = () => {
       }
     }).then((res)=>{
       if (res.result === "success") {
-        if(dayTabType === "FAN") {
+        if(dayTabType === "fan") {
           setEtcRank({...etcRank, fan: res.data.list})
         } else {
           setEtcRank({...etcRank, cupid: res.data.list})
@@ -256,16 +255,16 @@ const RankPage = () => {
         let rankInfo = {dj: 0, fan: 0, cupid: 0, team: 0}
         res.data.map((res) => {
           switch (res.s_rankSlct) {
-            case 'DJ':
+            case 'dj':
               rankInfo.dj = res.s_rank;
               break;
-            case 'FAN':
+            case 'fan':
               rankInfo.fan = res.s_rank;
               break;
-            case 'LOVER':
+            case 'lover':
               rankInfo.cupid = res.s_rank;
               break;
-            case 'TEAM':
+            case 'team':
               rankInfo.team = res.s_rank;
               break;
           }
@@ -282,7 +281,7 @@ const RankPage = () => {
       {/*DJ 차트*/}
       <section className='rankingTop'>
         <button className='rankingTopMore' onClick={() => {
-          history.push({pathname: '/rankDetail/DJ', state: period});
+          history.push({pathname: '/rank/list/dj/1', state: period});
         }}>더보기</button>
         <div className='title' onClick={()=>{dispatch(setSlidePopupOpen())}}>
           <div>DJ {period === "time" && "실시간"}</div>
@@ -303,7 +302,7 @@ const RankPage = () => {
             <div className='clickArea' onClick={()=>{setPopup(true)}}/>
           </div>
         </div>
-        <ChartSwiper data={djRank}/>
+        <DjChatSwiper data={djRank}/>
         <Refresh period={period} setPeriod={setPeriod}/>
       </section>
 
@@ -335,25 +334,23 @@ const RankPage = () => {
         <div className="cntTitle">
           <h2>일간 FAN / CUPID</h2>
           <button onClick={() => {
-            if (dayTabType === "FAN"){
-              history.push("/rankDetail/FAN");
-              dispatch(setSubTab("FAN"));
+            if (dayTabType === "fan"){
+              history.push("/rank/list/fan/1");
+              dispatch(setSubTab("fan"));
             } else {
-              history.push("/rankDetail/CUPID");
-              dispatch(setSubTab("CUPID"));
+              history.push("/rank/list/cupid/1");
+              dispatch(setSubTab("cupid"));
             }
           }}>더보기</button>
         </div>
         <ul className="tabmenu">
-          <li className={dayTabType === "FAN" ? 'active' : ''} onClick={() => {setDayTabType("FAN")}}>FAN</li>
-          <li className={dayTabType === "CUPID" ? 'active' : ''} onClick={() => {setDayTabType("CUPID")}}>CUPID</li>
+          <li className={dayTabType === "fan" ? 'active' : ''} onClick={() => {setDayTabType("fan")}}>FAN</li>
+          <li className={dayTabType === "cupid" ? 'active' : ''} onClick={() => {setDayTabType("cupid")}}>CUPID</li>
           <div className="underline"/>
         </ul>
-        <div className='listWrap'>
-          {etcRank.fan.length > 0 || etcRank.cupid.length > 0 ?
-            <RankingList data={dayTabType === "FAN" ? etcRank.fan : etcRank.cupid} tab={dayTabType}/> : <p>순위가 없습니다.</p>
-          }
-        </div>
+        {etcRank.fan.length > 0 || etcRank.cupid.length > 0 ?
+          <RankingList data={dayTabType === "fan" ? etcRank.fan : etcRank.cupid} tab={dayTabType}/> : <p>순위가 없습니다.</p>
+        }
       </section>
 
       {/*슬라이드 팝업(상단 DJ 차트 클릭)*/}

@@ -3,21 +3,14 @@ import {setSubTab} from "redux/actions/rank";
 import {useDispatch} from "react-redux";
 import {useHistory} from "react-router-dom";
 
-// global components
-
 const MyRanking = (props) => {
   const {data} = props
-
   const history = useHistory();
-
   const dispatch = useDispatch();
 
   const goRankingDetailPage = (e) => {
     const { target } = e.currentTarget.dataset;
-    console.log('in', target);
-
-
-    history.push(`/rankDetail/${target}`);
+    history.push(`/rank/${target}`);
     dispatch(setSubTab(target));
   }
 
