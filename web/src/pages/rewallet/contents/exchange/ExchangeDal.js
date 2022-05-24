@@ -137,29 +137,3 @@ const ExchangeDal = () => {
 }
 
 export default ExchangeDal
-
-//깐부 구슬 지급
-// async function fetchPayComplete() {
-//   console.log(select.byeol);
-//   if(select.byeol >= 300){
-//     marbleTotleCtn = Math.floor((Number(select.byeol) / 100));
-//     const param = {
-//       insSlct: "e",
-//       marbleCnt : marbleTotleCtn,
-//     };
-//     const {data} = await Api.getGganbuObtainMarble(param)
-//     if (data.s_return === 1) {
-//       setChargeContent(`별 ${select.byeol}개 교환으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
-//       setRewardPop(true);
-//       setGetMarble({
-//         rmarbleCnt : data.rmarbleCnt,
-//         ymarbleCnt : data.ymarbleCnt,
-//         bmarbleCnt : data.bmarbleCnt,
-//         vmarbleCnt : data.vmarbleCnt,
-//         totalmarbleCnt : data.marbleCnt,
-//       })
-//     }
-//   } else {
-//
-//   }
-// }

@@ -3,13 +3,13 @@ import React from 'react';
 import {IMG_SERVER} from 'context/config';
 
 const TeamSymbol = (props) => {
-  const {data} = props;
+  const { bgCode, edgeCode, medalCode } = props;
 
   return (
     <div className="teamSymbol">
-      <img src={`${IMG_SERVER}/team/parts/B/${data.team_bg_code}.png`} />
-      <img src={`${IMG_SERVER}/team/parts/E/${data.team_edge_code}.png`} />
-      <img src={`${IMG_SERVER}/team/parts/M/${data.team_medal_code}.png`} />
+      <img src={`${IMG_SERVER}/team/parts/B/${bgCode}.png`} />
+      <img src={`${IMG_SERVER}/team/parts/E/${edgeCode}.png`} />
+      <img src={`${IMG_SERVER}/team/parts/M/${medalCode}.png`} />
     </div>
   )
 }
