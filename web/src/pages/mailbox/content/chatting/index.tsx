@@ -151,7 +151,7 @@ export default function chatting() {
   //강제 스크롤 바닥
   const forceScrollDown = useCallback(() => {
     if (PrevRef.current !== null) {
-      PrevRef.current.scrollTo(0, PrevRef.current.scrollHeight - PrevRef.current.clientHeight);
+      window.scrollTo(0, PrevRef.current.scrollHeight);
     }
   }, []);
   //강제 스크롤 유지

@@ -23,6 +23,9 @@ import {tabType} from "pages/broadcast/constant";
 import {AuthType} from "constant";
 import {MANAGER_TYPE} from "./constant";
 import BadgeList from "../../../../common/badge_list";
+import LayerPopup from "../../../../components/ui/layerPopup/LayerPopup2";
+// import LayerPopup from "../../../../components/ui/layerPopup/LayerPopup2";
+import SpecialHistoryPop from "pages/remypage/components/popup/SpecialHistoryPop";
 import 'asset/scss/module/mypage/index.scss'
 
 import {
@@ -31,6 +34,7 @@ import {
   setBroadcastCtxUserMemNo,
   setBroadcastCtxUserNickName
 } from "../../../../redux/actions/broadcastCtx";
+import {setCommonPopupOpenData} from "redux/actions/common";
 import {
   setGlobalCtxAlertStatus,
   setGlobalCtxMultiViewer,
@@ -46,6 +50,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
+  const popup = useSelector(state => state.popup);
 
   const { baseData } = globalState;
   const { isLogin } = baseData;
@@ -53,6 +58,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   // state
   const [profileData, setProfileData] = useState<userProfileType | null>(null);
   const [badgeList, setBadgeList] = useState<Array<any>>([]);
+  const [layerPopMemNo, setLayerPopMemNo] = useState<string>(""); // 슬라이드 팝업 정보
   const [expData, setExpData] = useState<any>({
     expCalc: 0,
     expPercent: 0,
@@ -239,9 +245,33 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
       </>
     );
   };
+
+  const historyPopupOpen = (e) => {
+    const memNo = e.currentTarget.id;
+    e.preventDefault();
+    e.stopPropagation();
+    if(memNo === globalState.profile.memNo){
+      setLayerPopMemNo(memNo);
+      dispatch(setCommonPopupOpenData({...popup, layerPopup: true}));
+    }    
+
+  }
+
   const checkSpecialDj = (profileData) => {
+    // if(profileData.specialDjCnt > 0){
+    //   return (
+    //     <div className="badgeGroup">
+    //       <span
+    //         id={profileData.memNo}
+    //         className={`starBdg ${profileData.badgeSpecial === 1 ? "active" : ""}`}
+    //         onClick={historyPopupOpen}
+    //       >
+    //         {profileData.specialDjCnt}
+    //       </span>
+    //     </div>
+    //     );
     if (profileData.wasSpecial && profileData.badgeSpecial === 0) {
-      return (
+      return (     
         <div
           className="checkBadge"
           onClick={() => {
@@ -546,7 +576,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                   <span className="subIconWrap">
                     {/* {<span className="nationIcon"></span>} */}
                     {profileData.gender !== "" && (
-                      <em className={`icon_wrap ${profileData.gender === "m" ? "icon_male" : "icon_female"}`}>
+                      <em className={`icon_wrap ${profileData.gender === "n" ? "" : profileData.gender === "m" ? "icon_male" : "icon_female"}`}>
                         <span className="blind">성별</span>
                       </em>
                     )}
@@ -607,6 +637,13 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                         </div>
                       );
                     })}
+                    {[...Array(3 - profileData.fanRank.length)].map((rankItem, index) => {
+                      return (
+                        <div className={`rankingList__item`} key={index}>
+                          <img className="rankingList__item--img" src={`https://image.dalbitlive.com/common/photoNone-bgGray.png`} alt="기본 이미지" />
+                        </div>
+                      )
+                    })}
                     {globalState.baseData.memNo !== profileData.memNo && (
                       <button
                         className="rankingList__goFanboardBtn"
@@ -633,10 +670,10 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                       return (
                         <div
                           key={idx + "defalutRankList"}
-                          className={`rankingList__item ${idx === 1 ? "silver" : idx === 2 ? "bronze" : "gold"}`}
+                          className={`rankingList__item`}
                         >
                           <img
-                            src="https://image.dallalive.com/svg/ico_defalitprofile.svg"
+                            src="https://image.dalbitlive.com/common/photoNone-bgGray.png"
                             className="rankingList__item--img"
                             alt={`defalutrankProfileImg` + idx}
                           />
@@ -663,7 +700,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     </button>
                     <div className={`rankingList__item `}>
                       <img
-                        src="https://image.dallalive.com/svg/ico_defalitprofile.svg"
+                        src="https://image.dalbitlive.com/common/photoNone-bgGray.png"
                         className="rankingList__item--img"
                         alt={`defalutrankProfileImg`}
                       />
@@ -764,6 +801,12 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
           </div>
         </div>
       )}
+      {popup.layerPopup &&
+        <LayerPopup>
+          <SpecialHistoryPop
+            memNo={layerPopMemNo}/>
+        </LayerPopup>
+      }
     </>
   );
 }

@@ -183,48 +183,20 @@ export default function ChatHeaderWrap(prop: any) {
     <ChatHeaderWrapStyled isVideo={roomInfo.mediaType === MediaType.VIDEO}>
       <div className="top-section">
         <div className="dj-info">
-          <div
-            className="profile-image"
-            onClick={() => {
-              dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
-              dispatch(setBroadcastCtxUserMemNo(roomInfo.bjMemNo));
-            }}
-          >
-            <div
-              className="image-background"
-              style={
-                roomInfo !== null
-                  ? {
-                      backgroundImage: `url(${roomInfo.bjProfImg["thumb150x150"]})`,
-                    }
-                  : {}
-              }
-            ></div>
-            {roomInfo.badgeFrame.frameAni !== "" ? (
-              <>
-                <div
-                  className="dj-holder"
-                  style={{
-                    backgroundImage: `url(${roomInfo.badgeFrame.frameTop})`,
-                  }}
-                ></div>
-                <div
-                  className="dj-holder"
-                  style={{
-                    backgroundImage: `url(${roomInfo.badgeFrame.frameAni})`,
-                  }}
-                ></div>
-              </>
-            ) : (
-              <div
-                className="dj-holder"
-                style={
-                  roomInfo !== null
-                    ? { backgroundImage: `url(${roomInfo.bjHolder})` }
-                    : {}
-                }
-              ></div>
-            )}
+          <div className="profile-image" onClick={() => {
+            dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
+            dispatch(setBroadcastCtxUserMemNo(roomInfo.bjMemNo));
+          }}>
+            <div className="image-background" style={{backgroundImage: `url(${roomInfo.bjProfImg["thumb150x150"]})`,}}/>
+            {
+              roomInfo.badgeFrame.frameTop !== "" ?
+                <>
+                  <div className="dj-holder" style={{backgroundImage: `url(${roomInfo.badgeFrame.frameTop})`,}}/>
+                  <div className="dj-holder" style={{backgroundImage: `url(${roomInfo.badgeFrame.frameAni})`,}}/>
+                </>
+                :
+                <div className="dj-holder" style={{ backgroundImage: `url(${roomInfo.bjHolder})` }}/>
+            }
           </div>
 
           <div className="broadcast-info">

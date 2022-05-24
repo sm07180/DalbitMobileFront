@@ -209,7 +209,7 @@ export default (props) => {
             </div>
           </div>
         </div>
-
+`
         <div className="giftCategory">
           {giftCategoryItem.map((tab, idx) => {
             const { value, isNew, code } = tab;

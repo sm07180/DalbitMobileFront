@@ -70,7 +70,7 @@ const ClipDetail = (props) => {
                   <span className="title">{list.title}</span>
                 </div>
                 <div className="listItem">
-                  <GenderItems data={list.gender} />
+                  {list.gender === 'n' ? <></> :<GenderItems data={list.gender} size={18} />}
                   <span className="nickNm">{list.nickName}</span>
                 </div>
                 <div className="listItem">

@@ -5,25 +5,25 @@ import {MediaType, MiniGameType, tabType} from "pages/broadcast/constant";
 import {AuthType} from "constant";
 
 import {getItems, postErrorSave, splash} from "common/api";
-import {GiftActionFormat, NormalMsgFormat, ReqGood, SystemStartMsg} from "pages/broadcast/lib/chat_msg_format";
+import {
+  GiftActionFormat,
+  NormalMsgFormat,
+  ReqGood,
+  SystemEventMsg,
+  SystemStartMsg
+} from "pages/broadcast/lib/chat_msg_format";
 
 // static
 import MicAlarmClose from "common/static/image/mic_alarm_close.png";
 import {getCookie} from "common/utility/cookie";
 import {rtcSessionClear} from "./rtc_socket";
-import {
-  moveVoteListStep,
-  moveVoteStep,
-  setVoteActive,
-  setVoteCallback,
-} from "../../redux/actions/vote";
-import {
-  VoteCallbackPromisePropsType,
-} from "../../redux/types/voteType";
+import {moveVoteListStep, moveVoteStep, setVoteActive, setVoteCallback,} from "../../redux/actions/vote";
+import {VoteCallbackPromisePropsType,} from "../../redux/types/voteType";
 
 import {isDesktop} from "../../lib/agent";
 import {
-  setMailBoxChatListUpdate, setMailBoxImgSliderAddDeleteImg,
+  setMailBoxChatListUpdate,
+  setMailBoxImgSliderAddDeleteImg,
   setMailBoxIsMailBoxNew,
   setMailBoxPushChatInfo,
   setMailBoxUserCount
@@ -31,29 +31,41 @@ import {
 import {
   setBroadcastCtxBoost,
   setBroadcastCtxChatAnimationStart,
-  setBroadcastCtxChatCount, setBroadcastCtxChatFreeze,
+  setBroadcastCtxChatCount,
+  setBroadcastCtxChatFreeze,
   setBroadcastCtxChatLimit,
-  setBroadcastCtxComboAnimationStart, setBroadcastCtxCommonBadgeList,
-  setBroadcastCtxExtendTime, setBroadcastCtxMiniGameInfo, setBroadcastCtxMiniGameResult, setBroadcastCtxNoticeState,
+  setBroadcastCtxComboAnimationStart,
+  setBroadcastCtxCommonBadgeList,
+  setBroadcastCtxExtendTime,
+  setBroadcastCtxMiniGameInfo,
+  setBroadcastCtxMiniGameResult,
+  setBroadcastCtxNoticeState,
   setBroadcastCtxRealTimeValueSetLikeFanRank,
   setBroadcastCtxRightTabType,
   setBroadcastCtxRoomInfoBoosterOn,
   setBroadcastCtxRoomInfoGrantRefresh,
-  setBroadcastCtxRoomInfoIsListenerUpdate, setBroadcastCtxRoomInfoMoonCheck,
-  setBroadcastCtxRoomInfoNewFanCnt, setBroadcastCtxRoomInfoRefresh,
+  setBroadcastCtxRoomInfoIsListenerUpdate,
+  setBroadcastCtxRoomInfoMoonCheck,
+  setBroadcastCtxRoomInfoNewFanCnt,
+  setBroadcastCtxRoomInfoRefresh,
   setBroadcastCtxRoomInfoSettingUpdate,
-  setBroadcastCtxStoryState, setBroadcastCtxUserCount,
+  setBroadcastCtxStoryState,
+  setBroadcastCtxUserCount,
   setBroadcastCtxUserMemNo
 } from "../../redux/actions/broadcastCtx";
 import {
-  setGlobalCtxAlertStatus, setGlobalCtxChatInfoInit,
+  setGlobalCtxAlertStatus,
+  setGlobalCtxChatInfoInit,
   setGlobalCtxCurrentChatDataEmpty,
   setGlobalCtxGuestInfoEmpty,
-  setGlobalCtxIsShowPlayer, setGlobalCtxMailBlockUser,
+  setGlobalCtxIsShowPlayer,
+  setGlobalCtxMailBlockUser,
   setGlobalCtxMoveToAlert,
   setGlobalCtxRealtimeBroadStatus,
   setGlobalCtxRtcInfoEmpty,
-  setGlobalCtxSetToastStatus, setGlobalCtxSplash, setGlobalCtxTooltipStatus
+  setGlobalCtxSetToastStatus,
+  setGlobalCtxSplash,
+  setGlobalCtxTooltipStatus
 } from "../../redux/actions/globalCtx";
 
 // lib
@@ -821,7 +833,7 @@ export class ChatSocketHandler {
                     // }
                   }
                   case "reqGiftImg": {
-                    let { items, levelUp, boost } = this.splashData;
+                    let { items, levelUp, boost, story } = this.splashData;
                     // items : 시그니처 아이템 추가
                     items = items.concat(this.roomInfo?.signatureItem?.items || []);
 
@@ -838,6 +850,7 @@ export class ChatSocketHandler {
                       dalCnt,
                       isSecret,
                       repeatCnt,
+                      storyText
                     } = reqGiftImg;
                     const count = itemCnt;
                     const userNickname = nk;
@@ -850,7 +863,10 @@ export class ChatSocketHandler {
                         return levelUp.find((item: any) => item.itemNo === itemNo);
                       } else if (itemType === "boost") {
                         return boost.find((item: any) => item.itemNo === itemNo);
+                      } else if(itemType === 'story'){
+                        return story.find((item: any)=> item.itemNo === itemNo);
                       }
+
                     })();
                     let isTTSItem = typeof reqGiftImg.ttsText !== 'undefined' && reqGiftImg.ttsText !== "";
                     let isSoundItem = true;
@@ -909,12 +925,13 @@ export class ChatSocketHandler {
                           userNickname,
                         }))
                       } else {
+                        // 사연 플러스 아이템 추가
                         this.dispatch(setBroadcastCtxChatAnimationStart({
                           url: lottieUrl,
                           width,
                           height,
                           duration: duration * 1000 * repeatCnt,
-                          location,
+                          location : storyText? 'center': location,
                           soundOffLocationFlag: soundFileUrl? (!isSoundItem? 'soundOffLocation': '') : '',
                           count,
                           isCombo,
@@ -926,6 +943,7 @@ export class ChatSocketHandler {
                           memNo,
                           ttsItemInfo,
                           isTTSItem,
+                          storyText
                           // repeatCnt,
                         }))
                       }
@@ -1132,6 +1150,51 @@ export class ChatSocketHandler {
                       type: "div",
                       text: msg,
                       className: "system-start-msg",
+                    });
+                  }
+                  case "reqEventMsg": {
+                    const {recvMsg} = data;
+                    const message = JSON.parse(recvMsg.msg);
+                    const msg = {
+                      title:message.title,
+                      content:message.content.replace("{nickName}", `<span>${message.nickName}</span>`),
+                      linkTitle:message.linkTitle,
+                      linkUrl:message.linkUrl
+                    }
+                    return SystemEventMsg({
+                      type: "div",
+                      className: "common-event-msg",
+                      children: [
+                        {
+                          type: "div",
+                          className: "content",
+                          children: [
+                            {
+                              type: "div",
+                              className: "title",
+                              text: msg.title,
+                            },
+                            {
+                              type: "div",
+                              className:"text",
+                              text:msg.content,
+                            }
+                          ]
+                        },
+                        {
+                          type: "button",
+                          className: "button",
+                          text: msg.linkTitle,
+                          event: [
+                            {
+                              type: "click",
+                              callback: () => {
+                                this.history.push(msg.linkUrl)
+                              },
+                            }
+                            ]
+                        }
+                      ]
                     });
                   }
                   case "reqChangeCount": {
@@ -2041,6 +2104,10 @@ export class ChatSocketHandler {
 
                   case "reqPlayCoin": { // 달나라 동전 생성
                     const {reqPlayCoin} = data;
+
+                    //달나라 이벤트 진행중 여부
+                    if(!this.roomInfo?.moonLandEvent) return null;
+
                     /* 일반코인은 누적선물달을 체크 하지 않음 ( 그 외 보너스코인은 모두 10달 이상이여야 화면에 노출 ) */
                     const isNormalCoin = reqPlayCoin?.normal?.score > 0 && reqPlayCoin?.character?.score === 0 && reqPlayCoin?.gold?.score === 0;
 
@@ -2709,7 +2776,7 @@ export class ReConnectChat {
       this.lastRetryTime = now;
       if (this.isRetry == true && this.reTryCnt < 21) {
         this.reTryCnt++;
-        const chatInfo = new ChatSocketHandler(this.chatUserInfo, this);
+        const chatInfo = new ChatSocketHandler(this.chatUserInfo, this, this.dispatch);
         this.dispatch(setGlobalCtxChatInfoInit(chatInfo))
       } else {
         if (this.isRetryFinish == false) {

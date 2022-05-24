@@ -27,7 +27,6 @@ import Award from './award'
 import Purchase from './purchase'
 import PurchaseBenefit from './purchase_benefit'
 import PostGuide from './post_guide'
-import GoodStart from './goodstart'
 import Rebranding from './rebranding'
 import RecommendDj from './recommend_dj'
 import NewYear from './new_year'
@@ -50,7 +49,14 @@ import PlatformWar from './platformWar'
 import ContentLab from './contentLab'
 import ContentStar from './contentStar'
 import ContentStarSchedule from './contentStarSchedule'
+import KeyboardHero from './keyboardHero'
+import KeyboardTodayWinning from './keyboardHero/content/todayWinning'
 import Wassup from './wassup'
+import DallaGround from './dallaground'
+import BugReport from './bugreport'
+import ContentBroadcast from './contentBroadcast'
+
+
 import moment from "moment";
 
 export default (props) => {
@@ -103,8 +109,6 @@ export default (props) => {
         return <PurchaseBenefit />
       case 'post_guide':
         return <PostGuide />
-      case 'goodstart':
-        return <GoodStart />
       case 'rebranding':
         return <Rebranding />
       case 'recommend_dj':
@@ -139,12 +143,6 @@ export default (props) => {
         return <Acrostic />
       case 'playmaker':
         return <PlayMaker />
-      // case 'gganbu':
-      //   return <Gganbu />
-      // case 'participant':
-      //   return <Participant />
-      // case 'marblePocket':
-      //   return <MarblePocket />
       case 'invite':
         if(new moment().isAfter('20220308')){
           return window.location.href = '/'
@@ -163,6 +161,16 @@ export default (props) => {
         return <ContentStar />
       case 'contentstar_schedule':
         return <ContentStarSchedule />
+      case 'bugreport':
+        return <BugReport />
+      case 'keyboardhero':
+        return <KeyboardHero />
+      case 'keyboardhero_todaywinning':
+        return <KeyboardTodayWinning />
+      case 'contentBroadcast':
+        return <ContentBroadcast />
+      case 'dallaground':
+        return <DallaGround />
       default:
         return <></>
         break

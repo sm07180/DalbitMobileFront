@@ -14,7 +14,7 @@ function* setMaxVerSion () {
 	}
 }
 
-function * MainSagas() {
+function* MainSagas() {
 	yield takeEvery(SET_MAIN_DATA, setMaxVerSion)
 }
 

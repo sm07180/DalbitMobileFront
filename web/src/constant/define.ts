@@ -123,6 +123,7 @@ export const CHAT_CONFIG = {
       PACKET_RECV_REQ_KICKOUT: "reqKickOut", //강퇴
       PACKET_RECV_REQ_WELCOME: "reqWelcome", //인사말
       PACKET_RECV_REQ_BC_START: "reqBcStart", //방송시작
+      PACKET_RECV_REQ_EVENT_MSG: "reqEventMsg", //이벤트
 
       PACKET_RECV_REQ_ALERT: "reqAlert", //알림메세지
       PACKET_RECV_REQ_MYINFO: "reqMyInfo", //내정보수정

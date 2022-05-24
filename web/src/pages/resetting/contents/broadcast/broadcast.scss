@@ -17,7 +17,7 @@
       .menuName {
         flex: none;
         @include flex(center);
-        @include font(15px, 500, #303030);
+        @include font(15px, 600, #303030);
         span {
           margin-left: 8px;
           @include font(13px, 400, #999999);

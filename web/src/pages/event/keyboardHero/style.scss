@@ -1,0 +1,221 @@
+@import 'components/ui/_mixin.scss';
+.mobileType {
+  #keyboardHero {
+    .tabWrap.fixed {
+      position: sticky;
+      top: #{$HEADER-HEIGHT};
+      z-index: 2;
+    }
+  }
+}
+
+#keyboardHero{
+  position: relative;
+  img{width: 100%;}
+  section{position: relative;}
+  .tabWrap{
+    position: relative;
+    padding: 0 16px;
+    margin: -24% 0 16px 0;
+    &.fixed{
+      position: fixed;
+      width: 100%;
+      max-width: 480px;
+      margin: 0;
+      padding: 0;
+      z-index: 10;
+      .tabBox{
+        border-radius: 0;
+        .buttonBack{
+          border-radius: 0;
+        }
+      }
+    }
+    .tabBox{
+      @include flex(center, center);
+      position: relative;
+      width: 100%;
+      height: 44px;
+      overflow: hidden;
+      border-radius: 25px;
+      background-color: #9AA6B7;
+      >button{
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        overflow: hidden;
+        @for $i from 1 through 2{
+          &:nth-child(#{$i}){
+            &.active{
+              &~.buttonBack{
+                left: calc(100% / 2 * #{$i - 1});
+              }
+            }
+          }
+        }
+        img{
+          width: auto;
+          height: 22px;
+        }
+      }
+      .buttonBack{
+        @include position-top-left;
+        width: 50%;
+        height: 100%;
+        background: #2B466D;
+        border-radius: 25px;
+        transition:all .1s ease-in-out;
+      }
+    }
+  }
+  .winningWrap{
+    padding: 0 16px;
+    .winningBox{
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      >.title{
+        width: 100%;
+        height: 11.70%;
+      }
+      >.content{
+        width: 100%;
+        height: 100%;
+        background: #DDE3F5;
+        padding: 16px;
+        .welcome{
+          @include flex(center, center);
+          width: 100%;
+          @include font(12px, $Medium, #666);
+          white-space: nowrap;
+          margin-bottom: 13px;
+          &::after{
+            content: "";
+            width: 100%;
+            height: 1px;
+            background-color: #999;
+            margin-left: 13px;
+          }
+          &::before{
+            content: "";
+            width: 100%;
+            height: 1px;
+            background-color: #999;
+            margin-right: 13px;
+          }
+        }
+        .swiper-container{
+          height: 196px;
+        }
+        .listRow{
+          align-items: flex-start;
+          .photo{
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+          }
+          .listContent{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: calc(100% - 60px);
+            @include font(15px, $SemiBold, #303030);
+          }
+        }
+        .present{
+          width: fit-content;
+          max-width: 100%;
+          background-color: #fff;
+          border-radius: 8px 8px 8px 0;
+          margin: 8px 0;
+          padding: 8px 12px;
+          @include fontCut;
+        }
+        .nick{
+          width: 100%;
+          background-color: #FFF172;
+          border: 1px solid rgba(#A46B08,0.2);
+          border-radius: 8px 8px 0 8px;
+          padding: 8px 12px;
+          @include fontCut;
+        }
+        .listNone{
+          @include flex(center,center);
+          width: 120px;
+          height: 114px;
+          background:url('https://image.dalbitlive.com/event/keyboardHero/listNone.png') no-repeat center / contain;
+        }
+        .listMore{
+          margin-top: 16px;
+        }
+      }
+    }
+  }
+  .bonusWrap{
+    @include position-bottom-left(7.94%, 0);
+    padding: 0 6.67%;
+    width: 100%;
+    height: 40%;
+    .bonusBox{
+      @include flex(center, space-between, column);
+      width: 100%;
+      height: 100%;
+      .listRow{
+        flex: 1;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(#D5BF9D, 0.2);
+        padding: 0 8px;
+        +.listRow{
+          margin-top: 6px;
+        }
+        .photo{
+          width: 48px;
+          height: 48px;
+          margin-right: 8px;
+        }
+        .listContent{
+          width: 100%;
+          overflow: hidden;
+          >div{
+            width: calc(100% - 10px);
+            @include fontCut;
+            &.title{@include font(13px, $Bold, #303030)}
+            &.time{
+              @include font(15px, $Medium, #876635);
+              margin-top: 4px;
+            }
+          }
+        }
+        .listBack{
+          @include flex(center, center);
+          flex: none;
+          position: relative;
+          width: 90px;
+          height: 30px;
+          @include font(14px, $Bold, #fff);
+          background: linear-gradient(to bottom, #B2B2FF, #8080FD);
+          border-radius: 17px;
+          transform-style: preserve-3d;
+          &::after{
+            content: "";
+            @include position-top-left(4px, 0);
+            width: 90px;
+            height: 30px;
+            background: #6262EF;
+            border-radius: 17px;
+            transform: translateZ(-1px);
+          }
+          &.disabled{
+            background: #C4C4C4;
+            &::after{
+              background-color: #B1B1B1;
+            }
+          }
+        }
+      }
+    }
+  }
+}

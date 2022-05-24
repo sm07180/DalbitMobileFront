@@ -509,9 +509,6 @@ export default function Payment() {
             <p>
               사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.
             </p>
-            <p>
-              깐부 게임에 참여중인 회원은 1만원 이상 달 구매 시 받은 구슬을 사용했을 경우 달 환불이 불가합니다.
-            </p>
           </div>
         </div>
         {bankPop && <BankTimePopup setBankPop={setBankPop} goBank={goBank} />}

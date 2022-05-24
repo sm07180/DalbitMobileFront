@@ -44,11 +44,11 @@
       @include flex(center, center);
       height:48px;
       border-bottom:2px solid #f2f2f2;
-      @include font(16px,600,#acacac);
+      @include font(16px,$Medium,#666);
       box-sizing: border-box;
       cursor:pointer;
       &.active {
-        @include font(16px,bold,#202020);
+        @include font(16px,$Bold,#202020);
         border-bottom: solid 2px #202020;
       }
     }
@@ -92,7 +92,7 @@
     .selectBox{
       button {
         @include flex(center);
-        @include font(15px,400);
+        @include font(15px,$Medium,#202020);
         .arrowDownIcon{
           @include BGIMG('mypage/dalla/drop_down_icon.png');
           width: 20px;
@@ -102,7 +102,7 @@
       }
     }
     .sub {
-      @include font(13px,400,#666);
+      @include font(13px,$Regular,#666);
     }
   }
   .listWrap {
@@ -118,7 +118,7 @@
           @include flex(center);
           .historyText {
             line-height: 22px;
-            @include font(15px,500);
+            @include font(15px,$SemiBold,#303030);
           }
           .otherUserNick {
             position:relative;
@@ -150,19 +150,19 @@
             border-radius:20px;
             background-color:#999;
             text-align:center;
-            @include font(12px,400,white);
+            @include font(12px,$Medium,white);
           }
         }
         .historyDate {
-          @include font(12px,400,#707070);
+          @include font(12px,$Regular,#666);
         }
       }
       .quantity {
         margin-left:auto;
         padding-left:8px;
-        @include font(17px,500,black);
+        @include font(17px,$SemiBold,#202020);
         &.minous{
-          @include font(17px,400,#999);
+          @include font(17px,$SemiBold,#666);
         }
       }
     }

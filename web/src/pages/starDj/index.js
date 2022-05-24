@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory, withRouter} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 import {addComma} from "lib/common_fn";
@@ -49,7 +49,7 @@ const StarDj = (props) => {
           if (nowDate >= startDate && nowDate <= endDate){
             //5월 기준 myStarDjPoint프로시저 바뀜
             if (UtilityCommon.eventDateCheck("20220510")){
-              setEventInfo({...djInfo.data.eventInfo, stat: getStat(djInfo.data.eventInfo), myStat: myPoint.data, already: djInfo.data.specialDjCondition.already});
+              setEventInfo({...djInfo.data.eventInfo, stat: getStat(djInfo.data.eventInfo), myStat: {...myPoint.data, play_cnt: Math.ceil(myPoint.data.play_cnt / 60 / 60)}, already: djInfo.data.specialDjCondition.already});
             } else {
               setEventInfo({...djInfo.data.eventInfo, stat: getStat(djInfo.data.eventInfo), myStat: getMyStat(djInfo.data.specialDjCondition.conditionList), already: djInfo.data.specialDjCondition.already});
             }

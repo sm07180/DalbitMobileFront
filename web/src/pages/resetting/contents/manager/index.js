@@ -98,7 +98,7 @@ const SettingManager = () => {
     const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
     const windowBottom = windowHeight + window.pageYOffset;
 
-    if(searchPageInfo.paging?.totalPage > searchPaging.page && windowBottom >= docHeight - 300) { //totalPage가 현재 page보다 클경우
+    if(searchPageInfo.paging?.totalPage > searchPaging.page && windowBottom >= docHeight - 300) {//totalPage가 현재 page보다 클경우
       setSearchPaging({...searchPaging, page: searchPaging.page + 1});
       window.removeEventListener("scroll", scrollEvt);
     } else if(searchPageInfo.paging?.totalPage === searchPaging.page) {
@@ -114,21 +114,23 @@ const SettingManager = () => {
   }
 
   useEffect(() => {
-    getManagerList()
+    if(!isTab) {getManagerList()}
   }, []);
 
   useEffect(() => {
-    if(isTab && isSearch && searchPaging.page >= 1) {
+    if(isTab && isSearch && changes.search.length > 1 && searchPaging.page >= 1) {
       fetchListData();
     }
-  }, [searchPaging, isTab]);
+  }, [searchPaging]);
 
   useEffect(() => {
-    window.addEventListener("scroll", scrollEvt);
-    return () => {
-      window.removeEventListener("scroll", scrollEvt);
+    if(isTab) {
+      window.addEventListener("scroll", scrollEvt);
+      return () => {
+        window.removeEventListener("scroll", scrollEvt);
+      }
     }
-  }, [searchPageInfo]);
+  }, [searchPageInfo, isTab]);
 
   useEffect(() => {
     setSearchPaging({page: 1, records: 40});

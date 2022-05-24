@@ -776,6 +776,38 @@
           }
         }
       }
+      .badgeGroup {
+        @include position-top-left(12px, 12px);
+        .starBdg {
+          @include flex(center,center);
+          width: 73px;
+          height:28px;
+          line-height:12px;
+          border-radius:100px;
+          background-color: #666666;
+          @include font(12px,$Regular,#FFF);
+          cursor: pointer;
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 35px; height: 16px;
+            margin-right: 3px;
+            background-image: url("https://image.dalbitlive.com/badge/dalla/badge_starDJ-profileOff.png");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+          }
+          &::after {
+            content: "회";
+          }
+          &.active {
+            background-color:#8865FF;
+            &::before {
+              background-image: url("https://image.dalbitlive.com/badge/dalla/badge_starDJ-profileOn.png");
+            }
+          }
+        }
+      }
       .btnWrap {
         margin-top: 14px;
         button{

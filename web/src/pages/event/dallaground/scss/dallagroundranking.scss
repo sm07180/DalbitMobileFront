@@ -1,0 +1,151 @@
+@import 'components/ui/_mixin.scss';
+
+#dallaGroundRanking{
+  width: 100%;
+  background: #323639;
+  .myRankWrap{
+    @include flex(center, center);
+    height: 127px;
+    padding: 0 20px;
+    &.noTeam{
+      p{
+        @include font(16px, $Regular, #fff);
+      }
+    }
+    &.noLogin{
+      flex-direction: column;
+      p{
+        @include font(16px, $Regular, #fff);
+      }
+      button{
+        width: 89px;
+        line-height: 36px;
+        margin-top: 10px;
+        @include border(#d6d6d6, 18px);
+        @include font(12px, $Medium, #fff);
+      }
+    }
+    .myRankBox{
+      @include flex(center,center, column);
+      width: 100%;
+      &:first-child{
+        border-right: 2px solid rgba(255,255,255,0.21);
+      }
+      p{
+        @include font(16px, $Medium, #F2C039);
+        margin-bottom: 7px;
+      }
+      div{
+        @include font(30px, $SemiBold, #fff);
+      }
+    }
+  }
+  .rankingWrap{
+    width: 100%;
+    border-radius: 15px 15px 0 0;
+    overflow: hidden;
+    .titleBox{
+      @include flex(center);
+      width: 100%;
+      height: 50px;
+      background-color: #F2F2F2;
+      @include font(14px, $Medium, #202020);
+      div{
+        position: relative;
+        text-align: center;
+        &::after{
+          content:"";
+          @include position-top-right;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 1px;
+          height: 14px;
+          background: rgba(#B7B8B9,0.65);
+          border-radius: 16px;
+        }
+        &:last-child{
+          &::after{
+            display: none;
+          }
+        }
+      }
+      .rankNum{
+        width: 74px;
+        flex: none;
+      }
+      .symbol{
+        width: 98px;
+        flex: none;
+      }
+      .teamName{
+        width: 100%;
+      }
+    }
+    .rankingBox{
+      width: 100%;
+      background: #fff;
+      .eventRankList{
+        padding: 0 20px;
+        cursor: pointer;
+        .size0{display: none;}
+        .rankNum{
+          width: 36px;
+          margin-right: 38px;
+        }
+        @for $i from 1 through 3 {
+          &:nth-child(#{$i}) {
+            .rankNum {
+              position:relative;
+              &::after {
+                content:"";
+                @include position-center;
+                width:36px;height:40px;
+                @include BGIMG("event/medal-#{$i}.png");
+              }
+              .num {
+                display: none;
+              }
+            }
+          }
+        }
+        @for $i from 4 through 10 {
+          &:nth-child(#{$i}) {
+            .rankNum {
+              .num {
+                background-color: #1F2953;
+                @include font(13px, $Medium, #fff);
+              }
+            }
+          }
+        }
+        .rankNum {
+          .num {
+            background-color: #EEEEEE;
+            @include font(13px, $Medium, #000);
+          }
+        }
+        .symbol{
+          flex: none;
+          width: 98px;
+          .teamSymbol{
+            @include teamSymbol;
+            width: 55px;
+            height: 55px;
+          }
+        }
+        .teamName{
+          width: 100%;
+          @include font(16px, $Medium, #202020);
+          text-align: center;
+          @include fontCut;
+        }
+      }
+      #noResult{
+        margin: 0;
+        padding: 86px 0;
+        img{width: 110px;};
+        span{@include font(14px, $Medium, #666)}
+      }
+    }
+  }
+}

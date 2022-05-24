@@ -1,66 +1,20 @@
-import React, {useContext, useEffect, useMemo, useRef} from 'react';
-import {IMG_SERVER} from "context/config";
-import ListRow from "components/ui/listRow/ListRow";
+import React from 'react';
 import Utility from "components/lib/utility";
-import {useDispatch, useSelector} from "react-redux";
+// global components
+import ListRow from "../../../components/ui/listRow/ListRow";
+// components
+import MoreBtn from "../../../components/ui/moreBtn/MoreBtn";
+import {useSelector} from "react-redux";
 
 const ListRowComponent = (props) => {
-  const {type, item, isMyProfile, index, photoClick, openSlidePop, disableMoreButton, modifyEvent, deleteEvent } = props;
-  const dispatch = useDispatch();
+  const {item, index, type, isMyProfile, openSlidePop, modifyEvent, deleteEvent, photoClick, disableMoreButton} = props;
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const moreRef = useRef([]);
 
-  /* 더보기 박스 열기 */
-  const moreBoxOpenAction = (target) => {
-    target.classList.remove('hidden');
-    target.classList.add('isOpenMoreBox');
-  }
-
-  /* 더보기 박스 닫기 */
-  const moreBoxCloseAction = (target) => {
-    target.classList.add('hidden')
-    target.classList.remove('isOpenMoreBox')
-  }
-
-  /* 피드 더보기 박스 클릭 */
-  const moreBoxClick = (index) => {
-    const currentTarget = moreRef.current[index];
-
-    // 이전에 열려있는 박스가 있으면 닫는다
-    const prevTarget = document.getElementsByClassName('isOpenMoreBox')[0]
-    if(prevTarget) {
-      moreBoxCloseAction(prevTarget);
-    }
-
-    if(prevTarget !== currentTarget) {
-      if(currentTarget.classList.contains('hidden')) {
-        moreBoxOpenAction(currentTarget);
-      }else {
-        moreBoxCloseAction(currentTarget);
-      }
-    }
-  }
-
-  /* 피드 더보기 박스 닫기 (외부 클릭) */
-  const moreBoxClose = (e) => {
-    if(!e.target.classList.contains('moreBoxImg')) {
-      const target = document.getElementsByClassName('isOpenMoreBox')[0];
-      if(target) {
-        moreBoxCloseAction(target);
-      }
-    }
-  }
-
-  /* 차단/신고하기 */
+  {/* 차단/신고하기 */}
   const openBlockReport = (e) => {
     const nickNm = type === 'feed' ? item.mem_nick : item.nickName;
     openSlidePop(e, {memNo: item.mem_no, nickNm });
   }
-
-  useEffect(() => {
-    document.addEventListener('click', moreBoxClose);
-    return () => document.removeEventListener('click', moreBoxClose);
-  }, []);
 
   return (
     <ListRow photo={item.profImg?.thumb292x292} photoClick={photoClick}>
@@ -72,14 +26,18 @@ const ListRowComponent = (props) => {
         <div className="time">{item.ins_date ? Utility.writeTimeDffCalc(item.ins_date) : item.writeDate ? Utility.writeTimeDffCalc(item.writeDate) : item.writeDt && Utility.writeTimeDffCalc(item.writeDt)}</div>
       </div>
       <div className="listBack">
-        {disableMoreButton && <div className='moreBtn' onClick={() => moreBoxClick(index)}>
-          <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
-          <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
-            {type !=='fanBoard' && (globalState.profile.memNo === item.mem_no.toString()) && <button onClick={modifyEvent}>수정하기</button>}
-            {(isMyProfile || globalState.profile.memNo === item.mem_no || (type==='feed' && globalState.adminChecker)) && <button onClick={deleteEvent}>삭제하기</button>}
-            {globalState.profile.memNo !== item.mem_no.toString() && <button data-target-type="block" onClick={openBlockReport}>차단/신고하기</button>}
-          </div>
-        </div>}
+        {disableMoreButton && 
+        <MoreBtn index={index}>
+          {type !=='fanBoard' && (globalState.profile.memNo === item.mem_no.toString()) && 
+            <button onClick={modifyEvent}>수정하기</button>
+          }
+          {(isMyProfile || globalState.profile.memNo === item.mem_no || (type==='feed' && globalState.adminChecker)) && 
+            <button onClick={deleteEvent}>삭제하기</button>
+          }
+          {globalState.profile.memNo !== item.mem_no.toString() && 
+            <button data-target-type="block" onClick={openBlockReport}>차단/신고하기</button>
+          }
+        </MoreBtn>}
       </div>
     </ListRow>
   )

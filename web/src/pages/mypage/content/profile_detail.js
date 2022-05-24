@@ -736,7 +736,7 @@ export default (props) => {
             {profile.nickNm}
             <span className="subIconWrap">
               {profile.gender !== '' && (
-                <em className={`icon_wrap ${profile.gender === 'm' ? 'icon_male' : 'icon_female'}`}>
+                <em className={`icon_wrap ${profile.gender === 'n' ? '' : profile.gender === 'm' ? 'icon_male' : 'icon_female'}`}>
                   <span className="blind">성별</span>
                 </em>
               )}

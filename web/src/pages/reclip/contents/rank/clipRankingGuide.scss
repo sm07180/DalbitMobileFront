@@ -27,7 +27,7 @@
       width: 100%;
       line-height: 48px;
       border-bottom: 1px solid $DOWNCOLOR;
-      @include font(12px, 500, #666);
+      @include font(12px, 500, #303030);
       text-align: center;
     }
     tr.badge {
@@ -46,7 +46,7 @@
     ul{
       li{
         line-height: 21px;
-        @include font(12px, 400, #757575);
+        @include font(12px, 400, #666);
       }
     }
   }

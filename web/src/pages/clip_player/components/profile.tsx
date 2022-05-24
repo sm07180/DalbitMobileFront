@@ -351,11 +351,11 @@ let Profile = () => {
                         </span>
 
                         <span className="subIconWrap">
-                      {profileData.gender !== "" && (
-                          <em className={`icon_wrap ${profileData.gender === "m" ? "icon_male" : "icon_female"}`}>
-                            <span className="blind">성별</span>
+                        {profileData.gender !== "" && (
+                          <em className={`icon_wrap ${profileData.gender === "n" ? "" : profileData.gender === "m" ? "icon_male" : "icon_female"}`}>
+                          <span className="blind">성별</span>
                           </em>
-                      )}
+                        )}
                     </span>
                       </strong>
                     </div>
@@ -427,10 +427,10 @@ let Profile = () => {
                             return (
                                 <div
                                     key={idx + "defalutRankList"}
-                                    className={`rankingList__item ${idx === 1 ? "silver" : idx === 2 ? "bronze" : "gold"}`}
+                                    className={`rankingList__item`}
                                 >
                                   <img
-                                      src="https://image.dallalive.com/svg/ico_defalitprofile.svg"
+                                      src="https://image.dalbitlive.com/common/photoNone-bgGray.png"
                                       className="rankingList__item--img"
                                       alt={`defalutrankProfileImg` + idx}
                                   />
@@ -458,7 +458,7 @@ let Profile = () => {
                           </button>
                           <div className={`rankingList__item `}>
                             <img
-                                src="https://image.dallalive.com/svg/ico_defalitprofile.svg"
+                                src="https://image.dalbitlive.com/common/photoNone-bgGray.png"
                                 className="rankingList__item--img"
                                 alt={`defalutrankProfileImg`}
                             />

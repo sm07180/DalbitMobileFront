@@ -3,10 +3,13 @@ import styled from 'styled-components'
 
 import {useHistory} from 'react-router-dom'
 import {AttendContext} from '../../attend_ctx'
+import {useDispatch} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default (props) => {
   const {setPopup, eventDate} = props
   const history = useHistory()
+  const dispatch = useDispatch();
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {summaryList, statusList, dateList} = eventAttendState
 
@@ -65,11 +68,11 @@ export default (props) => {
           onClick={() => {
             closePopup()
           }}>
-          <img src="https://image.dallalive.com/svg/ic_close_w.svg" />
+          <img src="https://image.dalbitlive.com/svg/ic_close_w.svg" />
         </button>
         <div className="attendAlertBox">
           <div className="attendAlertBox__image">
-            <img src="https://image.dallalive.com/event/attend/201019/exp_img@2x.png" alt="경험치" />
+            <img src="https://image.dalbitlive.com/event/attend/201019/exp_img@2x.png" alt="경험치" />
           </div>
           <p className="attendAlertBox__title">
             출석체크 성공!
@@ -86,12 +89,26 @@ export default (props) => {
           ) : (
             <div
               className="goRoulette"
-              onClick={() => {
-                history.push('/event/attend_event/roulette')
-                setPopup(false)
-                eventAttendAction.setTab('roulette')
-              }}>
-              <img src="https://image.dallalive.com/event/attend/201028/roulette.gif" width="22px" />
+              onClick={()=>{
+                dispatch(setGlobalCtxMessage({
+                  type: "alert",
+                  msg: ` 키보드 히어로 31 이벤트가 진행 되는 동안에는 룰렛이벤트가 키보드히어로 31로 대체됩니다.`,
+                  callback: () => {
+                    history.push(`/event/keyboardhero`)
+                  }
+                }))
+              }}
+
+              //todo: 6월 12일
+              //   onClick={() => {
+              //   history.push('/event/attend_event/roulette')
+              //   setPopup(false)
+              //   eventAttendAction.setTab('roulette')
+              // }}
+            >
+
+
+              <img src="https://image.dalbitlive.com/event/attend/201028/roulette.gif" width="22px" />
               <span>룰렛 응모하기</span>
             </div>
           )}

@@ -41,9 +41,9 @@
       padding: 0 15px;
       border-radius: 100px;
       background: #f6f6f6;
-      @include font(13px,400,#acacac);
+      @include font(13px,$Medium,#666);
       &.active{
-        @include font(13px,500,white);
+        @include font(13px,$SemiBold,white);
         background: #202020;
       }
     }
@@ -58,7 +58,7 @@
         position:relative;
         @include flex;
         width: auto;
-        @include font(13px,400,#202020);
+        @include font(13px,$Regular,#202020);
         margin-left: 12px;
         .arrowDown{
           width: 20px;
@@ -141,8 +141,8 @@
         }
         .subject {
           font-size: 12px;
-          font-weight: 400;
-          color: #999;
+          font-weight: 500;
+          color: #666;
           margin-right: 6px;
           flex: none;
         }

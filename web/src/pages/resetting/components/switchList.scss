@@ -17,7 +17,7 @@
     flex: 1;
     @include flex(center);
     .title {
-      @include font(15px, 400, #303030);
+      @include font(15px, $Medium, #303030);
     }
     .questionMark {
       display: inline-block;

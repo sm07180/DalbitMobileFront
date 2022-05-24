@@ -8,10 +8,8 @@ const Tabmenu = (props) => {
       {data.map((list,index) => {
         const tabClick = (e) => {
           const {targetTab} = e.currentTarget.dataset;
-          if (targetTab === list) {
-            setTab(targetTab)
-          }
-          if(typeof tabChangeAction === 'function') tabChangeAction(list);
+          setTab(targetTab);
+          if (typeof tabChangeAction === 'function') tabChangeAction(targetTab);
         }
 
         return (

@@ -3640,191 +3640,6 @@ export default class API {
     })
   }
 
-  /**
-   * @brief 깐부 이벤트
-   * @method
-   * @create 문형진
-   */
-
-  // 깐부 이벤트 회차번호
-  static gganbuMarbleGather = async () => {
-    return await ajax({
-      url: '/event/gganbu/marble/gather',
-      method: 'POST'
-    })
-  }
-
-  // 깐부 랭킹 리스트
-  static getGganbuRankList = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/rank/list`,
-      method: 'GET',
-      params: data
-    })
-  }
-
-  // 깐부 현황 N 배지 갱신
-  static getGganbuBadge = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/badge/upd`,
-      method: 'POST',
-      params: data
-    })
-  }
-
-  // 깐부 이벤트 회차번호
-  static gganbuEventDate = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/round/info`,
-      method: 'GET',
-      params: data
-    })
-  }
-
-  // 깐부 검색
-  static getGganbuSearch = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/member/search`,
-      method: 'GET',
-      params: data
-    })
-  }
-
-  // 깐부 팬 리스트
-  static getGganbuFanList = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/search/fan`,
-      method: 'GET',
-      params: data
-    })
-  }
-
-  // 깐부 신청(버튼)
-  static postGganbuSub = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/relationship/req/ins`,
-      method: 'POST',
-      params: data
-    })
-  }
-
-  // 깐부 신청 취소(버튼)
-  static postGganbuCancel = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/relationship/req/cancel`,
-      method: 'POST',
-      params: data
-    })
-  }
-
-  // 깐부 받은 내역 수락(버튼)
-  static postGganbuIns = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/relationship/ins`,
-      method: 'POST',
-      params: data
-    })
-  }
-
-  // 깐부 신청리스트
-  static postGganbuList = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/relationship/list`,
-      method: 'POST',
-      params: data
-    })
-  }
-
-  // 깐부 구슬 리포트
-  static postGganbuReportList = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/report/list`,
-      method: 'POST',
-      params: data
-    })
-  }
-
-  // 깐부 구슬 획득
-  static getGganbuObtainMarble = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/marble/ins`,
-      method: 'POST',
-      params: data
-    })
-  }
-
-  static getGganbuPocket = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/pocket/get`,
-      method: 'POST',
-      params: data
-    })
-  }
-
-  static getGganbuPocketOpen = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/pocket/open`,
-      method: 'POST',
-      params: data
-    })
-  }
-
-  static getGganbuPocketReport = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/pocket/report/list`,
-      method: 'GET',
-      params: data
-    })
-  }
-
-  static getGganbuObtainMarble = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/marble/ins`,
-      method: 'POST',
-      params: data
-    })
-  }
-
-  static getGganbuBettingList = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/betting/list`,
-      method: 'GET',
-      params: data
-    })
-  }
-
-  static getGganbuBettingData = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/betting/stat/sel`,
-      method: 'GET',
-      params: data
-    })
-  }
-
-  static getGganbuMarbleBettingPage = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/marble/betting`,
-      method: 'GET',
-      params: data
-    })
-  }
-
-  static gganbuInfoSel = async (data) => {
-    return await ajax({
-      url: '/event/gganbu/relationship/sel',
-      method: 'POST',
-      params: data
-    })
-  }
-
-  static gganbuPocketPage = async (data) => {
-    return await ajax({
-      url: '/event/gganbu/pocket/page',
-      method: 'GET',
-      params: data
-    })
-  }
-
   // 좋아요 트리 사연 장식리스트
   static getLikeTreeDecoList = async (data) => {
     return await ajax({
@@ -3972,40 +3787,6 @@ export default class API {
     })
   }
 
-  /* 굿 스타트 이벤트 */
-  // Dj 페이지 (dj 랭킹, 전체 회차정보)
-  static getGoodStartDjInfo = async (data) => {
-    return await ajax({
-      url: '/event/goodStart/dj/page',
-      method: 'GET',
-      params: data,
-    })
-  }
-  // Dj 랭킹 (param: pageNo, pagePerCnt)
-  static getGoodStartDjRank = async (data) => {
-    return await ajax({
-      url: '/event/goodStart/dj/rank',
-      method: 'GET',
-      params: data,
-    })
-  }
-  // 신입 Dj 랭킹 (param: pageNo, pagePerCnt)
-  static getGoodStartNewDjRank = async (data) => {
-    return await ajax({
-      url: '/event/goodStart/dj/new/rank',
-      method: 'GET',
-      params: data,
-    })
-  }
-  // Fan 페이지 (fan 랭킹, 전체 회차정보)
-  static getGoodStartFanInfo = async (data) => {
-    return await ajax({
-      url: '/event/goodStart/fan/page',
-      method: 'GET',
-      params: data,
-    })
-  }
-
   //추천코드 및 회원 등록
   static inviteRegister = async (obj) => {
     const {reqBody, data} = obj || {}
@@ -4119,6 +3900,30 @@ export default class API {
     const {reqBody, data, params, method} = obj || {}
     return await ajax({
       url: '/event/poem',
+      method: method,
+      reqBody: reqBody,
+      params: params,
+      data: data,
+    })
+  }
+
+  //키보드히어로 이벤트
+  static keyboardHero = async (obj) => {
+    const {reqBody, data, params, method} = obj || {}
+    return await ajax({
+      url: '/event/keyboard',
+      method: method,
+      reqBody: reqBody,
+      params: params,
+      data: data,
+    })
+  }
+
+  //키보드히어로 보너스탭
+  static keyboardHeroBonus = async (obj) => {
+    const {reqBody, data, params, method} = obj || {}
+    return await ajax({
+      url: '/event/keyboard/bonus',
       method: method,
       reqBody: reqBody,
       params: params,
@@ -4393,6 +4198,17 @@ export default class API {
   // 사연 보관함 삭제
   static getStoryBoxDel = async ({roomNo, storyIdx}) => {
     return ajax({url: '/broad/story', method: 'DELETE', params: {roomNo:roomNo, storyIdx:storyIdx}})
+  }
+
+  // 달라 그라운드 이벤트
+  // 랭킹 리스트 (파라미터는 api 에서 고정 해둠 - 추후에 필요하면 수정)
+  static getDallaGroundRankingList = async () => {
+    return ajax({url: '/event/ground/ranking/list', method: 'GET', params: {}})
+  }
+
+  // 내 랭킹
+  static getDallaGroundMyRankingList = async () => {
+    return ajax({url: '/event/ground/ranking/my', method: 'GET', params: {}})
   }
 }
 

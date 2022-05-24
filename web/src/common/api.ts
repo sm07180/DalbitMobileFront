@@ -449,17 +449,11 @@ export async function deleteNoticeWrite(data: {
 export async function postStory(data: {
   roomNo: string;
   contents: string;
+  djMemNo?: string;
+  plusYn?: string;
 }): Promise<responseType> {
   return await ajax(Method.POST, "/broad/story", data);
 }
-// export async function postStoryNew(data: {
-//   roomNo: string;
-//   contents: string;
-//   djMemNo?: string;
-//   plusYn: string;
-// }): Promise<responseType> {
-//   return await ajax(Method.POST, "/broad/story/new", data);
-// }
 export async function deleteStory(data: {
   roomNo: string;
   storyIdx: number;
@@ -470,6 +464,7 @@ export async function getStory(data: {
   roomNo: string;
   page?: number;
   records?: number;
+  plusYn?: string;
 }): Promise<responseType> {
   return await ajax(Method.GET, "/broad/story", data);
 }
@@ -724,6 +719,13 @@ export async function MypageDeleteList(data: {
   memNo: string;
 }): Promise<responseType> {
   return await ajax(Method.DELETE, "/mypage/manager", data);
+}
+
+export async function BroadBlackListAddKickOut(data: {
+  blockNo: string;
+  roomNo: string;
+}): Promise<responseType> {
+  return await ajax(Method.POST, "/broad/black/add", data);
 }
 
 export async function MypageBlackList(data: {
@@ -1853,24 +1855,6 @@ export async function setMoonLandScore(
 //방송방 웰컴 페이지 이동 버튼 클릭시 (하루 한번만 띄울때 쓰는 체크값 업데이트)
 export async function welcomeEventDayCheckerUpdate(): Promise<responseType> {
   return await ajax(Method.POST, '/event/welcome/chkInfoUpd');
-}
-
-/*--- 굿 스타트 이벤트 */
-// Dj 페이지 (dj 랭킹, 전체 회차정보)
-export async function getGoodStartDjInfo(data: dataType): Promise<responseType> {
-  return await ajax(Method.GET, `/event/goodStart/dj/page`,data);
-}
-// Dj 랭킹 (param: pageNo, pagePerCnt)
-export async function getGoodStartDjRank(data: dataType): Promise<responseType> {
-  return await ajax(Method.GET, `/event/goodStart/dj/rank`, data);
-}
-// 신입 Dj 랭킹 (param: pageNo, pagePerCnt)
-export async function getGoodStartNewDjRank(data: dataType): Promise<responseType> {
-  return await ajax(Method.GET, `/event/goodStart/dj/new/rank`, data);
-}
-// Fan 페이지 (fan 랭킹, 전체 회차정보)
-export async function getGoodStartFanInfo(data: dataType): Promise<responseType> {
-  return await ajax(Method.GET, `/event/goodStart/fan/page`, data);
 }
 
 // 휴면 회원 인증

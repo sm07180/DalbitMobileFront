@@ -7,7 +7,7 @@ import {setProfileTabData} from "redux/actions/profile";
 
 const ProfileReplyComponent = (props) => {
   const {item, profile, isMyProfile, adminChecker, dateKey, replyDelete,
-    replyEditFormActive, type, blurBlock, goProfile, openBlockReportPop
+    replyEditFormActive, type, blurBlock, goProfile, openBlockReport
   } = props;
   const dispatch = useDispatch();
   const profileTab = useSelector(state => state.profileTab);
@@ -85,7 +85,7 @@ const ProfileReplyComponent = (props) => {
               <button onClick={() => {blurBlock(); replyEditFormActive(item?.tail_no, item?.tail_conts);}}>수정하기</button>
             }
             {(isMyProfile || isMyContents || adminChecker) && <button onClick={() => replyDelete(item?.replyIdx || item?.tail_no)}>삭제하기</button>}
-            {(!isMyContents) && <button onClick={() => openBlockReportPop(memNo, item?.nickName)}>차단/신고하기</button>}
+            {(!isMyContents) && <button onClick={() => openBlockReport(memNo, item?.nickName)}>차단/신고하기</button>}
           </div>
           }
         </div>
