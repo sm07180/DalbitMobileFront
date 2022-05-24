@@ -49,7 +49,7 @@ const StarDj = (props) => {
           if (nowDate >= startDate && nowDate <= endDate){
             //5월 기준 myStarDjPoint프로시저 바뀜
             if (UtilityCommon.eventDateCheck("20220510")){
-              setEventInfo({...djInfo.data.eventInfo, stat: getStat(djInfo.data.eventInfo), myStat: myPoint.data, already: djInfo.data.specialDjCondition.already});
+              setEventInfo({...djInfo.data.eventInfo, stat: getStat(djInfo.data.eventInfo), myStat: {...myPoint.data, play_cnt: Math.ceil(myPoint.data.play_cnt / 60 / 60)}, already: djInfo.data.specialDjCondition.already});
             } else {
               setEventInfo({...djInfo.data.eventInfo, stat: getStat(djInfo.data.eventInfo), myStat: getMyStat(djInfo.data.specialDjCondition.conditionList), already: djInfo.data.specialDjCondition.already});
             }
@@ -225,7 +225,7 @@ const StarDj = (props) => {
                     </div>
                   </div>
                   <div className={`myCondition ${eventInfo.myStat?.play_cnt >= eventInfo.stat?.brodTime ? "achieve" : ""}`}>
-                    <span className='myData'>{addComma(Math.ceil(eventInfo.myStat?.play_cnt/60/60))}시간</span>
+                    <span className='myData'>{addComma(eventInfo.myStat?.play_cnt)}시간</span>
                     <span className='isAchieve'>{eventInfo.myStat?.play_cnt >= eventInfo.stat?.brodTime ? "달성" : "미달성"}</span>
                   </div>
                 </div>
