@@ -23,13 +23,13 @@ const RankingWrap = (props) => {
             <RankList photoSize={55} type="my" rankList={billboardSel}>
               <div className="listContent">
                 <div className="listItem">
-                  <GenderItems data={billboardSel.memSex}/>
-                  <div className="nick">{billboardSel.memNick}</div>
+                  <GenderItems data={billboardSel.mem_sex}/>
+                  <div className="nick">{billboardSel.mem_nick}</div>
                 </div>
               </div>
               <div className="listBack center">
                 <span className="numBox">
-                  <span className="num">{Utility.addComma(billboardSel.newFanCnt)}</span>명
+                  <span className="num">{Utility.addComma(billboardSel.tot_score_cnt)}</span>점
                 </span>
               </div>
             </RankList>

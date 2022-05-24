@@ -76,8 +76,8 @@ const Billboard = () => {
         history.replace("/")
       },0)
     }
-    const listApi = tabmenuType === tabmenu[0] ? Api.getWhatsUpDjList : Api.getWhatsUpNewMemberList;
-    const selApi = tabmenuType === tabmenu[0] ? Api.getWhatsUpDjSel : Api.getWhatsUpNewMemberSel;
+    const listApi = tabmenuType === tabmenu[0] ? Api.getElectricSignDJList : Api.getElectricSignFanList;
+    const selApi = tabmenuType === tabmenu[0] ? Api.getElectricSignDJSel : Api.getElectricSignFanSel;
 
     listApi(listParams).then((res) => {
       setBillboardList(res.data.list);
@@ -90,6 +90,12 @@ const Billboard = () => {
     });
 
   }
+
+  useEffect(() => {
+    console.log(billboardList);
+    console.log(billboardSel);
+  }, [billboardList]);
+
   useEffect(()=>{
     pEvtBillboardManSel()
   }, [tabmenuType])
@@ -192,7 +198,7 @@ const Billboard = () => {
       return;
     }
     const paging = Object.assign({}, pageInfo, {pageNo:pageInfo.pageNo+1})
-    const targetApi = tabmenuType === tabmenu[0] ? Api.getWhatsUpDjList : Api.getWhatsUpNewMemberList;
+    const targetApi = tabmenuType === tabmenu[0] ? Api.getElectricSignDJList : Api.getElectricSignFanList;
     targetApi({
       ...paging, seqNo: billboardSel.seqNo
     }).then((res) => {

@@ -154,6 +154,7 @@ const MyClip = React.lazy(() => import("pages/remypage/contents/clip/clip"));
 
 const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromotion"));
 const BroadNoticeDetail = React.lazy(() => import("pages/profile/contents/noticeDetail/NoticeDetail"));
+const BillBoard = React.lazy(() => import("pages/event/billboard/index"));
 
 const Router = () => {
   const globalState = useSelector(({globalCtx}) => globalCtx);
@@ -361,6 +362,7 @@ const Router = () => {
         <Route exact path="/starDj/benefits" component={StarDjBenefits} />
 
         <Route exact path="/brdcst" component={BroadNoticeDetail} />
+        <Route exact path="/event/billboard" component={BillBoard} />
 
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />
