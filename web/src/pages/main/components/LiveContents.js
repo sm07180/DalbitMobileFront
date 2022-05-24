@@ -99,7 +99,7 @@ const LiveContents = (props) => {
                   <div className="listItem">
                     <span className="state">
                       <DataCnt type={"totalCnt"} value={list?.totalCnt} />
-                      <DataCnt type={"entryCnt"} value={list?.entryCnt} />
+                      {/* <DataCnt type={"entryCnt"} value={list?.entryCnt} /> */}
                       <DataCnt type={`${list.boostCnt > 0 ? "boostCnt" : "likeCnt"}`} value={list.likeCnt} />
                     </span>
                   </div>

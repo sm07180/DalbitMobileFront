@@ -1,0 +1,53 @@
+@import "components/ui/_mixin.scss";
+
+#firstClipPage{
+  width: 100%;
+  position: relative;
+  img{width: 100%;}
+  section{
+    padding: 0 24px;
+  }
+  .titleWrap{
+    width: 100%;
+    text-align: center;
+    margin: 16px 0 20px 0;
+    h1{
+      @include font(24px, $SemiBold, #202020);
+      margin-bottom: 6px
+    }
+    p{
+      @include font(15px, $Medium, #303030);
+    }
+  }
+  .contentWrap{
+    margin-bottom: 38px;
+    img{margin-bottom: 20px;}
+    p{
+      position: relative;
+      @include font(14px, $Regular, #303030);
+      padding-left: 12px;
+      word-break: keep-all;
+      &::after{
+        content:"-";
+        @include position-top-left;
+      }
+    }
+  }
+  .bottomWrap{
+    .recodeBox{
+      @include flex(center, space-between);
+      width: 100%;
+      margin-bottom: 32px;
+      span{@include font(15px, $Medium, #202020);}
+      button{
+        width: 128px;
+        line-height: 36px;
+        @include font(15px, $Medium, #303030);
+        @include border(#d6d6d6, 18px, 1px);
+      }
+    }
+    .submitBtn{
+      width: 100%;
+    }
+  }
+}

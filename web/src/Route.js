@@ -27,6 +27,7 @@ const Clip = React.lazy(() => import('pages/clip'));
 const ClipDetail = React.lazy(() => import('pages/clip/detail'));
 const ClipLikeList = React.lazy(() => import('pages/clip/like'));
 const ClipListenList = React.lazy(() => import('pages/clip/listen'));
+const ClipFirstUpload = React.lazy(() => import('pages/clip/firstclip'));
 const ClipRank = React.lazy(() => import('pages/reclip/contents/rank/ClipRanking'))
 const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/rank/ClipRankingGuide'))
 
@@ -319,6 +320,7 @@ const Router = () => {
         <Route exact path="/clip" component={Clip} />
         <Route exact path="/clip/like/list" component={ClipLikeList}/>
         <Route exact path="/clip/listen/list" component={ClipListenList}/>
+        <Route exact path="/clip/firstclip" component={ClipFirstUpload}/>
         <Route exact path="/clip/detail/:type" component={ClipDetail} />
         <Route exact path="/clip_rank" component={ClipRank} />
         <Route exact path="/clip_rank/reward" component={ClipRankGuide} />
