@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory, withRouter} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 import {addComma} from "lib/common_fn";
@@ -225,7 +225,7 @@ const StarDj = (props) => {
                     </div>
                   </div>
                   <div className={`myCondition ${eventInfo.myStat?.play_cnt >= eventInfo.stat?.brodTime ? "achieve" : ""}`}>
-                    <span className='myData'>{addComma(eventInfo.myStat?.play_cnt)}시간</span>
+                    <span className='myData'>{addComma(Math.ceil(eventInfo.myStat?.play_cnt/60/60))}시간</span>
                     <span className='isAchieve'>{eventInfo.myStat?.play_cnt >= eventInfo.stat?.brodTime ? "달성" : "미달성"}</span>
                   </div>
                 </div>
