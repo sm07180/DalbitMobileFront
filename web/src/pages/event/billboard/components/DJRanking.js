@@ -28,6 +28,7 @@ const RankingWrap = (props) => {
                 </div>
               </div>
               <div className="listBack center">
+                <span>총점</span>
                 <span className="numBox">
                   <span className="num">{Utility.addComma(billboardSel.tot_score_cnt)}</span>점
                 </span>
@@ -55,16 +56,16 @@ const RankingWrap = (props) => {
           {
             billboardList && billboardList.length > 0 &&
             billboardList.map((item, idx)=>
-              <RankList photoSize={55} rankList={{...item, mem_no: item.memNo}} listNum={idx} key={idx}>
+              <RankList photoSize={55} rankList={{...item, mem_no: item.mem_no}} listNum={idx} key={idx}>
                 <div className="listContent">
                   <div className="listItem">
-                    <GenderItems data={item.memSex}/>
-                    <div className="nick">{item.memNick}</div>
+                    <GenderItems data={item.mem_sex}/>
+                    <div className="nick">{item.mem_nick}</div>
                   </div>
                 </div>
                 <div className="listBack">
                   <span className="numBox">
-                    <span className="num">{Utility.addComma(item.newFanCnt)}</span>명
+                    <span className="num">{Utility.addComma(item.tot_score_cnt)}</span>점
                   </span>
                 </div>
               </RankList>

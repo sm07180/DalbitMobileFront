@@ -58,24 +58,8 @@ const Billboard = () => {
     }
   }
 
-  useEffect(() => {
-    window.addEventListener('scroll', tabScrollEvent)
-    return () => window.removeEventListener('scroll', tabScrollEvent)
-  },[])
-
-
-  const pEvtBillboardManSel = async ()=>{
-    const now = await Api.pEvtWassupManNoSel();
-    const last = await Api.pEvtWassupManLastNoSel();
-    const seqNo = now.data.seqNo ? now.data.seqNo : last.data.seqNo;
-    const listParams = {...pageInfo, pageNo:1, seqNo: seqNo};
-    const selParams = {seqNo: seqNo};
-
-    if(!seqNo){
-      setTimeout(()=>{
-        history.replace("/")
-      },0)
-    }
+  const pEvtBillboardManSel = async () => {
+    const listParams = {...pageInfo, pageNo: 1};
     const listApi = tabmenuType === tabmenu[0] ? Api.getElectricSignDJList : Api.getElectricSignFanList;
     const selApi = tabmenuType === tabmenu[0] ? Api.getElectricSignDJSel : Api.getElectricSignFanSel;
 
@@ -85,20 +69,10 @@ const Billboard = () => {
       setPageInfo({...pageInfo, pageNo: 1});
     });
 
-    selApi(selParams).then((res) => {
+    selApi().then((res) => {
       setBillboardSel(res.data);
     });
-
   }
-
-  useEffect(() => {
-    console.log(billboardList);
-    console.log(billboardSel);
-  }, [billboardList]);
-
-  useEffect(()=>{
-    pEvtBillboardManSel()
-  }, [tabmenuType])
 
   // 당겨서 새로 고침
   const mainTouchStart = useCallback(
@@ -137,6 +111,7 @@ const Billboard = () => {
 
     const heightDiff = (touchEndY - touchStartY) / ratio
     const heightDiffFixed = 48
+
     if (heightDiff >= heightDiffFixed) {
       let current_angle = (() => {
         const str_angle = refreshIconNode.style.transform
@@ -193,22 +168,27 @@ const Billboard = () => {
     }
   };
 
-  const getNextList = ()=>{
-    if(!billboardSel){
-      return;
-    }
-    const paging = Object.assign({}, pageInfo, {pageNo:pageInfo.pageNo+1})
+  const getNextList = () => {
+    if(!billboardSel) { return; }
+    const paging = Object.assign({}, pageInfo, {pageNo: pageInfo.pageNo + 1})
     const targetApi = tabmenuType === tabmenu[0] ? Api.getElectricSignDJList : Api.getElectricSignFanList;
-    targetApi({
-      ...paging, seqNo: billboardSel.seqNo
-    }).then((res) => {
-      if(res.data.list && res.data.list.length>0){
-        setBillboardList(f=>f.concat(res.data.list));
+    targetApi({...paging}).then((res) => {
+      if(res.data.list && res.data.list.length > 0){
+        setBillboardList(f => f.concat(res.data.list));
         setBillboardListCnt(res.data.cnt);
         setPageInfo(paging);
       }
-    })
+    }).catch(e => console.log(e));
   }
+
+  useEffect(() => {
+    window.addEventListener('scroll', tabScrollEvent)
+    return () => window.removeEventListener('scroll', tabScrollEvent)
+  },[])
+
+  useEffect(()=>{
+    pEvtBillboardManSel()
+  }, [tabmenuType])
 
   return (
     <>
@@ -269,7 +249,6 @@ const Billboard = () => {
             <li>본 이벤트는 사전 고지 없이 변경 및 종료될 수 있습니다.</li>
             <li>본 이벤트는 Apple과 무관합니다.</li>
           </ul>
-          <span>Design By 김예진 주임</span>
         </section>
       </div>
     </>

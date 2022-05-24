@@ -523,6 +523,8 @@ const MainPage = () => {
         <SubTabmenu data={topTenTabMenu} tab={topRankType} setTab={topRankTabChange} defaultTab={0} />
       </ToptenSwiper>
 
+      <div onClick={() => {history.push("/event/billboard")}}>전광판 이벤트</div>
+
       {/* 배너 영역 */}
       <section className='bannerWrap'>
         <BannerSlide/>
