@@ -23,6 +23,12 @@ import axios from 'axios'
 //context
 import {API_SERVER, PAY_SERVER, PHOTO_SERVER} from 'context/config'
 import qs from 'qs'
+import { cacheAdapterEnhancer } from 'axios-extensions'
+
+const historyPopCache = config => ({
+  forceUpdate: history.action === 'PUSH',
+  cache: true,
+})
 
 export default class API {
   //---------------------------------------------------------------------방송관련
@@ -2042,13 +2048,23 @@ export default class API {
     })
   }
 
-  static getMyRank = async (data) => {
+  // 내 랭킹
+  static getMyRank = async () => {
     return await ajax({
       method: 'GET',
       url: '/rank/myRank',
-      params: data
     })
   }
+
+  // 팀 랭킹 리스트
+  static getTeamRank = async () => {
+    return await ajax({
+      url: `/rank/list/team`,
+      method: 'GET',
+      reqBody: false,
+    })
+  }
+
 
   static getSpecialDjHistory = async (data) => {
     return await ajax({
@@ -3481,7 +3497,7 @@ export default class API {
 
   static postRankSetting = async (data) => {
     return await ajax({
-      url: `/member/rank/setting`,
+      url: `/rank/setting`,
       method: 'POST',
       data: data
     })
@@ -4062,8 +4078,8 @@ export default class API {
     return ajax({url: '/clip/rank/combine/list', method: 'GET', reqBody: false, params})
   }
   //팬랭킹 참여 유무
-  static getRankingApply = async () => {
-    return await ajax({url: "/rank/getRankingApply"})
+  static rankApply = async () => {
+    return await ajax({url: "/rank/apply"})
   }
 
   static getStoreIndexData = () => {
@@ -4229,7 +4245,13 @@ export const ajax = async (obj) => {
       formData.append('uploadType', data.uploadType)
     }
     const dataType = url === '/upload' ? formData : reqBody? data : qs.stringify(data)
-    let res = await axios({
+
+    const http = axios.create({
+      adapter: cacheAdapterEnhancer(axios.defaults.adapter, { enabledByDefault: false }),
+      withCredentials: true,
+    })
+
+    let res = await http({
       method: method,
       headers: {
         authToken: API.authToken || '',
@@ -4239,7 +4261,6 @@ export const ajax = async (obj) => {
       url: pathType + url,
       params: params,
       data: dataType,
-      withCredentials: true
     })
 
     return res.data

@@ -33,4 +33,15 @@ export default class Utility {
   }
 
 
+  // TOP3 랭킹 정보 빈값 넣어주는 함수
+  static addEmptyRanker = (list) => {
+    let topList = list;
+    for (let i = 0; i < 3 - list.length; i++){
+      topList = topList.concat({isEmpty: true})
+    }
+    return topList;
+  };
+
+
+
 }

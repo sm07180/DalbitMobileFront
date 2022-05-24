@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import moment from 'moment'
 
-import API from 'context/api'
+import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
@@ -128,7 +128,7 @@ const RankPage = () => {
         countDown += ":00"
       }
     }
-    return countDown;
+    return countDown
   }
   const weekNumberByThurFnc = (paramDate) => {
     const year = paramDate.getFullYear();
@@ -156,7 +156,7 @@ const RankPage = () => {
       }
     }
     return () => {
-      clearInterval(interval);
+      clearInterval(interval)
     }
   }, [period]);
 
@@ -179,23 +179,23 @@ const RankPage = () => {
         setPeriod("year")
         break;
     }
-    closePopup(dispatch);
+    closePopup(dispatch)
   }
 
   //DJ 차트 랭킹 (기간)
   useEffect(()=>{
-    fetchDjRank();
+    fetchDjRank()
   },[period])
 
   //FAN/CUPID 랭킹 (탭)
   useEffect(() => {
     fetchRank()
-  }, [dayTabType]);
+  }, [dayTabType])
 
   // DJ 랭킹 가져오기
   const fetchDjRank = () => {
     if(period==="time"){
-      API.getRankTimeList({
+      Api.getRankTimeList({
         rankSlct: 1,  // [DJ=1]
         page: 1,
         records: 10,
@@ -210,7 +210,7 @@ const RankPage = () => {
         type: period === "today" ? 1 : period === "week" ? 2 : period === "month" ? 3 : 4,
         date: moment(period === "today" ? new Date() : period === "week" ? convertMonday() : period === "month" ? convertMonth() : new Date()).format("YYYY-MM-DD")
       }
-      API.get_ranking({
+      Api.get_ranking({
         param: {
           rankSlct: 1,
           rankType: payload.type,
@@ -224,12 +224,11 @@ const RankPage = () => {
         }
       })
     }
-
-  };
+  }
 
   // 일간 FAN/CUPID 가져오기
   const fetchRank = () => {
-    API.get_ranking({
+    Api.get_ranking({
       param: {
         rankSlct: dayTabType === "fan" ?  2 : 3, // [FAN=2, CUPID=3]
         rankType: 1,  // [today=1, week=2, thismoth=3, year=4]
@@ -250,21 +249,21 @@ const RankPage = () => {
 
   // 내 랭킹 정보 가져오기
   const fetchMyRank = () => {
-    API.getMyRank().then((res) => {
+    Api.getMyRank().then((res) => {
       if (res.result === "success"){
         let rankInfo = {dj: 0, fan: 0, cupid: 0, team: 0}
         res.data.map((res) => {
           switch (res.s_rankSlct) {
-            case 'dj':
+            case 'DJ':
               rankInfo.dj = res.s_rank;
               break;
-            case 'fan':
+            case 'FAN':
               rankInfo.fan = res.s_rank;
               break;
-            case 'lover':
+            case 'LOVER': //CUPID
               rankInfo.cupid = res.s_rank;
               break;
-            case 'team':
+            case 'TEAM':
               rankInfo.team = res.s_rank;
               break;
           }

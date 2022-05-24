@@ -36,7 +36,7 @@ const TopRanker = (props) => {
 
   // 팬 랭킹참여 버튼
   const fetchRankSetting = (set) => {
-    const params = {isRankData: set,};
+    const params = {isRankData: set};
     Api.postRankSetting(params).then((res) => {
       if (res.result === 'success') {
         dispatch(setGlobalCtxMessage({type:'toast',msg: `FAN랭킹 참여 상태를 변경했습니다.`}));
@@ -47,7 +47,7 @@ const TopRanker = (props) => {
 
   // 팬랭킹 참여 여부 값
   const fetchRankApply = () => {
-    Api.getRankingApply().then((res) => {
+    Api.rankApply().then((res) => {
       if (res.result === 'success') {
         if (res.data.apply_ranking === 1) {
           setRankSetting(true);
@@ -217,9 +217,9 @@ const TopRanker = (props) => {
       {/*TEAM TOP3*/}
       {data && data.length > 0 && rankSlct === 'team' &&
       <Swiper {...swiperParams}>
-        {data.map((list, idex) => {
-          return (<div className='rankingTop3' key={idex}>
-            <div className='topHeader'>{(idex === 0 && data.length > 1) ? '저번주' : '이번주'} TOP3</div>
+        {data.map((list, index) => {
+          return (<div className='rankingTop3' key={index}>
+            <div className='topHeader'>{(index === 0 && data.length > 1) ? '저번주' : '이번주'} TOP3</div>
             <div className='topContent'>
               {list.map((value, index) => {
                 if (value.isEmpty) {

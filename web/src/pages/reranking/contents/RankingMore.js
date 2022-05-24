@@ -53,30 +53,16 @@ const RankingMore = () => {
   }, [pageInfo]);
 
   // 팀랭킹 fetch
-  const TeamRankFetch = async () => {
-    const today = getCurrentDate(2);
-    const preDate = getPreDate(2);
-    const params = {
-      tDate: today,
-      memNo: 0,
-      pageNo: 1,
-      pagePerCnt: 500
-    };
-    let topRankList = [];
-    const realRank =await Api.getTeamRankWeekList(params);
-    const prevRank =await Api.getTeamRankWeekList({...params, tDate: preDate, pagePerCnt: 3});
-    if (realRank.code === '00000') {
-      const { data } = realRank;
-      topRankList.push(addEmptyRanker(data.list.slice(0, 3)));
-      setRankInfo({list: data.list.slice(3), paging: { total: data.listCnt }});
-    }
-
-    if (prevRank.code === '00000' && prevRank.data.list.length > 0) {
-      const { data } = prevRank;
-      topRankList.push(addEmptyRanker(data.list));
-    }
-
-    setTopRankInfo(topRankList.reverse());
+  const TeamRankFetch = () => {
+    let topRank = [];
+    Api.getTeamRank().then((res) => {
+      if(res.code === "00000"){
+        topRank.push(Utility.addEmptyRanker(res.data.prevTop));
+        topRank.push(Utility.addEmptyRanker(res.data.list.slice(0, 3)));
+        setRankInfo({list: res.data.list.slice(3), paging: { total: res.data.listCnt }});
+      }
+    });
+    setTopRankInfo(topRank);
     loading = false;
   }
 
@@ -91,14 +77,14 @@ const RankingMore = () => {
     if (realTimeRank.code === 'C001') {
       const { data } = realTimeRank;
       setRankInfo({ ...data, list: data.list.slice(3) });
-      topRankList.push(addEmptyRanker(data.list.slice(0, 3)));
+      topRankList.push(Utility.addEmptyRanker(data.list.slice(0, 3)));
     }
 
     if (prevTimeRank.code === 'C001') {
       const { data } = prevTimeRank;
-      topRankList.push(addEmptyRanker(data.list));
+      topRankList.push(Utility.addEmptyRanker(data.list));
     } else {
-      topRankList.push(addEmptyRanker([]));
+      topRankList.push(Utility.addEmptyRanker([]));
     }
 
     setTopRankInfo(topRankList.reverse());
@@ -119,15 +105,15 @@ const RankingMore = () => {
 
     if (realRank.code === 'C001') {
       const { data } = realRank;
-      topRankList.push(addEmptyRanker(data.list.slice(0, 3)));
+      topRankList.push(Utility.addEmptyRanker(data.list.slice(0, 3)));
       setRankInfo({ ...data, list: data.list.slice(3) });
     }
 
     if (prevRank.code === 'C001') {
       const { data } = prevRank;
-      topRankList.push(addEmptyRanker(data.list));
+      topRankList.push(Utility.addEmptyRanker(data.list));
     } else {
-      topRankList.push(addEmptyRanker([]));
+      topRankList.push(Utility.addEmptyRanker([]));
     }
 
     setTopRankInfo(topRankList.reverse());
@@ -166,8 +152,6 @@ const RankingMore = () => {
   const getCurrentDate = (type) => {
     let result = '';
 
-    let rankType = type || pageInfo.rankType;
-
     //rankType => 0 - 타임, 1 - 일간, 2- 주간, 3- 월간, 4 - 연간
     switch (type) {
       case 1:
@@ -189,15 +173,6 @@ const RankingMore = () => {
 
     return result;
   }
-
-  // 상단 랭킹 저보 빈값 넣어주는 함수
-  const addEmptyRanker = (list) => {
-    let topList = list;
-    for (let i = 0; i < 3 - list.length; i++){
-      topList = topList.concat({isEmpty: true})
-    }
-    return topList;
-  };
 
   //DJ, FAN, CUPID, TEAM 클릭릭
   const changeType = (e) => {
