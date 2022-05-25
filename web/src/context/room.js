@@ -249,7 +249,7 @@ export const RoomJoin = async (obj) => {
     console.log('sessionRoomNo : ' + sessionRoomNo)
     //방송JOIN
     //const res = await Api.broad_join({data: {roomNo: roomNo, shadow: shadow}})
-    Room.dispatch(setGlobalCtxNativePlayerInfo({nativePlayerInfo:{state:'open', roomNo: roomNo}}))
+
     let res = {}
     res = await Api.broad_join_vw({data: {roomNo: roomNo, shadow: shadow}})
     //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
@@ -269,6 +269,8 @@ export const RoomJoin = async (obj) => {
           Room.dispatch(setGlobalCtxMessage({type:'confirm',
             msg: '이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?',
             callback: () => {
+              Room.dispatch(setGlobalCtxNativePlayerInfo({nativePlayerInfo:{state:'open', roomNo: roomNo}}))
+
               const callResetListen = async (mem_no) => {
                 const fetchResetListen = await Api.postResetListen({})
                 if (fetchResetListen.result === 'success') {
@@ -317,6 +319,8 @@ export const RoomJoin = async (obj) => {
       }
       return false
     } else if (res.result === 'success' && res.data !== null) {
+      Room.dispatch(setGlobalCtxNativePlayerInfo({nativePlayerInfo:{state:'open', roomNo: roomNo}}))
+
       //성공일때
       const {data} = res
       //하이브리드앱실행
