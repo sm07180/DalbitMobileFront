@@ -176,7 +176,7 @@ const contentStarSchedule = () => {
         path:'/profile/11651057290469'
       },
       {
-        bannerImg: "https://image.dalbitlive.com/event/contentStarSchedule/contentStar_220522-41647626846382.jpg",
+        bannerImg: "https://image.dalbitlive.com/event/contentStarSchedule/contentStar_220522-41647626846382-fix.jpg",
         title:"토리의 Thank you, Dalla People",
         date:"5월 22일 20:00",
         endDay: "20220522 230000",
@@ -282,7 +282,7 @@ const contentStarSchedule = () => {
               <>
                 {endEvent.reverse().map((list, index)=>{
                   return(
-                    <div className={`contentBox off`} key={index}>
+                    <div className={`contentBox`} key={index} onClick={() => history.push(`${list.path}`)}>
                       <div className="thumbNail">
                         <div className="off">
                           <p>종료된 콘텐츠 입니다.</p>

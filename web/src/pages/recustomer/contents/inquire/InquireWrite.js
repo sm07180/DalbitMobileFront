@@ -61,17 +61,15 @@ const Write = (props) => {
     API.center_qna_add({params}).then((res) => {
       setIsFetchFalse(false);
       if(res.result === "success") {
-        dispatch(setGlobalCtxMessage({type: "alert", msg: "1:1문의가 등록되었습니다.", callback: () => {
+        dispatch(setGlobalCtxMessage({type: "toast", msg: "1:1문의가 등록되었습니다."}))
           if(!globalState.token.isLogin) {
             history.goBack();
           } else {
-              setInquire("나의 문의내역");
-              dispatch(setNoticeTabList({...noticeTab, inquireTab: '나의 문의내역'}));
+            setInquire("나의 문의내역");
+            dispatch(setNoticeTabList({...noticeTab, inquireTab: '나의 문의내역'}));
           }
-        }}))
-        
       } else {
-        dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
+        dispatch(setGlobalCtxMessage({type: "toast", msg: res.message}));
       }
     }).catch((e) => console.log(e));
   };

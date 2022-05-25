@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom'
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems';
 import GenderItems from 'components/ui/genderItems/GenderItems';
+import TeamSymbol from 'components/ui/teamSymbol/TeamSymbol';
 import NoResult from 'components/ui/noResult/NoResult';
 import DataCnt from 'components/ui/dataCnt/DataCnt';
 import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
@@ -93,13 +94,16 @@ const LiveContents = (props) => {
                     <span className='title'>{list.title}</span>
                   </div>
                   <div className="listItem">
+                    {list.teamBgCode &&
+                    <TeamSymbol bgCode={list.teamBgCode} edgeCode={list.teamEdgeCode} medalCode={list.teamMedalCode}/>
+                    }
                     <GenderItems data={list.bjGender} />
                     <span className="nickNm">{list.bjNickNm}</span>
                   </div>
                   <div className="listItem">
                     <span className="state">
                       <DataCnt type={"totalCnt"} value={list?.totalCnt} />
-                      <DataCnt type={"entryCnt"} value={list?.entryCnt} />
+                      {/* <DataCnt type={"entryCnt"} value={list?.entryCnt} /> */}
                       <DataCnt type={`${list.boostCnt > 0 ? "boostCnt" : "likeCnt"}`} value={list.likeCnt} />
                     </span>
                   </div>
