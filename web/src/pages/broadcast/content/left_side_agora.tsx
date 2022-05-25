@@ -1569,7 +1569,7 @@ const LottieDisplayStyled = styled.div`
     transform: translate(-50%, -70%);
     width:400px; height:333px;
     padding: 75px 82px 90px;
-    background: url("https://image.dalbitlive.com/ani/story/ani_story-bg.png");
+    background: url("https://image.dallalive.com/ani/story/ani_story-bg.png");
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;

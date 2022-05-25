@@ -68,11 +68,11 @@ export default (props) => {
           onClick={() => {
             closePopup()
           }}>
-          <img src="https://image.dalbitlive.com/svg/ic_close_w.svg" />
+          <img src="https://image.dallalive.com/svg/ic_close_w.svg" />
         </button>
         <div className="attendAlertBox">
           <div className="attendAlertBox__image">
-            <img src="https://image.dalbitlive.com/event/attend/201019/exp_img@2x.png" alt="경험치" />
+            <img src="https://image.dallalive.com/event/attend/201019/exp_img@2x.png" alt="경험치" />
           </div>
           <p className="attendAlertBox__title">
             출석체크 성공!
@@ -108,7 +108,7 @@ export default (props) => {
             >
 
 
-              <img src="https://image.dalbitlive.com/event/attend/201028/roulette.gif" width="22px" />
+              <img src="https://image.dallalive.com/event/attend/201028/roulette.gif" width="22px" />
               <span>룰렛 응모하기</span>
             </div>
           )}

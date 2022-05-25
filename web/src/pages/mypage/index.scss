@@ -367,7 +367,7 @@
             position: relative;
             width: 54px;
             height: 51px;
-            background: url('https://image.dalbitlive.com/svg/ico_specialdj_on.png') no-repeat center;
+            background: url('https://image.dallalive.com/svg/ico_specialdj_on.png') no-repeat center;
             background-size: cover;
             &__count {
               position: absolute;
@@ -379,7 +379,7 @@
               letter-spacing: -0.28px;
             }
             &.prev {
-              background: url('https://image.dalbitlive.com/svg/ico_specialdj_off.png') no-repeat center;
+              background: url('https://image.dallalive.com/svg/ico_specialdj_off.png') no-repeat center;
             }
           }
         }
@@ -476,7 +476,7 @@
                 content: '';
                 width: 24px;
                 height: 24px;
-                background: url(https://image.dalbitlive.com/svg/ico_arrow2_right_b.svg) no-repeat right center;
+                background: url(https://image.dallalive.com/svg/ico_arrow2_right_b.svg) no-repeat right center;
               }
             }
           }
@@ -636,7 +636,7 @@
             background-repeat: no-repeat;
             cursor: pointer;
             &.defalut {
-              background: url('https://image.dalbitlive.com/common/photoNone-bgGray.png');
+              background: url('https://image.dallalive.com/common/photoNone-bgGray.png');
               margin-right: 6px;
               &:last-child {
                 margin-right: 0;
@@ -663,13 +663,13 @@
               content: '';
             }
             &.rank1:after {
-              background: url(https://image.dalbitlive.com/images/api/ic_gold.png) no-repeat;
+              background: url(https://image.dallalive.com/images/api/ic_gold.png) no-repeat;
             }
             &.rank2:after {
-              background: url(https://image.dalbitlive.com/images/api/ic_silver.png) no-repeat;
+              background: url(https://image.dallalive.com/images/api/ic_silver.png) no-repeat;
             }
             &.rank3:after {
-              background: url(https://image.dalbitlive.com/images/api/ic_bronze.png) no-repeat;
+              background: url(https://image.dallalive.com/images/api/ic_bronze.png) no-repeat;
             }
           }
           > a {
