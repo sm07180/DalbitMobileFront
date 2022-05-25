@@ -11,7 +11,7 @@ import DataCnt from "components/ui/dataCnt/DataCnt";
 import {useDispatch, useSelector} from "react-redux";
 
 export default withRouter((props) => {
-  const {data, tab, breakNo} = props;
+  const {data, tab} = props;
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -27,10 +27,6 @@ export default withRouter((props) => {
   return (
     <>
       {data.map((list, index) => {
-        if (breakNo < index + 1) {
-          return;
-        }
-
         return (
           <div className='listWrap'>
             <ListRow photo={list.profImg.thumb292x292} key={index}

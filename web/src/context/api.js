@@ -2040,32 +2040,13 @@ export default class API {
     })
   }
 
-  static getRankTimeList = async (data) => {
+  static getRankTimeList = async (param) => {
     return await ajax({
-      method: 'GET',
       url: '/time/rank',
-      params: data
-    })
-  }
-
-  // 내 랭킹
-  static getMyRank = async () => {
-    return await ajax({
       method: 'GET',
-      url: '/rank/myRank',
+      params: param
     })
   }
-
-  // 팀 랭킹 리스트
-  static getTeamRank = async () => {
-    return await ajax({
-      url: `/rank/list/team`,
-      method: 'GET',
-      reqBody: false,
-    })
-  }
-
-
   static getSpecialDjHistory = async (data) => {
     return await ajax({
       method: 'GET',
@@ -2078,6 +2059,42 @@ export default class API {
     const {param} = obj
     return await ajax({
       url: '/rank/page',
+      method: 'GET',
+      params: param
+    })
+  }
+
+  // 랭킹페이지(내 랭킹)
+  static getMyRank = async () => {
+    return await ajax({
+      method: 'GET',
+      url: '/rank/myRank',
+    })
+  }
+
+  // 랭킹페이지(팀랭킹)
+  static getRankTeam = async () => {
+    return await ajax({
+      url: `/rank/list/team`,
+      method: 'GET',
+      reqBody: false,
+      historyPopCache
+    })
+  }
+
+  //랭킹페이지(랭킹)
+  static getRank = async (param) => {
+    return await ajax({
+      url: '/rank/list',
+      method: 'GET',
+      params: param
+    })
+  }
+
+  //랭킹페이지(타임랭킹)
+  static getRankTime = async (param) => {
+    return await ajax({
+      url: '/rank/list/time',
       method: 'GET',
       params: param
     })

@@ -8,7 +8,7 @@ import {useSelector} from "react-redux";
 
 const TeamRankList = (props) => {
 
-  const {data, breakNo} = props;
+  const {data} = props;
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
 
@@ -24,9 +24,6 @@ const TeamRankList = (props) => {
   return (
     <div className="teamRankList listWrap">
       {data.map((list, index) => {
-        if (breakNo < index + 1) {
-          return (<></>);
-        }
         return (
           <div className="listRow" data-team-no={list.team_no} onClick={goTeamDetailPage} key={index}>
             <div className="teamSymbol">

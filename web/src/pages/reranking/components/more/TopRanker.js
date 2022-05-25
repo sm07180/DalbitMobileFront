@@ -12,7 +12,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const TopRanker = (props) => {
-  const {data, rankSlct, rankType} = props;
+  const {data, tab} = props;
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -81,14 +81,14 @@ const TopRanker = (props) => {
 
   // 팬랭킹페이지 들어왔을 경우 참여 여부 값
   useEffect(() => {
-    if (rankSlct === "fan") fetchRankApply()
-  },[rankSlct]);
+    if (tab.slct === "fan") fetchRankApply()
+  },[tab.slct]);
 
   return (
     <>
       {/*?(선정) 버튼*/}
       <div className="topItems">
-        {globalState.token.isLogin && rankSlct === "fan" &&
+        {globalState.token.isLogin && tab.slct === "fan" &&
         <button className={`fanSettingBtn ${rankSetting ? 'active' : ''}`}
                 onClick={() => clickRankSetting()}>{`${rankSetting ? '랭킹 참여중' : '미참여중'}`}</button>
         }
@@ -96,7 +96,7 @@ const TopRanker = (props) => {
       </div>
 
       {/*DJ, FAN, CUPID TOP3*/}
-      {(data && data.length > 0 && rankSlct !== 'team') &&
+      {(data && data.length > 0 && tab.slct !== 'team') &&
       <Swiper {...swiperParams}>
         {data.map((list, index) => {
           return (
@@ -104,10 +104,10 @@ const TopRanker = (props) => {
               <div className='topHeader'>
                 {
                   index === 0 ?
-                    rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
+                    tab.type === "time" ? `${index + 1}회차` : tab.type === "today" ? "어제" : tab.type === "week" ? "저번주" : tab.type === "month" ? "저번달" : "작년"
                     :
                     index === 1 ?
-                      rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
+                      tab.type === "time" ? `${index + 1}회차` : tab.type === "today" ? "오늘" : tab.type === "week" ? "이번주" : tab.type === "month" ? "이번달" : "올해"
                       :
                       `${index + 1}회차`
                 } TOP3
@@ -123,7 +123,7 @@ const TopRanker = (props) => {
                           </div>
                           <div className='rankerNick'>-</div>
                         </div>
-                        {rankSlct === "cupid" &&
+                        {tab.slct === "cupid" &&
                         <div className='cupidWrap'>
                           <div className='cupidHeader'>HONEY</div>
                           <div className='cupidContent'>
@@ -147,7 +147,7 @@ const TopRanker = (props) => {
                           <div className='rankerNick'>{data.nickNm}</div>
                         </div>
                         {
-                          rankSlct === "cupid" && data.djProfImg &&
+                          tab.slct === "cupid" && data.djProfImg &&
                           <div className='cupidWrap' onClick={() => history.push(`/profile/${data.djMemNo}`)}>
                             <div className='cupidHeader'>HONEY</div>
                             <div className='cupidContent'>
@@ -215,7 +215,7 @@ const TopRanker = (props) => {
       }
 
       {/*TEAM TOP3*/}
-      {data && data.length > 0 && rankSlct === 'team' &&
+      {data && data.length > 0 && tab.slct === 'team' &&
       <Swiper {...swiperParams}>
         {data.map((list, index) => {
           return (<div className='rankingTop3' key={index}>
@@ -253,14 +253,14 @@ const TopRanker = (props) => {
       {popup &&
       <LayerPopup setPopup={setPopup}>
         {
-          rankSlct === "dj" &&
+          tab.slct === "dj" &&
           <>
             <div className='popTitle'>DJ 랭킹 선정 기준</div>
             <div className='popSubTitle'>받은 별, 청취자 수, 받은 좋아요 <br/>(부스터 포함)의 종합 순위입니다.</div>
           </>
         }
         {
-          rankSlct === "fan" &&
+          tab.slct === "fan" &&
           <>
             <div className='popTitle'>FAN 랭킹 선정 기준</div>
             <div className='popSubTitle'>보낸 달과 보낸 좋아요(부스터 포함)의 <br/>종합 순위입니다.<br/></div>
@@ -268,7 +268,7 @@ const TopRanker = (props) => {
           </>
         }
         {
-          rankSlct === "cupid" &&
+          tab.slct === "cupid" &&
           <>
             <div className='popTitle'>CUPID 랭킹이란?</div>
             <div className='popSubTitle'>보낸 좋아요 개수 (부스터 포함)<br/>1~200위의 순위입니다.</div>
@@ -278,7 +278,7 @@ const TopRanker = (props) => {
           </>
         }
         {
-          rankSlct === "team" &&
+          tab.slct === "team" &&
           <>
             <div className='popTitle'>TEAM 랭킹 선정 기준</div>
             <div className='popSubTitle'>선물한 달(부스터 포함), 받은 별(부스터 포함),<br/> 신규팬, 방송 시간의 종합 순위입니다.</div>

@@ -29,7 +29,7 @@ const RankPage = () => {
   const rankState = useSelector(state => state.rankCtx)
 
   const [popup, setPopup] = useState(false) //선정기준
-  const [period , setPeriod] = useState("time") //DJ 차트 [타임, 일간, 주간, 월간, 연간]
+  const [type , setType] = useState("time") //DJ 차트 [타임, 일간, 주간, 월간, 연간]
   const [count, setCount] = useState() //DJ 차트기간 표시
   const [djRank, setDjRank] = useState([]); // DJ 차트랭킹
   const [myRank, setMyRank] = useState({dj:0, fan:0, cupid: 0, team:0})  //MY 랭킹
@@ -83,10 +83,10 @@ const RankPage = () => {
     week.setHours(0);
     week.setMinutes(0);
     week.setSeconds(0);
-    let reMainTime = period === "time" ? counting(time, now) :
-                     period === "today" ? counting(day, now) :
-                     period === "week" ? `${moment(now).format('M')}월 ${changeNumberToString(weekNumberByThurFnc(now))}째주` :
-                     period === "month" ? `${moment(now).format('YY')}년 ${moment(now).format('MM')}월` : `${moment(now).format('YYYY')}년`;
+    let reMainTime = type === "time" ? counting(time, now) :
+                     type === "today" ? counting(day, now) :
+                     type === "week" ? `${moment(now).format('M')}월 ${changeNumberToString(weekNumberByThurFnc(now))}째주` :
+                     type === "month" ? `${moment(now).format('YY')}년 ${moment(now).format('MM')}월` : `${moment(now).format('YYYY')}년`;
     setCount(reMainTime);
   }
   const counting = (endDate, now) => {
@@ -117,7 +117,7 @@ const RankPage = () => {
     } else {
       countDown += "00"
     }
-    if (period !== "week"){
+    if (type !== "week"){
       if (seconds > 0) {
         if (seconds < 10){
           countDown += `:0${seconds}`
@@ -141,42 +141,42 @@ const RankPage = () => {
   const changeNumberToString = (number) => number === 2 ? "둘" : number === 3 ? "셋" : number === 4 ? "넷" : number === 5 ? "다섯" : "첫";
   useEffect(() => {
     let interval = "";
-    timer(period);
-    if (period === "time") {
+    timer(type);
+    if (type === "time") {
       interval = setInterval(() => {
-        timer(period);
+        timer(type);
       }, 1000);
     } else {
-      if (period === "today") {
+      if (type === "today") {
         interval = setInterval(() => {
-          timer(period);
+          timer(type);
         }, 1000);
       } else {
-        timer(period);
+        timer(type);
       }
     }
     return () => {
       clearInterval(interval)
     }
-  }, [period]);
+  }, [type]);
 
   //DJ 차트 [타임, 일간, 주간, 월간, 연간] 선택
   const chartSelect = (e) => {
     switch (e.currentTarget.innerText) {
       case "타임":
-        setPeriod("time")
+        setType("time")
         break;
       case "일간":
-        setPeriod("today")
+        setType("today")
         break;
       case "주간":
-        setPeriod("week")
+        setType("week")
         break;
       case "월간":
-        setPeriod("month")
+        setType("month")
         break;
       case "연간":
-        setPeriod("year")
+        setType("year")
         break;
     }
     closePopup(dispatch)
@@ -185,7 +185,7 @@ const RankPage = () => {
   //DJ 차트 랭킹 (기간)
   useEffect(()=>{
     fetchDjRank()
-  },[period])
+  },[type])
 
   //FAN/CUPID 랭킹 (탭)
   useEffect(() => {
@@ -194,7 +194,7 @@ const RankPage = () => {
 
   // DJ 랭킹 가져오기
   const fetchDjRank = () => {
-    if(period==="time"){
+    if(type==="time"){
       Api.getRankTimeList({
         rankSlct: 1,  // [DJ=1]
         page: 1,
@@ -207,8 +207,8 @@ const RankPage = () => {
       })
     }else{
       const payload = {
-        type: period === "today" ? 1 : period === "week" ? 2 : period === "month" ? 3 : 4,
-        date: moment(period === "today" ? new Date() : period === "week" ? convertMonday() : period === "month" ? convertMonth() : new Date()).format("YYYY-MM-DD")
+        type: type === "today" ? 1 : type === "week" ? 2 : type === "month" ? 3 : 4,
+        date: moment(type === "today" ? new Date() : type === "week" ? convertMonday() : type === "month" ? convertMonth() : new Date()).format("YYYY-MM-DD")
       }
       Api.get_ranking({
         param: {
@@ -280,29 +280,29 @@ const RankPage = () => {
       {/*DJ 차트*/}
       <section className='rankingTop'>
         <button className='rankingTopMore' onClick={() => {
-          history.push({pathname: '/rank/list/dj/1', state: period});
+          history.push({pathname: `/rank/list/dj/${type}`, state: type});
         }}>더보기</button>
         <div className='title' onClick={()=>{dispatch(setSlidePopupOpen())}}>
-          <div>DJ {period === "time" && "실시간"}</div>
+          <div>DJ {type === "time" && "실시간"}</div>
           <div>
             <strong>
-              {period === "time" && "타임"}
-              {period === "today" && "일간"}
-              {period === "week" && "주간"}
-              {period === "month" && "월간"}
-              {period === "year" && "연간"}
+              {type === "time" && "타임"}
+              {type === "today" && "일간"}
+              {type === "week" && "주간"}
+              {type === "month" && "월간"}
+              {type === "year" && "연간"}
             </strong>차트
             <span className='optionSelect'/>
           </div>
         </div>
-        <span className={`countDown ${(period === "time" || period === "today") ? "text" : "" }`}>{count}</span>
+        <span className={`countDown ${(type === "time" || type === "today") ? "text" : "" }`}>{count}</span>
         <div className='criteria'>
           <div className='relative'>
             <div className='clickArea' onClick={()=>{setPopup(true)}}/>
           </div>
         </div>
         <DjChatSwiper data={djRank}/>
-        <Refresh period={period} setPeriod={setPeriod}/>
+        <Refresh type={type} setType={setType}/>
       </section>
 
       {/*나의 순위는?*/}
@@ -334,10 +334,10 @@ const RankPage = () => {
           <h2>일간 FAN / CUPID</h2>
           <button onClick={() => {
             if (dayTabType === "fan"){
-              history.push("/rank/list/fan/1");
+              history.push("/rank/list/fan/today");
               dispatch(setSubTab("fan"));
             } else {
-              history.push("/rank/list/cupid/1");
+              history.push("/rank/list/cupid/today");
               dispatch(setSubTab("cupid"));
             }
           }}>더보기</button>
@@ -356,11 +356,11 @@ const RankPage = () => {
       {commonPopup.slidePopup &&
       <PopSlide>
         <div className='selectWrap'>
-          <div className={`selectOption ${period === "time" ? "active" : ""}`} onClick={chartSelect}>타임</div>
-          <div className={`selectOption ${period === "today" ? "active" : ""}`} onClick={chartSelect}>일간</div>
-          <div className={`selectOption ${period === "week" ? "active" : ""}`} onClick={chartSelect}>주간</div>
-          <div className={`selectOption ${period === "month" ? "active" : ""}`} onClick={chartSelect}>월간</div>
-          <div className={`selectOption ${period === "year" ? "active" : ""}`} onClick={chartSelect}>연간</div>
+          <div className={`selectOption ${type === "time" ? "active" : ""}`} onClick={chartSelect}>타임</div>
+          <div className={`selectOption ${type === "today" ? "active" : ""}`} onClick={chartSelect}>일간</div>
+          <div className={`selectOption ${type === "week" ? "active" : ""}`} onClick={chartSelect}>주간</div>
+          <div className={`selectOption ${type === "month" ? "active" : ""}`} onClick={chartSelect}>월간</div>
+          <div className={`selectOption ${type === "year" ? "active" : ""}`} onClick={chartSelect}>연간</div>
         </div>
       </PopSlide>
       }

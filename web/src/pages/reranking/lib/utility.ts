@@ -10,6 +10,7 @@ import moment from "moment/moment";
 
 export default class Utility {
 
+  //DJ 타임랭킹 조회 parameter 생성
   static timeCheck = () => {
     // 1회차일 경우, 어제 3회차
     if (moment().hour() < 10) {
@@ -41,6 +42,68 @@ export default class Utility {
     }
     return topList;
   };
+
+
+  //랭크타입에 따른 조회 parameter 생성, rankType [타임=0, 일간=1, 주간=2, 월간=3, 연간=4]
+  static getSearchRankingDate = (rankType) => {
+    switch (rankType) {
+      case 1:
+        return {
+          rankingDate: moment().format('YYYY-MM-DD'), //오늘 날짜
+          prevRankingDate: moment().subtract(1, 'd').format('YYYY-MM-DD') // 어제 날짜
+        };
+      case 2:
+        return {
+          rankingDate: moment().startOf('isoWeek').days(1).format('YYYY-MM-DD'), // 이번주 월요일
+          prevRankingDate: moment().startOf('isoWeek').subtract(7, 'd').day(1).format('YYYY-MM-DD') // 지난주 월요일
+        };
+      case 3:
+        return {
+          rankingDate: moment().date(1).format('YYYY-MM-DD'), // 이번달 1일
+          prevRankingDate: moment().subtract(1, 'months').date(1).format('YYYY-MM-DD') // 지난달 1일
+        };
+      case 4:
+        return {
+          rankingDate: moment().month(0).date(1).format('YYYY-MM-DD'), // 이번년 1월 1일
+          prevRankingDate: moment().subtract(1, 'y').month(0).date(1).format('YYYY-MM-DD') // 지난년 1월 1일
+        };
+      default:
+        return {
+          rankingDate: moment().format('YYYY-MM-DD'), // 오늘 날짜
+          prevRankingDate: moment().subtract(1, 'd').format('YYYY-MM-DD') // 어제 날짜
+        };
+    }
+  }
+
+  //slct 코드 (랭킹구분)
+  static slctCode = (code) =>{
+    switch (code) {
+      case "dj":
+        return 1;
+      case "fan":
+        return 2;
+      case "cupid":
+        return 3;
+      case "team":
+        return 4;
+    }
+  }
+
+  //type 코드 (기간구분)
+  static typeCode = (code) =>{
+    switch (code) {
+      case "time":
+        return 0;
+      case "today":
+        return 1;
+      case "week":
+        return 2;
+      case "month":
+        return 3;
+      case "year":
+        return 4;
+    }
+  }
 
 
 

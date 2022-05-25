@@ -1,269 +1,158 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 
 import Api from "context/api";
 import moment from "moment/moment";
 import {useHistory, useParams} from "react-router-dom";
 import Utility from "../lib/utility";
 
-
 import '../scss/RankingMore.scss';
 import Header from "components/ui/header/Header";
 import TopRanker from "../components/more/TopRanker";
 import RankingList from "../components/more/RankList";
 import TeamRankList from "../components/more/TeamRankList";
-
-const rankSlctCode = {dj: 1, fan: 2, cupid: 3, team: 4};
-const tabListInfo = {
-  dj: ['타임','일간','주간', '월간', '연간'],
-  fan: ['일간','주간','월간'],
-  cupid: ['일간','주간'],
-  team: [],
-}
-const rankTypeCode = {'타임': 0, '일간': 1, '주간': 2, '월간': 3, '연간': 4};
-
-let loading = false;
+import SlctTab from "pages/reranking/components/more/SlctTab";
+import TypeTab from "pages/reranking/components/more/TypeTab";
 
 const RankingMore = () => {
   const history = useHistory();
   const params = useParams();
 
+  //string
   const [tab, setTab] = useState({
-    type: params.type || 'DJ',
-    date: params.date || 1,
+    slct: params.slct || 'dj',
+    type: params.type || 'time',
   })
 
-  const [pageInfo, setPageInfo] = useState({
-    rankSlct: (rankSlctCode[params.type] || 1),
-    rankType: (rankTypeCode[tabListInfo[params.type][0]] || 1),
+  //number
+  const [payload, setPayload] = useState({
+    rankSlct: Utility.slctCode(tab.slct),
+    rankType: Utility.typeCode(tab.type),
     page: 1,
     records: 150
   });
-  const [breakNo, setBreakNo] = useState(47); // 페이징 처리용 state
-  const [rankInfo, setRankInfo] = useState({paging: {total: 0}, list: []}); // total : 총 리스트 개수, list: 4 ~ 10 위 정보
+
+  const [paging, setPaging] = useState({
+      pageNo: 1,
+      pagePerCnt: 20,
+      lastPage: 0
+  });
+
+  const [rankInfo, setRankInfo] = useState({list: []});
   const [topRankInfo, setTopRankInfo] = useState([]); // 실시간 랭킹 TOP3, 이전 랭킹 TOP3
 
+  useEffect(()=>{
+    setPayload({
+      ...payload,
+      rankSlct: Utility.slctCode(tab.slct),
+      rankType: Utility.typeCode(tab.type),
+    })
+  },[tab])
+
   useEffect(() => {
-    if (pageInfo.rankSlct === 4) {
+    if (tab.slct === "team") {
       TeamRankFetch();  //팀랭킹
-    } else if (pageInfo.rankSlct === 1 && pageInfo.rankType === 0) {
+    } else if (tab.slct !== "team" && tab.type === "time") {
       DjTimeRankFetch();  //DJ 타임랭킹
     } else {
-      RankFetch();  //DJ, FAN, CUPID 일간, 주간,월간, 연간
+      RankFetch(payload.rankType);  //DJ, FAN, CUPID 일간, 주간,월간, 연간
     }
-  }, [pageInfo]);
+  }, [payload]);
 
   // 팀랭킹 fetch
   const TeamRankFetch = () => {
     let topRank = [];
-    Api.getTeamRank().then((res) => {
+
+    Api.getRankTeam().then((res) => {
       if(res.code === "00000"){
         topRank.push(Utility.addEmptyRanker(res.data.prevTop));
         topRank.push(Utility.addEmptyRanker(res.data.list.slice(0, 3)));
-        setRankInfo({list: res.data.list.slice(3), paging: { total: res.data.listCnt }});
+        setRankInfo({list: res.data.list.slice(3)});
+        setPaging({
+          ...paging, lastPage: Math.ceil((res.data.listCnt) / paging.pagePerCnt)
+        })
       }
     });
     setTopRankInfo(topRank);
-    loading = false;
   }
 
   // DJ 타임랭킹 fetch
-  const DjTimeRankFetch = async () => {
-    let today = moment().format('YYYY-MM-DD HH:mm:ss');
-    let preDate = Utility.timeCheck();
-    let topRankList = []; // 상단 탑랭킹 정보
-    const realTimeRank =await Api.getRankTimeList({ rankSlct: rankSlctCode[tab.type], ...pageInfo, rankType: 1, rankingDate: today }); // 실시간 랭킹 정보
-    const prevTimeRank =await Api.getRankTimeList({ rankSlct: rankSlctCode[tab.type], ...pageInfo, rankType: 1, rankingDate: preDate, page: 1, records: 3 }); // 이전 랭킹 정보
-
-    if (realTimeRank.code === 'C001') {
-      const { data } = realTimeRank;
-      setRankInfo({ ...data, list: data.list.slice(3) });
-      topRankList.push(Utility.addEmptyRanker(data.list.slice(0, 3)));
+  const DjTimeRankFetch = () => {
+    let topRank = [];
+    const param = {
+      ...payload,
+      rankSlct: 1,
+      rankingDate: moment().format('YYYY-MM-DD HH:mm:ss'),
+      prevRankingDate:  Utility.timeCheck()
     }
 
-    if (prevTimeRank.code === 'C001') {
-      const { data } = prevTimeRank;
-      topRankList.push(Utility.addEmptyRanker(data.list));
-    } else {
-      topRankList.push(Utility.addEmptyRanker([]));
-    }
-
-    setTopRankInfo(topRankList.reverse());
-    loading = false;
+    Api.getRankTime(param).then((res)=>{
+      if(res.code === "C001"){
+        topRank.push(Utility.addEmptyRanker(res.data.prevTop));
+        topRank.push(Utility.addEmptyRanker(res.data.list.slice(0, 3)));
+        setRankInfo({list: res.data.list.slice(3)});
+        setPaging({
+          ...paging, lastPage: Math.ceil((res.data.listCnt) / paging.pagePerCnt)
+        })
+      }
+    });
+    setTopRankInfo(topRank);
   };
 
   // DJ, FAN, CUPID 일간, 주간,월간, 연간
-  const RankFetch = async () => {
-    const today = getCurrentDate();
-    const preDate = getPreDate();
-    let topRankList = []; // 상단 탑랭킹 정보
+  const RankFetch = (type) => {
+    let topRank = [];
+    const {rankingDate, prevRankingDate} = Utility.getSearchRankingDate(type);
     const param = {
-      ...pageInfo,
-      rankingDate: today,
-    }; // API 파라미터
-    const realRank =await Api.get_ranking({param}); // 실시간 랭킹 정보
-    const prevRank =await Api.get_ranking({param: {...param, rankingDate: preDate, records: 3}}); // 이전 회차 랭킹 정보
+      ...payload, rankingDate: rankingDate, prevRankingDate: prevRankingDate
+    };
 
-    if (realRank.code === 'C001') {
-      const { data } = realRank;
-      topRankList.push(Utility.addEmptyRanker(data.list.slice(0, 3)));
-      setRankInfo({ ...data, list: data.list.slice(3) });
-    }
-
-    if (prevRank.code === 'C001') {
-      const { data } = prevRank;
-      topRankList.push(Utility.addEmptyRanker(data.list));
-    } else {
-      topRankList.push(Utility.addEmptyRanker([]));
-    }
-
-    setTopRankInfo(topRankList.reverse());
-    loading = false;
+    Api.getRank(param).then((res)=>{
+      if(res.code === "C001"){
+        topRank.push(Utility.addEmptyRanker(res.data.prevTop));
+        topRank.push(Utility.addEmptyRanker(res.data.list.slice(0, 3)));
+        setRankInfo({list: res.data.list.slice(3)});
+        setPaging({
+          ...paging, lastPage: Math.ceil((res.data.listCnt) / paging.pagePerCnt)
+        })
+      }
+    });
+    setTopRankInfo(topRank);
   }
 
-  // 이전 회차 날짜 파라미터 구하기
-  const getPreDate = (type) => {
-    let result = '';
-
-    let rankType = type || pageInfo.rankType;
-
-    //rankType => 0 - 타임, 1 - 일간, 2- 주간, 3- 월간, 4 - 연간
-    switch (rankType) {
-      case 1:
-        result = moment().subtract(1, 'd').format('YYYY-MM-DD'); // 어제 날짜
-        break;
-      case 2:
-        result = moment().startOf('isoWeek').subtract(7, 'd').day(1).format('YYYY-MM-DD'); // 지난주 월요일
-        break;
-      case 3:
-        result = moment().subtract(1, 'months').date(1).format('YYYY-MM-DD'); // 지난달 1일
-        break;
-      case 4:
-        result = moment().subtract(1, 'y').month(0).date(1).format('YYYY-MM-DD'); // 지난년 1월 1일
-        break;
-      default:
-        result = moment().subtract(1, 'd').format('YYYY-MM-DD'); // 어제 날짜
-        break;
-    }
-
-    return result;
-  }
-
-  // 오늘 회차 날짜 데이터 구하기
-  const getCurrentDate = (type) => {
-    let result = '';
-
-    //rankType => 0 - 타임, 1 - 일간, 2- 주간, 3- 월간, 4 - 연간
-    switch (type) {
-      case 1:
-        result = moment().format('YYYY-MM-DD'); // 오늘 날짜
-        break;
-      case 2:
-        result = moment().startOf('isoWeek').days(1).format('YYYY-MM-DD'); // 이번주 월요일
-        break;
-      case 3:
-        result = moment().date(1).format('YYYY-MM-DD'); // 이번달 1일
-        break;
-      case 4:
-        result = moment().month(0).date(1).format('YYYY-MM-DD'); // 이번년 1월 1일
-        break;
-      default:
-        result = moment().format('YYYY-MM-DD'); // 오늘 날짜
-        break;
-    }
-
-    return result;
-  }
-
-  //DJ, FAN, CUPID, TEAM 클릭릭
-  const changeType = (e) => {
-    const {typeTab} = e.currentTarget.dataset;
-    if (!loading) {
-      loading = true;
-      history.replace(`/rank/list/${typeTab}/${tab.date}`)
-      setTab({...tab, type: typeTab})
-
-      setRankInfo({list: [], paging: {total: 0}});
-      setTopRankInfo([]);
-      setPageInfo({
-        ...pageInfo,
-        page: 1,
-        rankSlct: rankSlctCode[typeTab],
-        rankType: rankTypeCode[tabListInfo[typeTab][0]]
-      });
-    }
-  }
-
-  //타임/일간/주간/월간/연간 클릭
-  const changeDate = (e) => {
-    const {dateTab} = e.currentTarget.dataset;
-    if (!loading) {
-      loading = true;
-      history.replace(`/rank/list/${tab.type}/${dateTab}`)
-      setTab({...tab, date: dateTab})
-
-      setBreakNo(47);
-      setRankInfo({list: [], paging: {total: 0}});
-      setTopRankInfo([]);
-      setPageInfo({...pageInfo, page: 1, rankType: parseInt(dateTab)});
-    }
-  };
-
-  const scrollEvent = () => {
-    if (rankInfo.paging.total > breakNo && Utility.isHitBottom()) {
-      setBreakNo(breakNo + 50);
-      window.removeEventListener('scroll', scrollEvent);
-    } else if (rankInfo.paging.total === breakNo) {
-      window.removeEventListener('scroll', scrollEvent);
-    }
-  };
-
-  useEffect(() => {
-      window.addEventListener('scroll', scrollEvent);
-    return () => {
-      window.removeEventListener('scroll', scrollEvent);
-    }
-  }, [rankInfo, breakNo]);
+  // let list = !_.isEmpty(rankInfo) && rankInfo.list.slice(0, (paging.pageNo * paging.pagePerCnt));
+  // const getScroll = () => {
+  //   if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+  //     if (Utility.isHitBottom() && paging.pageNo <= paging.lastPage) {
+  //       setPaging({...paging, pageNo: paging.pageNo + 1})
+  //     }
+  //   }
+  // }
+  // useEffect(() => {
+  //   if (typeof document !== 'undefined') {
+  //     document.addEventListener('scroll', getScroll);
+  //     return () => document.removeEventListener('scroll', getScroll)
+  //   }
+  // });
 
   return (
     <div id="rankingList">
       {/*헤더*/}
       <Header position={'sticky'} title={'랭킹 전체'} type={'back'}>
         <div className='buttonGroup'>
-          <button className='benefits' onClick={()=>history.push({pathname: `/rank/benefit/${params.type}`})}>혜택</button>
+          <button className='benefits' onClick={()=>history.push({pathname: `/rank/benefit/${tab.slct}`})}>혜택</button>
         </div>
       </Header>
 
       {/*DJ, FAN, CUPID, TEAM 탭*/}
-      <div id="rankCategory">
-        <div className="rankCategoryWrapbox">
-          <div className={`rankCategoryList ${tab.type === "dj" ? "active" : ""}`} data-type-tab="dj" onClick={changeType}>DJ</div>
-          <div className={`rankCategoryList ${tab.type === "fan" ? "active" : ""}`} data-type-tab="fan" onClick={changeType}>FAN</div>
-          <div className={`rankCategoryList ${tab.type === "cupid" ? "active" : ""}`} data-type-tab="cupid" onClick={changeType}>CUPID</div>
-          <div className={`rankCategoryList ${tab.type === "team" ? "active" : ""}`} data-type-tab="team" onClick={changeType}>TEAM</div>
-          <div className="wrapboxBg"/>
-          <div className="underline"/>
-        </div>
-      </div>
+      <SlctTab tab={tab} setTab={setTab} setRankInfo={setRankInfo} setTopRankInfo={setTopRankInfo} setPaging={setPaging}/>
 
       {/*타임/일간/주간/월간/연간 탭*/}
-      <div className='tabWrap'>
-        <ul className="tabmenu">
-          {tabListInfo[tab.type].map((menu, index) => {
-            const target = rankTypeCode[menu];
-            return (<li key={index} className={target === pageInfo.rankType ? 'active' : ''} data-date-tab={target} onClick={changeDate}>{menu}</li>);
-          })}
-        </ul>
-      </div>
+      {payload.rankSlct !== 4 && <TypeTab tab={tab} setTab={setTab} setRankInfo={setRankInfo} setTopRankInfo={setTopRankInfo} setPaging={setPaging}/>}
 
       {/*랭킹리스트 TOP3, List 구성*/}
       <div className="rankingContent">
-        <TopRanker data={topRankInfo} rankSlct={tab.type} rankType={pageInfo.rankType}/>
-
-        {pageInfo.rankSlct !== 4 ?
-          <RankingList data={rankInfo.list} tab={tab.type} topRankList={false} breakNo={breakNo}/>
-          :
-          <TeamRankList data={rankInfo.list} breakNo={breakNo}/>
-        }
+        <TopRanker data={topRankInfo} tab={tab}/>
+        {payload.rankSlct !== 4 ? <RankingList data={rankInfo.list} tab={tab.type}/> : <TeamRankList data={rankInfo.list}/>}
       </div>
     </div>
   );

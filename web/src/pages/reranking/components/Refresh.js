@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react'
 
 const Refresh = (props) => {
-  const {period, setPeriod} = props;
+  const {type, setType} = props;
   const [refresh, setRefresh] = useState({
     text: "",
     num: 0
   })
 
   useEffect(() => {
-    switch (period) {
+    switch (type) {
       case "time":
         setRefresh({text: "일간 랭킹", num: 1})
         break;
@@ -25,24 +25,24 @@ const Refresh = (props) => {
         setRefresh({text: "타임 랭킹", num: 5})
         break;
     }
-  }, [period])
+  }, [type])
 
   const chartSelect = () => {
     switch (refresh.text) {
       case "일간 랭킹":
-        setPeriod("today")
+        setType("today")
         break;
       case "주간 랭킹":
-        setPeriod("week")
+        setType("week")
         break;
       case "월간 랭킹":
-        setPeriod("month")
+        setType("month")
         break;
       case "연간 랭킹":
-        setPeriod("year")
+        setType("year")
         break;
       case "타임 랭킹":
-        setPeriod("time")
+        setType("time")
         break;
     }
   }

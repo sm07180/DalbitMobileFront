@@ -14,25 +14,25 @@ const RankingBenefit = () => {
   const params = useParams();
 
   const benefitLink = (e) =>{
-    const { typeTab } = e.currentTarget.dataset;
-    history.replace(`/rank/benefit/${typeTab}`)
+    const { slctTab } = e.currentTarget.dataset;
+    history.replace(`/rank/benefit/${slctTab}`)
   }
 
   return (
     <div id="rankingBenefit">      
       <Header position={'sticky'} title="랭킹 혜택" type={'back'}/>
       <ul className="tabmenu">
-        <li className={`tabList ${params.type === "dj"    ? 'tabActive' : ''}`} data-type-tab="dj"     onClick={benefitLink}>DJ</li>
-        <li className={`tabList ${params.type === "fan"   ? 'tabActive' : ''}`} data-type-tab="fan"    onClick={benefitLink}>FAN</li>
-        <li className={`tabList ${params.type === "cupid" ? 'tabActive' : ''}`} data-type-tab="cupid"  onClick={benefitLink}>CUPID</li>
-        <li className={`tabList ${params.type === "team"  ? 'tabActive' : ''}`} data-type-tab="team"   onClick={benefitLink}>TEAM</li>
+        <li className={`tabList ${params.slct === "dj"    ? 'tabActive' : ''}`} data-slct-tab="dj"     onClick={benefitLink}>DJ</li>
+        <li className={`tabList ${params.slct === "fan"   ? 'tabActive' : ''}`} data-slct-tab="fan"    onClick={benefitLink}>FAN</li>
+        <li className={`tabList ${params.slct === "cupid" ? 'tabActive' : ''}`} data-slct-tab="cupid"  onClick={benefitLink}>CUPID</li>
+        <li className={`tabList ${params.slct === "team"  ? 'tabActive' : ''}`} data-slct-tab="team"   onClick={benefitLink}>TEAM</li>
         <div className={`underline`}/>
       </ul>
       <div className='subContent'>
-        {(params.type === "dj"   ) && <BenefitDj/>}
-        {(params.type === "fan"  ) && <BenefitFan/>}
-        {(params.type === "cupid") && <BenefitCupid/>}
-        {(params.type === "team" ) && <BenefitTeam/>}
+        {(params.slct === "dj"   ) && <BenefitDj/>}
+        {(params.slct === "fan"  ) && <BenefitFan/>}
+        {(params.slct === "cupid") && <BenefitCupid/>}
+        {(params.slct === "team" ) && <BenefitTeam/>}
       </div>
     </div>
   )
