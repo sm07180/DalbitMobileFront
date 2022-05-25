@@ -4,6 +4,7 @@ import React from 'react'
 import Alert from './content/alert'
 import AlertNoClose from './content/alert_no_close'
 import Confirm from './content/confirm'
+import ImgConfirm from './content/imgConfirm'
 import ConfirmAdmin from './content/confirm_admin'
 import Toast from './content/toast'
 import LayerPop from './content/layerPop'
@@ -52,6 +53,12 @@ const Popup = (props) => {
           return (
             <div id="popup" onClick={closePopupDim}>
               <Confirm />
+            </div>
+          )
+        if (type === 'imgConfirm')
+          return (
+            <div id="popup" onClick={closePopupDim}>
+              <ImgConfirm />
             </div>
           )
         if (type === 'confirm_admin')

@@ -535,9 +535,10 @@ export default () => {
         dispatch(nativeEnd(event.detail));
         break
       case 'native-non-member-end':
-        dispatch(setGlobalCtxMessage({type:"confirm",
-          buttonText: {right: '로그인'},
-          msg: `<div id="nonMemberPopup"><p>이 방송이 즐거우셨나요~?<br/>로그인 후 DJ와 소통해보세요!<br>DJ가 당신을 기다립니다 ^^</p><img src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
+        dispatch(setGlobalCtxMessage({type:"imgConfirm",
+          buttonText: {left: '취소',right: '로그인'},
+          // msg: `<div id="nonMemberPopup"><p>이 방송이 즐거우셨나요~?<br/>로그인 후 DJ와 소통해보세요!<br>DJ가 당신을 기다립니다 ^^</p><img src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
+          msg: `<img src="https://image.dalbitlive.com/common/broadcast/noMember_broadcast-enter.png" alt="간편하게 회원가입하고, 다양한 라이브에 참여해보세요!"/>`,
           callback: () => {
             localStorage.setItem(
               'prevRoomInfo',

@@ -258,9 +258,10 @@ export const RoomJoin = async (obj) => {
     if (res.result === 'fail') {
       Room.dispatch(setGlobalCtxNativePlayerInfo({nativePlayerInfo:{state:'ready', roomNo: roomNo}}))
       if (res.code === '-99') {
-        Room.dispatch(setGlobalCtxMessage({type:'alert',
-          buttonMsg: '로그인',
-          msg: `<div id="nonMemberPopup"><p>로그인 후 DJ와 소통해보세요!<br/>DJ가 당신을 기다립니다 ^^</p><img style="width:166px;padding-top:12px;"src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
+        Room.dispatch(setGlobalCtxMessage({type:'imgConfirm',
+          buttonText: {left: '취소',right: '로그인'},
+          // msg: `<div id="nonMemberPopup"><p>로그인 후 DJ와 소통해보세요!<br/>DJ가 당신을 기다립니다 ^^</p><img style="width:166px;padding-top:12px;"src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
+          msg: `<img src="https://image.dalbitlive.com/common/broadcast/noMember_broadcast-enter.png" alt="간편하게 회원가입하고, 다양한 라이브에 참여해보세요!"/>`,
           callback: () => {
             window.location.href = '/login'
           }

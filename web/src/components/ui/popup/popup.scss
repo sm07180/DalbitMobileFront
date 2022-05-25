@@ -117,6 +117,42 @@
           box-sizing: border-box;
         }
       }
-    }    
+    } 
+    &#imgConfirmPop {
+      position: relative;
+      @include flex(flex-start, flex-start, column);
+      width: 328px;min-height: 200px;
+      overflow: hidden;
+      .popContent {
+        flex: 1;
+        @include flex(center, center, column);
+        width: 100%;
+        .imgWrap {
+          img {
+            width: 100%;
+          }
+        }
+      }
+      .popBtnWrap {
+        @include flex(center);
+        width: 100%;
+        border-top: 1px solid #E3E3E3;
+        .cancelBtn {
+          flex: 1;
+          @include flex(center, center);
+          height: 48px;
+          border-right: 1px solid #E3E3E3;
+          @include font(15px, $Medium, #666666);
+          background-color: #FFF;
+        }
+        .submitBtn {
+          flex: 1;
+          @include flex(center, center);
+          height: 48px;
+          @include font(16px, 500, #FF3C7B);
+          background-color: #FFF;
+        }
+      }
+    }   
   }
 }
