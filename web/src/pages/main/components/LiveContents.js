@@ -94,7 +94,9 @@ const LiveContents = (props) => {
                     <span className='title'>{list.title}</span>
                   </div>
                   <div className="listItem">
-                    <TeamSymbol bgCode={'b002'} edgeCode={'e008'} medalCode={'m011'}/>
+                    {list.teamBgCode &&
+                    <TeamSymbol bgCode={list.teamBgCode} edgeCode={list.teamEdgeCode} medalCode={list.teamMedalCode}/>
+                    }
                     <GenderItems data={list.bjGender} />
                     <span className="nickNm">{list.bjNickNm}</span>
                   </div>
