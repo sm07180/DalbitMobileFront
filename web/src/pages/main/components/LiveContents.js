@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom'
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems';
 import GenderItems from 'components/ui/genderItems/GenderItems';
+import TeamSymbol from 'components/ui/teamSymbol/TeamSymbol';
 import NoResult from 'components/ui/noResult/NoResult';
 import DataCnt from 'components/ui/dataCnt/DataCnt';
 import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
@@ -93,6 +94,7 @@ const LiveContents = (props) => {
                     <span className='title'>{list.title}</span>
                   </div>
                   <div className="listItem">
+                    <TeamSymbol bgCode={'b002'} edgeCode={'e008'} medalCode={'m011'}/>
                     <GenderItems data={list.bjGender} />
                     <span className="nickNm">{list.bjNickNm}</span>
                   </div>
