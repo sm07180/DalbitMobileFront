@@ -25,7 +25,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {moveVoteStep, setVoteActive} from "../../redux/actions/vote";
 import {
   setBroadcastCtxChatFreeze,
-  setBroadcastCtxExtendTimeOnce, setBroadcastCtxIsWide,
+  setBroadcastCtxExtendTimeOnce, setBroadcastCtxHeartActive, setBroadcastCtxIsWide,
   setBroadcastCtxLikeClicked,
   setBroadcastCtxMiniGameInfo,
   setBroadcastCtxRealTimeValueSetLikeFanRank,
@@ -314,6 +314,9 @@ export default function SideWrapper() {
             cancelCallback: () => history.push("/"),
           }));
         } else if (newRoomInfo.code + "" === "-3") {
+          // 좋아요 시간체크 초기화
+          dispatch(setBroadcastCtxHeartActive(false));
+
           //해당방 회원 아님 룸조인 처리
           const listenRoomNo = sessionStorage.getItem("room_no");
 
