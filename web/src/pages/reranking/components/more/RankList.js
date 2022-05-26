@@ -28,7 +28,7 @@ export default withRouter((props) => {
 
   return (
     <>
-      {data.map((list, index) => {
+      {data && data.map((list, index) => {
         return (
           <div className='listWrap' key={list.memNo}>
             <ListRow photo={list.profImg.thumb292x292}

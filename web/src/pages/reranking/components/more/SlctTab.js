@@ -1,10 +1,10 @@
 import React from 'react';
 import {useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {setCache, setPaging} from "redux/actions/rank";
+import {setCache, setPaging, setRankList, setRankTopList} from "redux/actions/rank";
 
 const SlctTab = (props) => {
-  const {tab, setTab, setRankInfo, setTopRankInfo} = props;
+  const {tab, setTab} = props;
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -17,10 +17,10 @@ const SlctTab = (props) => {
       history.replace(`/rank/list/${slctTab}/today`)
     }
     setTab({slct: slctTab, type: "today"})
-    setRankInfo({list: []})
-    setTopRankInfo([])
     dispatch(setPaging({pageNo: 1, pagePerCnt: 20, lastPage: 1}))
     dispatch(setCache(false))
+    dispatch(setRankTopList([]));
+    dispatch(setRankList([]));
   }
 
   return (

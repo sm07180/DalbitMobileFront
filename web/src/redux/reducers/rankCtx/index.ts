@@ -11,6 +11,8 @@ const initialState:RankStateType = {
         lastPage: 0
     },
     rankList: [],
+    rankTopList: [],
+
     rankData: {
         isRankData: false,
     },
@@ -73,6 +75,9 @@ const rank = createReducer<RankStateType, RankActions>(initialState, {
     },
     "rank/SET_RANK_LIST": (state, {payload}) => {
         return {...state, rankList: payload}
+    },
+    "rank/SET_RANK_TOP_LIST": (state, {payload}) => {
+        return {...state, rankTopList: payload}
     },
     "rank/SET_RANK_DATA": (state, {payload}) => {
         return {...state, rankData: payload}

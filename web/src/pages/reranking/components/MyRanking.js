@@ -10,7 +10,7 @@ const MyRanking = (props) => {
 
   const goRankingDetailPage = (e) => {
     const { target } = e.currentTarget.dataset;
-    history.push(`/rank/list/${target}`);
+    history.push(`/rank/list/${target}/today`);
     dispatch(setSubTab(target));
   }
 

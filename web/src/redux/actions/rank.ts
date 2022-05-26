@@ -3,8 +3,8 @@ import {createAction} from "typesafe-actions";
 export const SET_SUB_TAB = "rank/SET_SUB_TAB";
 export const SET_CACHE = "rank/SET_CACHE";
 export const SET_PAGING = "rank/SET_PAGING";
-
-export const SET_RANK_LIST                = 'rank/SET_RANK_LIST';
+export const SET_RANK_LIST  = 'rank/SET_RANK_LIST';
+export const SET_RANK_TOP_LIST = 'rank/SET_RANK_TOP_LIST';
 export const SET_RANK_DATA                = 'rank/SET_RANK_DATA';
 export const SET_RANK_LEVEL_LIST          = 'rank/SET_RANK_LEVEL_LIST';
 export const SET_RANK_LIKE_LIST           = 'rank/SET_RANK_LIKE_LIST';
@@ -29,8 +29,8 @@ export const SET_RANK_FROM_SEARCH         = 'rank/SET_RANK_FROM_SEARCH';
 export const setSubTab = createAction(SET_SUB_TAB)<string>();
 export const setCache = createAction(SET_CACHE)<boolean>();
 export const setPaging = createAction(SET_PAGING)<any>();
-
 export const setRankList = createAction(SET_RANK_LIST)<any>();
+export const setRankTopList = createAction(SET_RANK_TOP_LIST)<any>();
 export const setRankData = createAction(SET_RANK_DATA)<any>();
 export const setRankLevelList = createAction(SET_RANK_LEVEL_LIST)<any>();
 export const setRankLikeList = createAction(SET_RANK_LIKE_LIST)<any>();

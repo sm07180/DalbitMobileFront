@@ -27,7 +27,7 @@ const TeamRankList = (props) => {
 
   return (
     <div className="teamRankList listWrap">
-      {data.map((list, index) => {
+      {data && data.map((list, index) => {
         return (
           <div className="listRow" data-team-no={list.team_no} onClick={goTeamDetailPage} key={index}>
             <div className="teamSymbol">
