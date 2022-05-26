@@ -270,28 +270,29 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
     //       </span>
     //     </div>
     //     );
-    if (profileData.wasSpecial && profileData.badgeSpecial === 0) {
-      return (     
-        <div
-          className="checkBadge"
-          onClick={() => {
-            viewSpecialList(profileData.memNo);
-          }}
-        >
-          <div className="specialIcon prev" />
-        </div>
-      );
-    } else if (profileData.badgeSpecial > 0) {
-      return (
-        <div
-          className="checkBadge"
-          onClick={() => {
-            viewSpecialList(profileData.memNo);
-          }}
-        >
-        </div>
-      );
-    } else if (profileData.isNew === true) {
+              // if (profileData.wasSpecial && profileData.badgeSpecial === 0) {
+              //   return (     
+              //     <div
+              //       className="checkBadge"
+              //       onClick={() => {
+              //         viewSpecialList(profileData.memNo);
+              //       }}
+              //     >
+              //       <div className="specialIcon prev" />
+              //     </div>
+              //   );
+              // } else if (profileData.badgeSpecial > 0) {
+              //   return (
+              //     <div
+              //       className="checkBadge"
+              //       onClick={() => {
+              //         viewSpecialList(profileData.memNo);
+              //       }}
+              //     >
+              //     </div>
+              //   );
+              // } else 
+    if (profileData.isNew === true) {
       return <span className="newIcon">신입 DJ</span>;
     } else if (profileData.isNewListener === true) {
       return <span className="newIcon">신입청취자</span>;

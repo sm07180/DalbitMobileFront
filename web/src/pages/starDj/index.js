@@ -221,7 +221,7 @@ const StarDj = (props) => {
                     <span className='icon broadcastTime'></span>
                     <div className='titleWrap'>
                       <span className='titleName'>방송시간 {addComma(eventInfo.stat?.brodTime)}시간</span>
-                      <span className='titleInfo'>(팬 방송 제외)</span>
+                      <span className='titleInfo'>(팬 방송 제외, 하루 최대 4시간만 반영)</span>
                     </div>
                   </div>
                   <div className={`myCondition ${eventInfo.myStat?.play_cnt >= eventInfo.stat?.brodTime ? "achieve" : ""}`}>
