@@ -58,7 +58,7 @@ const Billboard = () => {
     }
   }
 
-  const pEvtBillboardManSel = async () => {
+  const pEvtBillBoardListSel = async () => {
     const listParams = {...pageInfo, pageNo: 1};
     const listApi = tabmenuType === tabmenu[0] ? Api.getElectricSignDJList : Api.getElectricSignFanList;
     const selApi = tabmenuType === tabmenu[0] ? Api.getElectricSignDJSel : Api.getElectricSignFanSel;
@@ -187,7 +187,7 @@ const Billboard = () => {
   },[])
 
   useEffect(()=>{
-    pEvtBillboardManSel()
+    pEvtBillBoardListSel()
   }, [tabmenuType])
 
   return (
