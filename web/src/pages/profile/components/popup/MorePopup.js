@@ -55,6 +55,7 @@ const MorePopup = (props) => {
     if(isReceive) {
       dispatch(setGlobalCtxMessage({type:'confirm',
         msg: `선택한 회원의 방송 알림 설정을<br/>해제 하시겠습니까?`,
+        buttonText: {right: '해제하기'},
         callback: () => {
           editAlarms('', '설정해제가 완료되었습니다.', !isReceive)
         }
@@ -66,7 +67,7 @@ const MorePopup = (props) => {
         buttonText: {right: '설정하기'},
         callback: () => {
           editAlarms(
-            '방송 알림 설정을 완료하였습니다',
+            '',
             `마이페이지 > 서비스 설정 ><br/> [알림설정 관리]에서 설정한 회원을<br/> 확인하고 삭제 할 수 있습니다.`,
             !isReceive
           )

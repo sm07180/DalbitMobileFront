@@ -567,8 +567,7 @@ let Profile = () => {
            
         {popup.layerPopup &&
           <LayerPopup>
-            <SpecialHistoryPop
-              memNo={layerPopMemNo}/>
+            <SpecialHistoryPop memNo={layerPopMemNo}/>
           </LayerPopup>
         }
       </>

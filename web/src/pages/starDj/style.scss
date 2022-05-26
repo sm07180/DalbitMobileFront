@@ -93,6 +93,7 @@
                 @include flex(center, space-between);
                 width: 134px; height: 40px;
                 padding: 8px 10px;
+                margin-left: 10px;
                 border-radius: 6px;
                 background-color: #FFF1F1;
                 &.achieve {
