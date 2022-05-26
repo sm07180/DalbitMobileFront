@@ -156,6 +156,7 @@ const TopRanker = (props) => {
                         {
                           tab.slct === "cupid" && data.djProfImg &&
                           <div className='cupidWrap' onClick={() => {
+                            dispatch(setRankTopSwiperNum(swiperNum));
                             dispatch(setCache(true));
                             history.push(`/profile/${data.djMemNo}`)
                           }}>
