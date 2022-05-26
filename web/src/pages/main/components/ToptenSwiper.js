@@ -31,27 +31,16 @@ const ToptenSwiper = (props) => {
 
   // 프로필 상세 페이지 이동
   const onClickAction = (item) => {
-    if (!globalState.baseData.isLogin) {
-      history.push("/login")
+    if (topRankType === "DJ") {
+      history.push(`/rank/list/dj/time`);
     } else {
-      // history.push(`/profile/${item.memNo}`);
-      if(topRankType === "DJ") {
-        history.push(`/rank/list/dj/time`);
-      }else{
-        history.push(`/rank/list/fan/today`);
-      }
+      history.push(`/rank/list/fan/today`);
     }
   };
+
   // 팀 상세 페이지 이동
   const goTeamDetailPage = (e) => {
     history.push(`/rank/list/team`);
-    // const { teamNo } = e.currentTarget.dataset;
-    //
-    // if (!globalState.baseData.isLogin) {
-    //   history.push('/login');
-    // } else if (teamNo !== undefined) {
-    //   history.push(`/team/detail/${teamNo}`);
-    // }
   };
 
   // 스와이퍼 리플레쉬 액션
