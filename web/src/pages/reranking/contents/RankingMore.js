@@ -156,7 +156,7 @@ const RankingMore = () => {
       {/*랭킹리스트 TOP3, List 구성*/}
       <div className="rankingContent">
         <TopRanker data={rankState.rankTopList} tab={tab}/>
-        {payload.rankSlct !== 4 ? <RankingList data={list} tab={tab.type}/> : <TeamRankList data={list}/>}
+        {payload.rankSlct !== 4 ? <RankingList data={list} tab={tab}/> : <TeamRankList data={list}/>}
       </div>
     </div>
   );

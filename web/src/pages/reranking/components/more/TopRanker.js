@@ -9,7 +9,7 @@ import {IMG_SERVER} from 'context/config'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
-import {setCache} from "redux/actions/rank";
+import {setCache, setRankTopSwiperNum} from "redux/actions/rank";
 
 const TopRanker = (props) => {
   const {data, tab} = props;
@@ -17,6 +17,7 @@ const TopRanker = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const rankState = useSelector(state => state.rankCtx)
   const [popup, setPopup] = useState(false);
   const [rankSetting, setRankSetting] = useState();
 
@@ -30,7 +31,7 @@ const TopRanker = (props) => {
       el: '.swiper-pagination',
       clickable: true
     },
-    initialSlide: 2,
+    initialSlide: rankState.rankTopSwiperNum,
     rebuildOnUpdate: true
   };
 
@@ -100,6 +101,7 @@ const TopRanker = (props) => {
       {(data && data.length > 0 && tab.slct !== 'team') &&
       <Swiper {...swiperParams}>
         {data.map((list, index) => {
+          let swiperNum = index;
           return (
             <div className='rankingTop3' key={index}>
               <div className='topHeader'>
@@ -141,6 +143,7 @@ const TopRanker = (props) => {
                     return (
                       <div className="ranker" key={index}>
                         <div className="listColumn" onClick={() => {
+                          dispatch(setRankTopSwiperNum(swiperNum));
                           dispatch(setCache(true));
                           history.push(`/profile/${data.memNo}`)
                         }}>

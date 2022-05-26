@@ -1,7 +1,5 @@
 import React from 'react'
 
-import Lottie from 'react-lottie'
-
 import ListRow from 'components/ui/listRow/ListRow'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import {IMG_SERVER} from 'context/config'
@@ -40,33 +38,33 @@ export default withRouter((props) => {
                        dispatch(setCache(true));
                        props.history.push(`/profile/${list.memNo}`)
                      }}>
-              <div className="rank">{tab !== 'team' ? list.rank : index + 4}</div>
+              <div className="rank">{tab.type !== 'team' ? list.rank : index + 4}</div>
               <div className="listContent">
                 <div className="listItem">
                   <GenderItems data={list.gender}/>
                   <span className="nick">{list.nickNm}</span>
                 </div>
                 <div className='listItem'>
-                  {tab === "dj" &&
+                  {tab.slct === "dj" &&
                   <>
                     <DataCnt type={"listenerPoint"} value={list.listenerPoint}/>
                     <DataCnt type={'djGoodPoint'} value={list.goodPoint}/>
                     <DataCnt type={"listenPoint"} value={list.broadcastPoint}/>
                   </>
                   }
-                  {tab === 'fan' &&
+                  {tab.slct === 'fan' &&
                   <>
                     <DataCnt type={'starCnt'} value={list.starCnt}/>
                     <DataCnt type={"listenPoint"} value={list.listenPoint}/>
                   </>
                   }
-                  {tab === 'cupid' &&
+                  {tab.slct === 'cupid' &&
                   <>
                     <DataCnt type={'cupid'} value={list.djNickNm} clickEvent={(e) => goProfile(list.djMemNo, e)}/>
                     <DataCnt type={'djGoodPoint'} value={list.djGoodPoint}/>
                   </>
                   }
-                  {tab === 'team' &&
+                  {tab.slct === 'team' &&
                   <>
                     <DataCnt type={'point'} value={list.rank_pt}/>
                   </>

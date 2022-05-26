@@ -8,6 +8,7 @@ export type RankStateType = {
     rankTopList: Array<any>
     cache: boolean
     paging: Paging
+    rankTopSwiperNum: number,
 
     //delete
     rankData: RankDataType
