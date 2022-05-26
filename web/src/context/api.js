@@ -2078,7 +2078,8 @@ export default class API {
       url: `/rank/list/team`,
       method: 'GET',
       reqBody: false,
-      historyPopCache
+      forceUpdate: history.action === 'PUSH',
+      cache: true,
     })
   }
 
@@ -4248,6 +4249,14 @@ export default class API {
 API.customHeader = null
 API.authToken = null
 
+const http = axios.create({
+  // Accept: 'application/json',
+  // headers: { 'Cache-Control': 'no-cache' },
+  adapter: cacheAdapterEnhancer(axios.defaults.adapter),
+  withCredentials: true,
+});
+
+
 //ajax
 export const ajax = async (obj) => {
   const {url, method, data, params, reqBody} = obj
@@ -4262,13 +4271,7 @@ export const ajax = async (obj) => {
       formData.append('uploadType', data.uploadType)
     }
     const dataType = url === '/upload' ? formData : reqBody? data : qs.stringify(data)
-
-    const http = axios.create({
-      adapter: cacheAdapterEnhancer(axios.defaults.adapter, { enabledByDefault: false }),
-      withCredentials: true,
-    })
-
-    let res = await http({
+    let res = await axios({
       method: method,
       headers: {
         authToken: API.authToken || '',
@@ -4278,6 +4281,7 @@ export const ajax = async (obj) => {
       url: pathType + url,
       params: params,
       data: dataType,
+      withCredentials: true
     })
 
     return res.data

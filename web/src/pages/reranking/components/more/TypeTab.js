@@ -1,9 +1,12 @@
 import React from 'react';
 import {useHistory} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {setCache, setPaging} from "redux/actions/rank";
 
 const TypeTab = (props) => {
   const {tab, setTab, setRankInfo, setTopRankInfo} = props;
   const history = useHistory();
+  const dispatch = useDispatch();
 
   //타임/일간/주간/월간/연간 클릭
   const changeType = (e) => {
@@ -12,6 +15,8 @@ const TypeTab = (props) => {
     setTab({...tab, type: typeTab})
     setRankInfo({list: []})
     setTopRankInfo([])
+    dispatch(setPaging({pageNo: 1, pagePerCnt: 20, lastPage: 1}))
+    // dispatch(setCache(false))
   }
 
   return (

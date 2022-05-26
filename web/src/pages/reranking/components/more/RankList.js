@@ -9,6 +9,7 @@ import {RoomValidateFromClipMemNo, RoomValidateFromListenerFollow,} from "common
 import {useHistory, withRouter} from "react-router-dom";
 import DataCnt from "components/ui/dataCnt/DataCnt";
 import {useDispatch, useSelector} from "react-redux";
+import {setCache} from "redux/actions/rank";
 
 export default withRouter((props) => {
   const {data, tab} = props;
@@ -18,6 +19,7 @@ export default withRouter((props) => {
   const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const goProfile = (value, e) => {
+    dispatch(setCache(true));
     e.stopPropagation();
     if (value !== undefined) {
       props.history.push(`/profile/${value}`);
@@ -28,10 +30,16 @@ export default withRouter((props) => {
     <>
       {data.map((list, index) => {
         return (
-          <div className='listWrap'>
-            <ListRow photo={list.profImg.thumb292x292} key={index}
-                     onClick={() => props.history.push(`/profile/${list.memNo}`)}
-                     photoClick={() => props.history.push(`/profile/${list.memNo}`)}>
+          <div className='listWrap' key={list.memNo}>
+            <ListRow photo={list.profImg.thumb292x292}
+                     onClick={() => {
+                       dispatch(setCache(true));
+                       props.history.push(`/profile/${list.memNo}`)
+                     }}
+                     photoClick={() => {
+                       dispatch(setCache(true));
+                       props.history.push(`/profile/${list.memNo}`)
+                     }}>
               <div className="rank">{tab !== 'team' ? list.rank : index + 4}</div>
               <div className="listContent">
                 <div className="listItem">
@@ -74,8 +82,7 @@ export default withRouter((props) => {
                     RoomValidateFromClipMemNo(list.roomNo, list.memNo, dispatch, globalState, history, list.nickNm);
                   }}>
                   <span className='equalizer'>
-                    <Lottie
-                      options={{loop: true, autoPlay: true, path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json`}}/>
+                    <img src={`${IMG_SERVER}/ranking/dalla/ico_equalizer.gif`} style={{height:"11px", width:"12px"}}/>
                   </span>
                     <span className='liveText'>LIVE</span>
                   </div>
@@ -97,11 +104,7 @@ export default withRouter((props) => {
                     });
                   }}>
                     <span className='headset'>
-                      <Lottie options={{
-                        loop: true,
-                        autoPlay: true,
-                        path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
-                      }}/>
+                      <img src={`${IMG_SERVER}/ranking/dalla/ico_headset.gif`} style={{height:"11px", width:"12px"}}/>
                     </span>
                     <span className='ListenerText'>LIVE</span>
                   </div>

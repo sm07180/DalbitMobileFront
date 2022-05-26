@@ -4,6 +4,12 @@ import {RANK_TYPE} from "../../../pages/rank/constant";
 
 const initialState:RankStateType = {
     subTab: "FAN",
+    cache: true,
+    paging: {
+        pageNo: 1,
+        pagePerCnt: 20,
+        lastPage: 0
+    },
     rankList: [],
     rankData: {
         isRankData: false,
@@ -58,6 +64,12 @@ const initialState:RankStateType = {
 const rank = createReducer<RankStateType, RankActions>(initialState, {
     "rank/SET_SUB_TAB": (state,{payload}) => {
         return {...state, subTab: payload}
+    },
+    "rank/SET_CACHE": (state,{payload}) => {
+        return {...state, cache: payload}
+    },
+    "rank/SET_PAGING": (state, {payload}) => {
+        return {...state, paging: payload}
     },
     "rank/SET_RANK_LIST": (state, {payload}) => {
         return {...state, rankList: payload}

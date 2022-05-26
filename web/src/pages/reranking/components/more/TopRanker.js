@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
 
 import Api from 'context/api';
-import Lottie from 'react-lottie';
 import Swiper from 'react-id-swiper';
 
 import {useHistory, withRouter} from "react-router-dom";
@@ -10,6 +9,7 @@ import {IMG_SERVER} from 'context/config'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {setCache} from "redux/actions/rank";
 
 const TopRanker = (props) => {
   const {data, tab} = props;
@@ -75,6 +75,7 @@ const TopRanker = (props) => {
     if (!globalState.token.isLogin) {
       history.push('/login');
     } else if (teamNo !== undefined) {
+      dispatch(setCache(true));
       history.push(`/team/detail/${teamNo}`);
     }
   };
@@ -139,7 +140,10 @@ const TopRanker = (props) => {
                   } else {
                     return (
                       <div className="ranker" key={index}>
-                        <div className="listColumn" onClick={() => history.push(`/profile/${data.memNo}`)}>
+                        <div className="listColumn" onClick={() => {
+                          dispatch(setCache(true));
+                          history.push(`/profile/${data.memNo}`)
+                        }}>
                           <div className="photo">
                             <img src={data.profImg.thumb292x292} alt=""/>
                             <div className={`rankerRank index${index + 1}`}/>
@@ -148,7 +152,10 @@ const TopRanker = (props) => {
                         </div>
                         {
                           tab.slct === "cupid" && data.djProfImg &&
-                          <div className='cupidWrap' onClick={() => history.push(`/profile/${data.djMemNo}`)}>
+                          <div className='cupidWrap' onClick={() => {
+                            dispatch(setCache(true));
+                            history.push(`/profile/${data.djMemNo}`)
+                          }}>
                             <div className='cupidHeader'>HONEY</div>
                             <div className='cupidContent'>
                               <div className='cupidThumb'>
@@ -166,13 +173,7 @@ const TopRanker = (props) => {
                               RoomValidateFromClipMemNo(data.roomNo, data.memNo, dispatch, globalState, history, data.nickNm);
                             }}>
                               <span className='equalizer'>
-                                <Lottie
-                                  options={{
-                                    loop: true,
-                                    autoPlay: true,
-                                    path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json`
-                                  }}
-                                />
+                                <img src={`${IMG_SERVER}/ranking/dalla/ico_equalizer.gif`} style={{height:"11px", width:"12px"}}/>
                               </span>
                               <span className='liveText'>LIVE</span>
                             </div>
@@ -191,13 +192,7 @@ const TopRanker = (props) => {
                               });
                             }}>
                                 <span className='headset'>
-                                  <Lottie
-                                    options={{
-                                      loop: true,
-                                      autoPlay: true,
-                                      path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
-                                    }}
-                                  />
+                                  <img src={`${IMG_SERVER}/ranking/dalla/ico_headset.gif`} style={{height:"11px", width:"12px"}}/>
                                 </span>
                               <span className='ListenerText'>LIVE</span>
                             </div>

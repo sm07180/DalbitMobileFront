@@ -19,6 +19,13 @@ export type RankStateType = {
     specialPointList: Array<any>
     rankTimeData: RankTimeDataType
     subTab: string
+    cache: boolean
+    paging: Paging
+}
+export type Paging = {
+    pageNo: number,
+    pagePerCnt: number,
+    lastPage: number
 }
 export type RankDataType = {
     isRankData: boolean

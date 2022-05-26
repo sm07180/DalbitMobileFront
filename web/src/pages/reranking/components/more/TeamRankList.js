@@ -5,18 +5,22 @@ import {useHistory, withRouter} from "react-router-dom";
 import DataCnt from "components/ui/dataCnt/DataCnt";
 import '../../scss/TeamRankList.scss';
 import {useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
+import {setCache} from "redux/actions/rank";
 
 const TeamRankList = (props) => {
 
   const {data} = props;
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const goTeamDetailPage = (e) => {
     const { teamNo } = e.currentTarget.dataset;
     if (!globalState.token.isLogin) {
       history.push('/login');
     } else if (teamNo !== undefined) {
+      dispatch(setCache(true));
       history.push(`/team/detail/${teamNo}`);
     }
   }

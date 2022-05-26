@@ -5,6 +5,7 @@ import {isDesktop} from "../../../lib/agent";
 import {goMail} from "common/mailbox/mail_func";
 import {useDispatch, useSelector} from "react-redux";
 import {setNoticeData, setNoticeTab} from "../../../redux/actions/notice";
+import {setCache} from "../../../redux/actions/rank";
 import {Hybrid, isAndroid, isHybrid} from "../../../context/hybrid";
 import API from "../../../context/api";
 import moment from "moment";
@@ -117,7 +118,9 @@ const TitleButton = (props) => {
     case '랭킹':
       return (
         <div className='buttonGroup'>
-          <button className='benefits' onClick={() => history.push("/rank/benefit/dj")}>
+          <button className='benefits' onClick={() => {
+            history.push("/rank/benefit/dj")
+          }}>
             혜택
           </button>
         </div>
