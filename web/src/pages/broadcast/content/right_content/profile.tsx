@@ -803,8 +803,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
       )}
       {popup.layerPopup &&
         <LayerPopup>
-          <SpecialHistoryPop
-            memNo={layerPopMemNo}/>
+          <SpecialHistoryPop memNo={layerPopMemNo}/>
         </LayerPopup>
       }
     </>
