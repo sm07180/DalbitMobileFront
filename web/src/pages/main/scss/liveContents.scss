@@ -96,6 +96,18 @@
           .state {
             @include font(13px,400,#999);
           }
+          .teamSymbol {
+            position: relative;
+            display: inline-block;
+            width: 14px; height: 14px;
+            margin-right: 2px;
+            border-radius: 50%;
+            overflow: hidden;
+            img {
+              @include position-center;
+              width: 100%;
+            }
+          }
         }
       }
     }      

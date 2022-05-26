@@ -2966,37 +2966,7 @@
       }
     }
   }
-  // 스디 배지
-  .checkBadge {
-    position: absolute;
-    top: 0;
-    left: 12px;
-    cursor: pointer;
-    .specialIcon {
-      display: flex;
-      justify-content: center;
-      position: relative;
-      width: 54px;
-      height: 51px;
-      background: url("https://image.dalbitlive.com/svg/ico_specialdj_on.png")
-        no-repeat center;
-      background-size: cover;
-      &__count {
-        position: absolute;
-        top: 12px;
-        font-weight: $bold;
-        font-style: normal;
-        color: #ec455f;
-        font-size: 11px;
-        letter-spacing: -0.28px;
-      }
-      &.prev {
-        background: url("https://image.dalbitlive.com/svg/ico_specialdj_off.png")
-          no-repeat center;
-      }
-    }
-  }
-
+  
   .effectList {
     padding: 20px 15px;
     .effectItem {

@@ -357,32 +357,32 @@
           color: white;
           border-radius: 12px;
         }
-        .checkBadge {
-          position: absolute;
-          top: 0;
-          left: 12px;
-          .specialIcon {
-            display: flex;
-            justify-content: center;
-            position: relative;
-            width: 54px;
-            height: 51px;
-            background: url('https://image.dalbitlive.com/svg/ico_specialdj_on.png') no-repeat center;
-            background-size: cover;
-            &__count {
-              position: absolute;
-              top: 12px;
-              font-weight: 600;
-              font-style: normal;
-              color: #ec455f;
-              font-size: 11px;
-              letter-spacing: -0.28px;
-            }
-            &.prev {
-              background: url('https://image.dalbitlive.com/svg/ico_specialdj_off.png') no-repeat center;
-            }
-          }
-        }
+        // .checkBadge {
+        //   position: absolute;
+        //   top: 0;
+        //   left: 12px;
+        //   .specialIcon {
+        //     display: flex;
+        //     justify-content: center;
+        //     position: relative;
+        //     width: 54px;
+        //     height: 51px;
+        //     background: url('https://image.dalbitlive.com/svg/ico_specialdj_on.png') no-repeat center;
+        //     background-size: cover;
+        //     &__count {
+        //       position: absolute;
+        //       top: 12px;
+        //       font-weight: 600;
+        //       font-style: normal;
+        //       color: #ec455f;
+        //       font-size: 11px;
+        //       letter-spacing: -0.28px;
+        //     }
+        //     &.prev {
+        //       background: url('https://image.dalbitlive.com/svg/ico_specialdj_off.png') no-repeat center;
+        //     }
+        //   }
+        // }
         // .specialIcon {
         //   position: absolute;
         //   top: 0;
