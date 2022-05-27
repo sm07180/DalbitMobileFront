@@ -5,11 +5,15 @@ import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import './receipt.scss'
 
 import {useHistory, useLocation} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdateProfile} from "redux/actions/globalCtx";
 
 const Receipt = () => {
   const history = useHistory();
   const location = useLocation();
+  const dispatch = useDispatch();
   const {info} = location.state || ""
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [receipt, setReceipt] = useState({
     orderId: info.orderId,
@@ -22,6 +26,7 @@ const Receipt = () => {
   useEffect(() => {
     payTracking();
     getReciptInfo();
+    profileUpdate();
   }, []);
 
   //결제 트래킹
@@ -56,6 +61,16 @@ const Receipt = () => {
       })
     });
   };
+
+  const profileUpdate = () => {
+    Api.profile({params: {memNo: globalState.token.memNo}}).then((res) => {
+      const {result, message, data} = res
+      if (result === 'success') {
+        dispatch(setGlobalCtxUpdateProfile(data));
+      } else {
+      }
+    })
+  }
 
   const payTypeKor = (payWay) => {
     switch (payWay) {
