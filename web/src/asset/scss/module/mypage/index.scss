@@ -205,34 +205,6 @@
         color: $white;
         border-radius: 12px;
       }
-      .checkBadge {
-        position: absolute;
-        top: 0;
-        left: 12px;
-        // z-index: 3;
-        cursor: pointer;
-        .specialIcon {
-          display: flex;
-          justify-content: center;
-          position: relative;
-          width: 54px;
-          height: 51px;
-          background: url("https://image.dalbitlive.com/svg/ico_specialdj_on.png") no-repeat center;
-          background-size: cover;
-          &__count {
-            position: absolute;
-            top: 12px;
-            font-weight: $bold;
-            font-style: normal;
-            color: #ec455f;
-            font-size: 11px;
-            letter-spacing: -0.28px;
-          }
-          &.prev {
-            background: url("https://image.dalbitlive.com/svg/ico_specialdj_off.png") no-repeat center;
-          }
-        }
-      }
       .profile {
         &__loginWrap {
           position: relative;
@@ -476,7 +448,6 @@
           box-sizing: border-box;
         }
         &__wrapper {
-          margin-top:10px;
           border-radius:15px;
           overflow:hidden;
         }
@@ -1434,6 +1405,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    margin-bottom: 10px;
     .swiper-container {
       overflow: hidden;
     }

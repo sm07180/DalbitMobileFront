@@ -258,39 +258,39 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   }
 
   const checkSpecialDj = (profileData) => {
-    // if(profileData.specialDjCnt > 0){
-    //   return (
-    //     <div className="badgeGroup">
-    //       <span
-    //         id={profileData.memNo}
-    //         className={`starBdg ${profileData.badgeSpecial === 1 ? "active" : ""}`}
-    //         onClick={historyPopupOpen}
-    //       >
-    //         {profileData.specialDjCnt}
-    //       </span>
-    //     </div>
-    //     );
-    if (profileData.wasSpecial && profileData.badgeSpecial === 0) {
-      return (     
-        <div
-          className="checkBadge"
-          onClick={() => {
-            viewSpecialList(profileData.memNo);
-          }}
-        >
-          <div className="specialIcon prev" />
-        </div>
-      );
-    } else if (profileData.badgeSpecial > 0) {
+    if(profileData.specialDjCnt > 0){
       return (
-        <div
-          className="checkBadge"
-          onClick={() => {
-            viewSpecialList(profileData.memNo);
-          }}
-        >
+        <div className="badgeGroup">
+          <span
+            id={profileData.memNo}
+            className={`starBdg ${profileData.badgeSpecial === 1 ? "active" : ""}`}
+            onClick={historyPopupOpen}
+          >
+            {profileData.specialDjCnt}
+          </span>
         </div>
-      );
+        );
+    // if (profileData.wasSpecial && profileData.badgeSpecial === 0) {
+    //   return (     
+    //     <div
+    //       className="checkBadge"
+    //       onClick={() => {
+    //         viewSpecialList(profileData.memNo);
+    //       }}
+    //     >
+    //       <div className="specialIcon prev" />
+    //     </div>
+    //   );
+    // } else if (profileData.badgeSpecial > 0) {
+    //   return (
+    //     <div
+    //       className="checkBadge"
+    //       onClick={() => {
+    //         viewSpecialList(profileData.memNo);
+    //       }}
+    //     >
+    //     </div>
+    //   );
     } else if (profileData.isNew === true) {
       return <span className="newIcon">신입 DJ</span>;
     } else if (profileData.isNewListener === true) {
@@ -803,8 +803,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
       )}
       {popup.layerPopup &&
         <LayerPopup>
-          <SpecialHistoryPop
-            memNo={layerPopMemNo}/>
+          <SpecialHistoryPop memNo={layerPopMemNo}/>
         </LayerPopup>
       }
     </>

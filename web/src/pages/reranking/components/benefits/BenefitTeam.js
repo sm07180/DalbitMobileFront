@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 
 import {IMG_SERVER} from 'context/config'
 
-import './benefit.scss'
+import '../../scss/Benefit.scss'
 
 export default () => {
   return (

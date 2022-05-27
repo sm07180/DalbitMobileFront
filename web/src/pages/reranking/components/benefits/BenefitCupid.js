@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 
 import {IMG_SERVER} from 'context/config'
 
-import './benefit.scss'
+import '../../scss/Benefit.scss'
 
 export default () => {
   return (
@@ -31,7 +31,6 @@ export default () => {
               <th>3위</th>
             </tr>
           </thead>
-
           <tbody>
             <tr>
               <td className="rank">달</td>
@@ -48,7 +47,6 @@ export default () => {
           </tbody>
         </table>
       </div>
-
       <div className="tableBox">
         <p className="title">주간 CUPID 랭킹 TOP3</p>
         <table>
@@ -58,7 +56,6 @@ export default () => {
             <col width="27%" />
             <col width="27%" />
           </colgroup>
-
           <thead>
             <tr>
               <th>주간</th>
@@ -67,7 +64,6 @@ export default () => {
               <th>3위</th>
             </tr>
           </thead>
-
           <tbody>
             <tr>
               <td className="rank">배지</td>
@@ -87,7 +83,6 @@ export default () => {
                 </span>
               </td>
             </tr>
-
             <tr>
               <td className="rank">입장효과</td>
               <td>
@@ -100,7 +95,6 @@ export default () => {
                 <img src={`${IMG_SERVER}/ranking/likew3@2x.png`} width={80} alt="입장효과" />
               </td>
             </tr>
-
             <tr className="animationFrame">
               <td className="rank">애니메이션<br />프레임</td>
               <td>
@@ -138,7 +132,6 @@ export default () => {
                 <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 50
               </td>
             </tr>
-
             <tr>
               <td className="effect">
                 방송 청취중
@@ -158,7 +151,6 @@ export default () => {
                 +3 효과
               </td>
             </tr>
-
             <tr>
               <td>
                 방송 청취중 <br />

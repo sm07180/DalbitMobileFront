@@ -1,46 +1,38 @@
-import React, {useState} from 'react'
+import React from 'react'
 
 import Header from 'components/ui/header/Header'
-import Tabmenu from '../components/Tabmenu'
-import BenefitDj from '../components/BenefitDj'
-import BenefitFan from '../components/BenefitFan'
-import BenefitLover from '../components/BenefitLover'
-import BenefitTeam from '../components/BenefitTeam'
+import BenefitDj from '../components/benefits/BenefitDj'
+import BenefitFan from '../components/benefits/BenefitFan'
+import BenefitCupid from '../components/benefits/BenefitCupid'
+import BenefitTeam from '../components/benefits/BenefitTeam'
 
-// components
-//static
-import './rankingBenefit.scss'
-import {useLocation} from "react-router-dom";
-
-const tabList = ["DJ", "FAN", "CUPID",'TEAM'];
+import '../scss/RankingBenefit.scss'
+import {useHistory, useParams} from "react-router-dom";
 
 const RankingBenefit = () => {
-  let location = useLocation();
-  
-  //현재 선택된 탭 이름
-  const [tabName, setTabName] = useState(location.state === "FAN" ? "FAN" : location.state === "CUPID" ? "CUPID" : "DJ");
+  const history = useHistory();
+  const params = useParams();
+
+  const benefitLink = (e) =>{
+    const { slctTab } = e.currentTarget.dataset;
+    history.replace(`/rank/benefit/${slctTab}`)
+  }
 
   return (
     <div id="rankingBenefit">      
       <Header position={'sticky'} title="랭킹 혜택" type={'back'}/>
-      <Tabmenu data={tabList} tab={tabName} setTab={setTabName} />
+      <ul className="tabmenu">
+        <li className={`tabList ${params.slct === "dj"    ? 'tabActive' : ''}`} data-slct-tab="dj"     onClick={benefitLink}>DJ</li>
+        <li className={`tabList ${params.slct === "fan"   ? 'tabActive' : ''}`} data-slct-tab="fan"    onClick={benefitLink}>FAN</li>
+        <li className={`tabList ${params.slct === "cupid" ? 'tabActive' : ''}`} data-slct-tab="cupid"  onClick={benefitLink}>CUPID</li>
+        <li className={`tabList ${params.slct === "team"  ? 'tabActive' : ''}`} data-slct-tab="team"   onClick={benefitLink}>TEAM</li>
+        <div className={`underline`}/>
+      </ul>
       <div className='subContent'>
-        {
-          tabName === "DJ" &&
-            <BenefitDj/>
-        }
-        {
-          tabName === "FAN" &&
-            <BenefitFan/>
-        }
-        {
-          tabName === "CUPID" &&
-            <BenefitLover/>
-        }
-        {
-          tabName === "TEAM" &&
-            <BenefitTeam/>
-        }
+        {(params.slct === "dj"   ) && <BenefitDj/>}
+        {(params.slct === "fan"  ) && <BenefitFan/>}
+        {(params.slct === "cupid") && <BenefitCupid/>}
+        {(params.slct === "team" ) && <BenefitTeam/>}
       </div>
     </div>
   )

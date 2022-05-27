@@ -33,7 +33,7 @@ const ClipRanking = () => {
     let topInfo = [];
 
     if ( yesterdayInfo.code === 'C001' && yesterdayInfo.data.paging.total > 0 ) {
-      topInfo.push({ title: searchInfo.rankType === 1 ? '어제' : '저번주', list: yesterdayInfo.data.list })
+      topInfo.push({ title: searchInfo.rankType === 1 ? '어제' : '지난주', list: yesterdayInfo.data.list })
     }
 
     if ( todayInfo.code === 'C001' && todayInfo.data.paging.total > 0 ) {
@@ -99,7 +99,7 @@ const ClipRanking = () => {
     const { clipNo, type } = e.currentTarget.dataset;
     let tempType = type;
     if (type === undefined) tempType = 1;
-    // 0: 어제 + 오늘, 1: 오늘, 2: 저번주 + 이번주, 3: 이번주
+    // 0: 어제 + 오늘, 1: 오늘, 2: 지난주 + 이번주, 3: 이번주
     const callType = getCallType(playType);
     let playListInfoData = {
       ...searchInfo,

@@ -333,25 +333,26 @@ export default (props) => {
   }
   // check special Dj
   const checkSpecialDj = () => {
-    if (profile.wasSpecial === true && profile.badgeSpecial === 0) {
-      return (
-        <div className="checkBadge" onClick={() => dispatch(setGlobalCtxCloseSpecial(true))}>
-          <div className="specialIcon prev"/>
-        </div>
-      )
-    } else if (profile.badgeSpecial > 0) {
-      return (
-        <div className="checkBadge" onClick={() => dispatch(setGlobalCtxCloseSpecial(true))}>
-          <div className="specialIcon">
-            {profile.specialDjCnt && profile.specialDjCnt > 0 ? (
-              <em className="specialIcon__count">{profile.specialDjCnt}</em>
-            ) : (
-              ''
-            )}
-          </div>
-        </div>
-      )
-    } else if (profile.isNew === true) {
+    // if (profile.wasSpecial === true && profile.badgeSpecial === 0) {
+    //   return (
+    //     <div className="checkBadge" onClick={() => dispatch(setGlobalCtxCloseSpecial(true))}>
+    //       <div className="specialIcon prev"/>
+    //     </div>
+    //   )
+    // } else if (profile.badgeSpecial > 0) {
+    //   return (
+    //     <div className="checkBadge" onClick={() => dispatch(setGlobalCtxCloseSpecial(true))}>
+    //       <div className="specialIcon">
+    //         {profile.specialDjCnt && profile.specialDjCnt > 0 ? (
+    //           <em className="specialIcon__count">{profile.specialDjCnt}</em>
+    //         ) : (
+    //           ''
+    //         )}
+    //       </div>
+    //     </div>
+    //   )
+    // } else
+    if (profile.isNew === true) {
       return <span className="newIcon">신입 DJ</span>
     } else if (profile.isNewListener === true) {
       return <span className="newIcon">신입청취자</span>
