@@ -5,6 +5,12 @@ export type RankActions = ActionType<typeof actions>
 
 export type RankStateType = {
     rankList: Array<any>
+    rankTopList: Array<any>
+    cache: boolean
+    paging: Paging
+    rankTopSwiperNum: number,
+
+    //delete
     rankData: RankDataType
     levelList: Array<any>
     likeList: Array<any>
@@ -20,6 +26,13 @@ export type RankStateType = {
     rankTimeData: RankTimeDataType
     subTab: string
 }
+export type Paging = {
+    pageNo: number,
+    pagePerCnt: number,
+    lastPage: number
+}
+
+//delete
 export type RankDataType = {
     isRankData: boolean
 }

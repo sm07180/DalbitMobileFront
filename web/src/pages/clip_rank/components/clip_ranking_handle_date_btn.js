@@ -58,7 +58,7 @@ export default function ClipRankHandleDateBtn() {
       if (isEqualDateFormat) {
         return '이번주 실시간'
       } else if (isEqualChangeDate) {
-        return '저번주'
+        return '지난주'
       } else {
         let year = formState.rankingDate.slice(0, 4)
         let month = formState.rankingDate.slice(5, 7)

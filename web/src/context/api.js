@@ -23,6 +23,12 @@ import axios from 'axios'
 //context
 import {API_SERVER, PAY_SERVER, PHOTO_SERVER} from 'context/config'
 import qs from 'qs'
+import { cacheAdapterEnhancer } from 'axios-extensions'
+
+const historyPopCache = config => ({
+  forceUpdate: history.action === 'PUSH',
+  cache: true,
+})
 
 export default class API {
   //---------------------------------------------------------------------방송관련
@@ -2034,22 +2040,13 @@ export default class API {
     })
   }
 
-  static getRankTimeList = async (data) => {
+  static getRankTimeList = async (param) => {
     return await ajax({
-      method: 'GET',
       url: '/time/rank',
-      params: data
-    })
-  }
-
-  static getMyRank = async (data) => {
-    return await ajax({
       method: 'GET',
-      url: '/rank/myRank',
-      params: data
+      params: param
     })
   }
-
   static getSpecialDjHistory = async (data) => {
     return await ajax({
       method: 'GET',
@@ -2062,6 +2059,43 @@ export default class API {
     const {param} = obj
     return await ajax({
       url: '/rank/page',
+      method: 'GET',
+      params: param
+    })
+  }
+
+  // 랭킹페이지(내 랭킹)
+  static getMyRank = async () => {
+    return await ajax({
+      method: 'GET',
+      url: '/rank/myRank',
+    })
+  }
+
+  // 랭킹페이지(팀랭킹)
+  static getRankTeam = async () => {
+    return await ajax({
+      url: `/rank/list/team`,
+      method: 'GET',
+      reqBody: false,
+      forceUpdate: history.action === 'PUSH',
+      cache: true,
+    })
+  }
+
+  //랭킹페이지(랭킹)
+  static getRank = async (param) => {
+    return await ajax({
+      url: '/rank/list',
+      method: 'GET',
+      params: param
+    })
+  }
+
+  //랭킹페이지(타임랭킹)
+  static getRankTime = async (param) => {
+    return await ajax({
+      url: '/rank/list/time',
       method: 'GET',
       params: param
     })
@@ -3481,7 +3515,7 @@ export default class API {
 
   static postRankSetting = async (data) => {
     return await ajax({
-      url: `/member/rank/setting`,
+      url: `/rank/setting`,
       method: 'POST',
       data: data
     })
@@ -4062,8 +4096,8 @@ export default class API {
     return ajax({url: '/clip/rank/combine/list', method: 'GET', reqBody: false, params})
   }
   //팬랭킹 참여 유무
-  static getRankingApply = async () => {
-    return await ajax({url: "/rank/getRankingApply"})
+  static rankApply = async () => {
+    return await ajax({url: "/rank/apply"})
   }
 
   static getStoreIndexData = () => {
@@ -4251,6 +4285,14 @@ export default class API {
 
 API.customHeader = null
 API.authToken = null
+
+const http = axios.create({
+  // Accept: 'application/json',
+  // headers: { 'Cache-Control': 'no-cache' },
+  adapter: cacheAdapterEnhancer(axios.defaults.adapter),
+  withCredentials: true,
+});
+
 
 //ajax
 export const ajax = async (obj) => {

@@ -33,7 +33,7 @@ const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/rank/ClipRa
 
 // 랭킹
 const Ranking = React.lazy(() => import('pages/reranking'))
-const RankListPage = React.lazy(() => import('pages/reranking/contents/RankListPage'))
+const RankingMore = React.lazy(() => import('pages/reranking/contents/RankingMore'))
 const RankingBenefit = React.lazy(() => import('pages/reranking/contents/RankingBenefit'))
 const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
 
@@ -181,9 +181,9 @@ const Router = () => {
         <Route exact path="/rule/:category" component={ReRule} />
 
         <Route exact path="/rank" component={Ranking} />
-        <Route exact path="/rankDetail/:type" component={RankListPage} />
-        <Route exact path="/rankBenefit" component={RankingBenefit} />
-        <Route exact path="/rank/:type" component={RankingGuide} />
+        <Route exact path="/rank/list/:slct/:type?" component={RankingMore} />
+        <Route exact path="/rank/benefit/:slct" component={RankingBenefit} />
+        {/*<Route exact path="/rank/:type" component={RankingGuide} />*/}
 
         <Route exact path="/setting" component={ReSetting} />
         <Route exact path="/setting/:type" component={ReSetting} />
