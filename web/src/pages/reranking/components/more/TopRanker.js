@@ -72,10 +72,11 @@ const TopRanker = (props) => {
 
   // 팀 상세 페이지 이동
   const goTeamDetailPage = (e) => {
-    const { teamNo } = e.currentTarget.dataset;
+    const { teamNo, swiperNum } = e.currentTarget.dataset;
     if (!globalState.token.isLogin) {
       history.push('/login');
     } else if (teamNo !== undefined) {
+      dispatch(setRankTopSwiperNum(swiperNum));
       dispatch(setCache(true));
       history.push(`/team/detail/${teamNo}`);
     }
@@ -217,6 +218,7 @@ const TopRanker = (props) => {
       {data && data.length > 0 && tab.slct === 'team' &&
       <Swiper {...swiperParams}>
         {data.map((list, index) => {
+          let swiperNum = index;
           return (<div className='rankingTop3' key={index}>
             <div className='topHeader'>{(index === 0 && data.length > 1) ? '저번주' : '이번주'} TOP3</div>
             <div className='topContent'>
@@ -227,7 +229,7 @@ const TopRanker = (props) => {
                   </div>);
                 }
                 return (
-                  <div className="ranker" key={index} data-team-no={value.team_no} onClick={goTeamDetailPage}>
+                  <div className="ranker" key={index} data-team-no={value.team_no} data-swiper-num={swiperNum} onClick={goTeamDetailPage}>
                     <div className="listColumn" data-type={index}>
                       <div className="teamWrapBox">
                         <div className="teamSymbol">
