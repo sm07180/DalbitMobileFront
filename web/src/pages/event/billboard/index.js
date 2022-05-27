@@ -61,7 +61,7 @@ const Billboard = () => {
   }
 
   const pEvtBillBoardListSel = async () => {
-    const listParams = {seqNo: seqNo, pageNo: pageInfo.pageNo, pagePerCnt: pageInfo.pagePerCnt};
+    const listParams = {...pageInfo, pageNo: 1, seqNo: seqNo};
     const selParams = {seqNo: seqNo}
     const listApi = tabmenuType === tabmenu[0] ? Api.getElectricSignDJList : Api.getElectricSignFanList;
     const selApi = tabmenuType === tabmenu[0] ? Api.getElectricSignDJSel : Api.getElectricSignFanSel;
@@ -173,7 +173,7 @@ const Billboard = () => {
 
   const getNextList = () => {
     if(!billboardSel) { return; }
-    const paging = Object.assign({}, pageInfo, {pageNo: pageInfo.pageNo + 1})
+    const paging = Object.assign({}, pageInfo, {pageNo: pageInfo.pageNo + 1, seqNo: seqNo})
     const targetApi = tabmenuType === tabmenu[0] ? Api.getElectricSignDJList : Api.getElectricSignFanList;
     targetApi({...paging}).then((res) => {
       if(res.data.list && res.data.list.length > 0){
@@ -189,20 +189,15 @@ const Billboard = () => {
     return () => window.removeEventListener('scroll', tabScrollEvent)
   },[])
 
-  // useEffect(()=>{
-  //   pEvtBillBoardListSel()
-  // }, [tabmenuType])
-
   useEffect(() => {
     if(moment(nowDay).isAfter(moment(seqDate.firstEnd))) {
       seqNo = 2;
-      pEvtBillBoardListSel(seqNo);
+      pEvtBillBoardListSel();
     } else {
       seqNo = 1;
-      pEvtBillBoardListSel(seqNo);
+      pEvtBillBoardListSel();
     }
-    console.log(seqNo);
-  }, [nowDay, tabmenuType]);
+  }, [tabmenuType]);
 
   return (
     <>

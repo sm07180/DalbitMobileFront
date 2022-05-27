@@ -48,7 +48,7 @@ const RankingWrap = (props) => {
           {
             billboardList && billboardList.length < 1 &&
             <div className="noList">
-              <img src={`${IMG_SERVER}/event/rebranding/list_none.png`} alt={`list_none`}/>
+              <img src={`${IMG_SERVER}/common/listNone/listNone.png`} alt={`list_none`}/>
               <span>현재 랭킹 내역이 없어요.</span>
             </div>
           }
