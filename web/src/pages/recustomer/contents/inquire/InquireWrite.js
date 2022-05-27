@@ -133,7 +133,8 @@ const Write = (props) => {
       return list.includes(ext);
     };
     if (!extValidator(fileExtension)) {
-      dispatch(setGlobalCtxMessage({type: "alert", msg: "jpg, png 이미지만 사용 가능합니다."}))
+      dispatch(setGlobalCtxMessage({type: "alert", msg: "jpg, png 이미지만 사용 가능합니다."}));
+      return;
     }
     reader.readAsDataURL(target.files[0]);
     reader.onload = async () => {
