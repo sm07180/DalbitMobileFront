@@ -108,7 +108,7 @@ const TopRanker = (props) => {
               <div className='topHeader'>
                 {
                   index === 0 ?
-                    tab.type === "time" ? `${index + 1}회차` : tab.type === "today" ? "어제" : tab.type === "week" ? "저번주" : tab.type === "month" ? "저번달" : "작년"
+                    tab.type === "time" ? `${index + 1}회차` : tab.type === "today" ? "어제" : tab.type === "week" ? "지난주" : tab.type === "month" ? "지난달" : "작년"
                     :
                     index === 1 ?
                       tab.type === "time" ? `${index + 1}회차` : tab.type === "today" ? "오늘" : tab.type === "week" ? "이번주" : tab.type === "month" ? "이번달" : "올해"
@@ -220,7 +220,7 @@ const TopRanker = (props) => {
         {data.map((list, index) => {
           let swiperNum = index;
           return (<div className='rankingTop3' key={index}>
-            <div className='topHeader'>{(index === 0 && data.length > 1) ? '저번주' : '이번주'} TOP3</div>
+            <div className='topHeader'>{(index === 0 && data.length > 1) ? '지난주' : '이번주'} TOP3</div>
             <div className='topContent'>
               {list.map((value, index) => {
                 if (value.isEmpty) {
