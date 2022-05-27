@@ -44,7 +44,7 @@ const Billboard = () => {
   const [billboardSel, setBillboardSel] = useState(null);
   const [billboardList, setBillboardList] = useState([]);
   const [billboardListCnt, setBillboardListCnt] = useState(0);
-  const [seqDate, setSeqDate] = useState({firstStart: "20220530 000900", firstEnd: "20220605 235959", secondStart: "20220606 000000", secondEnd: "20220612 235959"});
+  const [seqDate, setSeqDate] = useState({firstStart: "20220530 000900", firstEnd: "20220527 155959", secondStart: "20220606 000000", secondEnd: "20220612 235959"});
 
   const tabActive = (index) => {
     setTabmenuType(tabmenu[index])
