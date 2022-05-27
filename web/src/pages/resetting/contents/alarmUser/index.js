@@ -33,8 +33,7 @@ const SettingAlarm = () => {
   const fetchDeleteData = async (memNo) => {
     const res = await Api.deletePushMembers({memNo})
     if(res.result === "success") {
-      dispatch(setGlobalCtxMessage({type: "alert",msg: "삭제가 완료되었습니다."}))
-      fetchData();
+      dispatch(setGlobalCtxMessage({type: "alert",msg: "삭제가 완료되었습니다.", callback: () => {fetchData()}}));
     }
   }
 
@@ -42,7 +41,7 @@ const SettingAlarm = () => {
 
     dispatch(setGlobalCtxMessage({type: "confirm",
       msg: "선택한 회원을 삭제하면 방송시작에 대한 알림을 받을 수 없습니다.",
-      remsg: "삭제하시겠습니까?",
+      buttonText: {right: "해제하기"},
       callback: () => {
         fetchDeleteData(memNo)
       }

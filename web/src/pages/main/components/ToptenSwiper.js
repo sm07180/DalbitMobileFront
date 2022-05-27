@@ -7,6 +7,7 @@ import {useHistory} from "react-router-dom";
 import {IMG_SERVER} from 'context/config';
 import {RoomValidateFromClipMemNo, RoomValidateFromListenerFollow,} from "common/audio/clip_func";
 import {useDispatch, useSelector} from "react-redux";
+import {setCache, setPaging, setRankList, setRankTopList, setRankTopSwiperNum} from "redux/actions/rank";
 
 const ToptenSwiper = (props) => {
   const {data, swiperRefresh, pullToRefreshPause, topRankType, children} = props;
@@ -29,23 +30,28 @@ const ToptenSwiper = (props) => {
     }
   };
 
-  // 프로필 상세 페이지 이동
+  //랭킹 전체보기 이동
   const onClickAction = (item) => {
-    if (!globalState.baseData.isLogin) {
-      history.push("/login")
+    // dispatch(setRankTopSwiperNum(1));
+    // dispatch(setPaging({pageNo: 1, pagePerCnt: 20, lastPage: 1}))
+    // dispatch(setCache(false))
+    dispatch(setRankTopList([]));
+    dispatch(setRankList([]));
+    if (topRankType === "DJ") {
+      history.push(`/rank/list/dj/time`);
     } else {
-      history.push(`/profile/${item.memNo}`);
+      history.push(`/rank/list/fan/today`);
     }
   };
+
   // 팀 상세 페이지 이동
   const goTeamDetailPage = (e) => {
-    const { teamNo } = e.currentTarget.dataset;
-
-    if (!globalState.baseData.isLogin) {
-      history.push('/login');
-    } else if (teamNo !== undefined) {
-      history.push(`/team/detail/${teamNo}`);
-    }
+    // dispatch(setRankTopSwiperNum(1));
+    // dispatch(setPaging({pageNo: 1, pagePerCnt: 20, lastPage: 1}))
+    // dispatch(setCache(false))
+    dispatch(setRankTopList([]));
+    dispatch(setRankList([]));
+    history.push(`/rank/list/team`);
   };
 
   // 스와이퍼 리플레쉬 액션

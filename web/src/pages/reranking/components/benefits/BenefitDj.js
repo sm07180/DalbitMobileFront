@@ -2,15 +2,11 @@ import React, {useEffect, useState} from 'react'
 
 import {IMG_SERVER} from 'context/config'
 
-//static
-import pointIcon from '../static/ico_point_red.svg'
+import pointIcon from '../../static/ico_point_red.svg'
 
-import './benefit.scss'
+import '../../scss/Benefit.scss'
 
-let wepbSrc
 export default () => {
-  const [effectPop, setEffectPop] = useState(false)
-
   return (
     <>
       <div className="benefitTop">

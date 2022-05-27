@@ -8,9 +8,14 @@ import { tabType } from "../constant";
 import Swiper from "react-id-swiper";
 import GiftDalPop from "./gift_dal_pop";
 import BadgeList from "../../../common/badge_list";
+import LayerPopup from "components/ui/layerPopup/LayerPopup2";
+import SpecialHistoryPop from "pages/remypage/components/popup/SpecialHistoryPop";
+
 import "../../../asset/scss/module/mypage/index.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {setBroadcastCtxUserMemNo} from "../../../redux/actions/broadcastCtx";
+
+import {setCommonPopupOpenData} from "redux/actions/common";
 import {
   setGlobalCtxAlertStatus,
   setGlobalCtxMultiViewer,
@@ -23,10 +28,12 @@ let Profile = () => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const clipState = useSelector(({clipCtx}) => clipCtx);
+  const popup = useSelector(state => state.popup);
 
   const { baseData, clipInfo, clipPlayer } = globalState;
   const { isLogin } = baseData;
 
+  const [layerPopMemNo, setLayerPopMemNo] = useState<string>("");
   const [fanState, setFanState] = useState(0);
   const [badgeList, setBadgeList] = useState<Array<any>>([]);
   const [expData, setExpData] = useState<any>({
@@ -194,7 +201,30 @@ let Profile = () => {
         </>
     );
   };
+  const historyPopupOpen = (e) => {
+    const memNo = e.currentTarget.id;
+    e.preventDefault();
+    e.stopPropagation();
+    if(memNo === globalState.profile.memNo){
+      setLayerPopMemNo(memNo);
+      dispatch(setCommonPopupOpenData({...popup, layerPopup: true}));
+    }   
+
+  }
+
   const checkSpecialDj = (profileData) => {
+    if(profileData.specialDjCnt > 0){
+      return (
+        <div className="badgeGroup">
+          <span
+            id={profileData.memNo}
+            className={`starBdg ${profileData.badgeSpecial === 1 ? "active" : ""}`}
+            onClick={historyPopupOpen}
+          >
+            {profileData.specialDjCnt}
+          </span>
+        </div>
+        );
     // if (profileData.wasSpecial && profileData.badgeSpecial === 0) {
     //   return (
     //       <div
@@ -223,8 +253,7 @@ let Profile = () => {
     //         </div>
     //       </div>
     //   );
-    // } else 
-    if (profileData.isNew === true) {
+    } else if (profileData.isNew === true) {
       return <span className="newIcon">신입 DJ</span>;
     } else if (profileData.isNewListener === true) {
       return <span className="newIcon">신입청취자</span>;
@@ -535,6 +564,12 @@ let Profile = () => {
               </div>
             </div>
         )}
+           
+        {popup.layerPopup &&
+          <LayerPopup>
+            <SpecialHistoryPop memNo={layerPopMemNo}/>
+          </LayerPopup>
+        }
       </>
   );
 };

@@ -4,7 +4,16 @@ import {RANK_TYPE} from "../../../pages/rank/constant";
 
 const initialState:RankStateType = {
     subTab: "FAN",
+    cache: true,
+    paging: {
+        pageNo: 1,
+        pagePerCnt: 20,
+        lastPage: 0
+    },
     rankList: [],
+    rankTopList: [],
+    rankTopSwiperNum:1,
+
     rankData: {
         isRankData: false,
     },
@@ -59,8 +68,20 @@ const rank = createReducer<RankStateType, RankActions>(initialState, {
     "rank/SET_SUB_TAB": (state,{payload}) => {
         return {...state, subTab: payload}
     },
+    "rank/SET_CACHE": (state,{payload}) => {
+        return {...state, cache: payload}
+    },
+    "rank/SET_PAGING": (state, {payload}) => {
+        return {...state, paging: payload}
+    },
     "rank/SET_RANK_LIST": (state, {payload}) => {
         return {...state, rankList: payload}
+    },
+    "rank/SET_RANK_TOP_LIST": (state, {payload}) => {
+        return {...state, rankTopList: payload}
+    },
+    "rank/SET_RANK_TOP_SWIPER_NUM": (state, {payload}) => {
+        return {...state, rankTopSwiperNum: payload}
     },
     "rank/SET_RANK_DATA": (state, {payload}) => {
         return {...state, rankData: payload}
