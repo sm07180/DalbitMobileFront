@@ -23,6 +23,9 @@ let touchEndY = null
 const refreshDefaultHeight = 48
 
 const Billboard = () => {
+  let seqNo = 1;
+  const nowDay = moment().format('YYYYMMDD HHmmss');
+
   const mainRef = useRef()
   const iconWrapRef = useRef()
   const arrowRefreshRef = useRef()
@@ -37,12 +40,11 @@ const Billboard = () => {
   const [tabFixed, setTabFixed] = useState(false);
   const [tabmenuType, setTabmenuType] = useState(tabmenu[0]);
 
-  const [pageInfo, setPageInfo] = useState({
-    pageNo: 1, pagePerCnt: 10
-  });
+  const [pageInfo, setPageInfo] = useState({pageNo: 1, pagePerCnt: 10});
   const [billboardSel, setBillboardSel] = useState(null);
   const [billboardList, setBillboardList] = useState([]);
   const [billboardListCnt, setBillboardListCnt] = useState(0);
+  const [seqDate, setSeqDate] = useState({firstStart: "20220530 000900", firstEnd: "20220605 235959", secondStart: "20220606 000000", secondEnd: "20220612 235959"});
 
   const tabActive = (index) => {
     setTabmenuType(tabmenu[index])
@@ -50,7 +52,7 @@ const Billboard = () => {
 
   const tabScrollEvent = () => {
     const tabMenuNode = tabMenuRef.current
-    const tabMenuTop = tabMenuNode.getBoundingClientRect().top;
+    const tabMenuTop = tabMenuNode?.getBoundingClientRect().top;
     if (window.scrollY >= tabMenuTop) {
       setTabFixed(true)
     } else {
@@ -59,7 +61,8 @@ const Billboard = () => {
   }
 
   const pEvtBillBoardListSel = async () => {
-    const listParams = {...pageInfo, pageNo: 1};
+    const listParams = {seqNo: seqNo, pageNo: pageInfo.pageNo, pagePerCnt: pageInfo.pagePerCnt};
+    const selParams = {seqNo: seqNo}
     const listApi = tabmenuType === tabmenu[0] ? Api.getElectricSignDJList : Api.getElectricSignFanList;
     const selApi = tabmenuType === tabmenu[0] ? Api.getElectricSignDJSel : Api.getElectricSignFanSel;
 
@@ -69,7 +72,7 @@ const Billboard = () => {
       setPageInfo({...pageInfo, pageNo: 1});
     });
 
-    selApi().then((res) => {
+    selApi(selParams).then((res) => {
       setBillboardSel(res.data);
     });
   }
@@ -186,9 +189,20 @@ const Billboard = () => {
     return () => window.removeEventListener('scroll', tabScrollEvent)
   },[])
 
-  useEffect(()=>{
-    pEvtBillBoardListSel()
-  }, [tabmenuType])
+  // useEffect(()=>{
+  //   pEvtBillBoardListSel()
+  // }, [tabmenuType])
+
+  useEffect(() => {
+    if(moment(nowDay).isAfter(moment(seqDate.firstEnd))) {
+      seqNo = 2;
+      pEvtBillBoardListSel(seqNo);
+    } else {
+      seqNo = 1;
+      pEvtBillBoardListSel(seqNo);
+    }
+    console.log(seqNo);
+  }, [nowDay, tabmenuType]);
 
   return (
     <>
