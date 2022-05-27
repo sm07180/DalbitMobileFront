@@ -34,6 +34,8 @@ const RankingMore = () => {
     records: 150
   });
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(()=>{
     setPayload({
       ...payload,
@@ -54,6 +56,8 @@ const RankingMore = () => {
 
   // 팀랭킹 fetch
   const TeamRankFetch = () => {
+    if (loading) false;
+
     cacheApi.getRankTeam(rankState.cache).then((res) => {
       if(res.data.code === "00000"){
         let topRank = [];
@@ -67,11 +71,15 @@ const RankingMore = () => {
           lastPage: Math.ceil((res.data.data.listCnt) / rankState.paging.pagePerCnt)
         }));
       }
-    });
+
+      setLoading(false);
+    }).catch(e => setLoading(false));
   }
 
   // DJ 타임랭킹 fetch
   const DjTimeRankFetch = () => {
+    if (loading) false;
+
     const param = {
       ...payload,
       rankingDate: moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -91,11 +99,15 @@ const RankingMore = () => {
           lastPage: Math.ceil((res.data.data.listCnt) / rankState.paging.pagePerCnt)
         }));
       }
-    });
+
+      setLoading(false);
+    }).catch(e => setLoading(false));
   };
 
   // DJ, FAN, CUPID 일간, 주간,월간, 연간
   const RankFetch = (type) => {
+    if (loading) false;
+
     const {rankingDate, prevRankingDate} = Utility.getSearchRankingDate(type);
     const param = {...payload, rankingDate: rankingDate, prevRankingDate: prevRankingDate};
 
@@ -112,7 +124,9 @@ const RankingMore = () => {
           lastPage: Math.ceil((res.data.data.listCnt) / rankState.paging.pagePerCnt)
         }));
       }
-    });
+
+      setLoading(false);
+    }).catch(e => setLoading(false));
   }
 
   // 스크롤 이벤트
@@ -135,6 +149,13 @@ const RankingMore = () => {
     }
   },[rankState.paging]);
 
+  const tabClick = (value) => {
+    if (!loading) {
+      setLoading(true);
+      setTab(value);
+    }
+  };
+
   return (
     <div id="rankingList">
       {/*헤더*/}
@@ -148,10 +169,10 @@ const RankingMore = () => {
       </Header>
 
       {/*DJ, FAN, CUPID, TEAM 탭*/}
-      <SlctTab tab={tab} setTab={setTab} setPaging={setPaging}/>
+      <SlctTab tab={tab} setTab={tabClick} setPaging={setPaging}/>
 
       {/*타임/일간/주간/월간/연간 탭*/}
-      {payload.rankSlct !== 4 && <TypeTab tab={tab} setTab={setTab} setPaging={setPaging}/>}
+      {payload.rankSlct !== 4 && <TypeTab tab={tab} setTab={tabClick} setPaging={setPaging}/>}
 
       {/*랭킹리스트 TOP3, List 구성*/}
       <div className="rankingContent">
