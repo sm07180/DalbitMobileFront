@@ -33,7 +33,6 @@ export const SET_CLOSE_FAN_RANK 				= 'global/ctx/SET_CLOSE_FAN_RANK';
 export const SET_BOARD_NUMBER 					= 'global/ctx/SET_BOARD_NUMBER';
 export const SET_NOTICE_INDEX_NUM 			= 'global/ctx/SET_NOTICE_INDEX_NUM';
 export const SET_BANNER_CHECK 					= 'global/ctx/SET_BANNER_CHECK';
-export const SET_EXIT_MARBLE_INFO 			= 'global/ctx/SET_EXIT_MARBLE_INFO';
 export const SET_NEWS 						      = 'global/ctx/SET_NEWS';
 export const SET_STICKER 					      = 'global/ctx/SET_STICKER';
 export const SET_STICKER_MSG 					  = 'global/ctx/SET_STICKER_MSG';
@@ -145,7 +144,7 @@ export const WALLET_ADD_DATA 				                = 'global/ctx/WALLET_ADD_DATA';
 export const WALLET_ADD_HISTORY 				            = 'global/ctx/WALLET_ADD_HISTORY';
 
 
-export const setGlobalCtxNativePlayer = createAction(SET_NATIVE_PLAYER)<NativePlayerType>();
+export const setGlobalCtxNativePlayer = createAction(SET_NATIVE_PLAYER)<NativePlayerType | null>();
 export const setGlobalCtxNativePlayerInfo = createAction(SET_NATIVE_PLAYER_INFO)<Pick<GlobalCtxStateType, 'nativePlayerInfo'>>();
 export const setGlobalCtxMessage = createAction(SET_MESSAGE)<MessageType>();
 export const setGlobalCtxRoomInfo = createAction(SET_ROOM_INFO)<any>();
@@ -177,7 +176,6 @@ export const setGlobalCtxCloseFanRank = createAction(SET_CLOSE_FAN_RANK)<any>();
 export const setGlobalCtxBoardNumber = createAction(SET_BOARD_NUMBER)<any>();
 export const setGlobalCtxNoticeIndexNum = createAction(SET_NOTICE_INDEX_NUM)<any>();
 export const setGlobalCtxBannerCheck = createAction(SET_BANNER_CHECK)<any>();
-export const setGlobalCtxExitMarbleInfo = createAction(SET_EXIT_MARBLE_INFO)<any>();
 export const setGlobalCtxNews = createAction(SET_NEWS)<any>();
 export const setGlobalCtxSticker = createAction(SET_STICKER)<any>();
 export const setGlobalCtxStickerMsg = createAction(SET_STICKER_MSG)<any>();

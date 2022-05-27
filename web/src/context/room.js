@@ -137,7 +137,6 @@ export const RoomJoin = async (obj) => {
       if (listener === 'listener' || listener === 'clip') {
         return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, shadow: 0})
       } else if (Room.globalState.adminChecker === false && roomNo === Utility.getCookie('listen_room_no')) {
-        // pip상태에서 같은방 입장
         return Hybrid('EnterRoom', '')
       } else {
         if(Utility.getCookie('listen_room_no') !== 'null' && Utility.getCookie('listen_room_no') !== undefined) {
@@ -256,7 +255,6 @@ export const RoomJoin = async (obj) => {
     if (callbackFunc !== undefined) callbackFunc()
     //
     if (res.result === 'fail') {
-      Room.dispatch(setGlobalCtxNativePlayerInfo({nativePlayerInfo:{state:'ready', roomNo: roomNo}}))
       if (res.code === '-99') {
         Room.dispatch(setGlobalCtxMessage({type:'imgConfirm',
           buttonText: {left: '취소',right: '로그인'},

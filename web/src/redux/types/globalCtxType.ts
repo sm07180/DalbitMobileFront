@@ -123,7 +123,6 @@ export type GlobalCtxStateType = {
   authFormRef: HTMLFormElement | null
   noServiceInfo: NoServiceInfoType
   userReportInfo: UserReportInfoType
-  exitMarbleInfo: ExitMarbleInfoType
   goToMoonTab: "" | "info" | "rank"
   walletData: WalletDataType
   backEventCallback: any
@@ -186,7 +185,7 @@ export type UserProfileType = {
 
 export type MessageType = {
   title?: string,
-  type: '' | 'alert' | 'layerPop' | 'alert_no_close' | 'toast' | 'confirm' | 'confirm_admin'
+  type: '' | 'alert' | 'layerPop' | 'alert_no_close' | 'toast' | 'confirm' | 'confirm_admin' | 'imgConfirm'
   buttonMsg?: string
   buttonText?:ButtonTextType
   msg?: string
@@ -202,16 +201,6 @@ export type MessageType = {
 export type ButtonTextType = {
   left?: string
   right?: string
-}
-export type ExitMarbleInfoType = {
-  rMarbleCnt: number
-  yMarbleCnt: number
-  bMarbleCnt: number
-  vMarbleCnt: number
-  isBjYn: string
-  marbleCnt: number
-  pocketCnt: number
-  showState: boolean
 }
 export type UserReportInfoType = {
   memNo: string

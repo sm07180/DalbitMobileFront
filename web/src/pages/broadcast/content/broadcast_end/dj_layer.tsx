@@ -13,11 +13,8 @@ import expIcon from "./static/ic_exp.svg";
 import NoResultImg from "./static/no_result_img.svg";
 
 import "./index.scss";
-import {useDispatch, useSelector} from "react-redux";
 
 function BroadcastEndByDj() {
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const { exitMarbleInfo } = globalState;
   const history = useHistory();
   const { dimLayer, dispatchDimLayer } = useContext(BroadcastLayerContext);
 

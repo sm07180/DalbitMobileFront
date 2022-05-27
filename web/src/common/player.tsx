@@ -43,7 +43,6 @@ import {
   setGlobalCtxAlertStatus,
   setGlobalCtxClipInfoAdd,
   setGlobalCtxClipPlayerInit,
-  setGlobalCtxExitMarbleInfo,
   setGlobalCtxGuestInfoEmpty,
   setGlobalCtxIsShowPlayer,
   setGlobalCtxRtcInfoEmpty,
@@ -74,7 +73,6 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
     rtcInfo,
     isShowPlayer,
     guestInfo,
-    exitMarbleInfo,
   } = globalState;
 
   const [bgImage, setBgImage] = useState("");
@@ -511,26 +509,6 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
         if (roomNo1) {
           const { data, result } = await broadcastExit({ roomNo: roomNo1 });
           if (result === "success") {
-            dispatch(setGlobalCtxExitMarbleInfo({
-              ...exitMarbleInfo,
-              rMarbleCnt: data.getMarbleInfo.rMarbleCnt,
-              yMarbleCnt: data.getMarbleInfo.yMarbleCnt,
-              bMarbleCnt: data.getMarbleInfo.bMarbleCnt,
-              vMarbleCnt: data.getMarbleInfo.vMarbleCnt,
-              isBjYn: data.getMarbleInfo.isBjYn,
-              marbleCnt: data.getMarbleInfo.marbleCnt,
-              pocketCnt: data.getMarbleInfo.pocketCnt,
-            }));
-            if (
-              globalState.exitMarbleInfo.marbleCnt > 0 ||
-              globalState.exitMarbleInfo.pocketCnt > 0
-            ) {
-              dispatch(setGlobalCtxExitMarbleInfo({
-                ...exitMarbleInfo,
-                showState: true,
-              }));
-            }
-
             rtcSessionClear();
             if (
               chatInfo &&

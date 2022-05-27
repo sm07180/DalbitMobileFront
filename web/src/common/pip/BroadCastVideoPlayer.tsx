@@ -11,7 +11,6 @@ import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 import {broadcastExit} from "common/api";
 import {useDispatch, useSelector} from "react-redux";
 import {
-  setGlobalCtxExitMarbleInfo,
   setGlobalCtxGuestInfoEmpty, setGlobalCtxIsShowPlayer,
   setGlobalCtxRtcInfoEmpty
 } from "../../redux/actions/globalCtx";
@@ -20,7 +19,7 @@ const BroadCastVideoPlayer = ()=>{
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const {chatInfo, rtcInfo, isShowPlayer, guestInfo, exitMarbleInfo} = globalState;
+  const {chatInfo, rtcInfo, isShowPlayer, guestInfo} = globalState;
   const displayWrapRef = useRef<HTMLDivElement>(null);
 
   const disconnectGuest = () => {
@@ -43,24 +42,6 @@ const BroadCastVideoPlayer = ()=>{
     if (result !== "success") {
       console.log(`broadcastExit fail`);
       return;
-    }
-    if(data && data.getMarbleInfo){
-      dispatch(setGlobalCtxExitMarbleInfo({
-        ...exitMarbleInfo,
-        rMarbleCnt: data.getMarbleInfo.rMarbleCnt,
-        yMarbleCnt: data.getMarbleInfo.yMarbleCnt,
-        bMarbleCnt: data.getMarbleInfo.bMarbleCnt,
-        vMarbleCnt: data.getMarbleInfo.vMarbleCnt,
-        isBjYn: data.getMarbleInfo.isBjYn,
-        marbleCnt: data.getMarbleInfo.marbleCnt,
-        pocketCnt: data.getMarbleInfo.pocketCnt,
-      }))
-    }
-
-    if (exitMarbleInfo.marbleCnt > 0 || exitMarbleInfo.pocketCnt > 0) {
-      dispatch(setGlobalCtxExitMarbleInfo({
-        ...exitMarbleInfo, showState: true
-      }));
     }
     if (guestInfo !== null) {
       guestInfo[Object.keys(guestInfo)[0]].stop?.();

@@ -194,16 +194,6 @@ const initialState: GlobalCtxStateType = {
     memNick: "",
     showState: false,
   },
-  exitMarbleInfo: {
-    rMarbleCnt: 0,
-    yMarbleCnt: 0,
-    bMarbleCnt: 0,
-    vMarbleCnt: 0,
-    isBjYn: "",
-    marbleCnt: 0,
-    pocketCnt: 0,
-    showState: false,
-  },
   goToMoonTab: "info",
   walletData:initWalletData,
   popup:[],
@@ -340,9 +330,6 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
   },
   "global/ctx/SET_BANNER_CHECK": (state, {payload}) => {
     return {...state, bannerCheck: payload}
-  },
-  "global/ctx/SET_EXIT_MARBLE_INFO": (state, {payload}) => {
-    return {...state, exitMarbleInfo: payload}
   },
   "global/ctx/SET_NEWS": (state, {payload}) => {
     return {...state, news: payload}

@@ -15,7 +15,6 @@ import {thumbInlineStyle} from "./PlayerStyle";
 import equalizerLiveAni from "./ani/equalizer_live.json";
 import {useDispatch, useSelector} from "react-redux";
 import {
-  setGlobalCtxExitMarbleInfo,
   setGlobalCtxGuestInfoEmpty,
   setGlobalCtxIsShowPlayer,
   setGlobalCtxRtcInfoEmpty
@@ -30,8 +29,6 @@ const BroadCastAudioPlayer = ()=>{
     rtcInfo,
     isShowPlayer,
     guestInfo,
-    exitMarbleInfo,
-    userProfile
   } = globalState;
   const [mute, setMute] = useState(rtcInfo?.audioTag?.muted);
   const roomNo = sessionStorage.getItem("room_no") === null ? "" : sessionStorage.getItem("room_no") as string;
@@ -61,9 +58,6 @@ const BroadCastAudioPlayer = ()=>{
       return;
     }
 
-    if (exitMarbleInfo.marbleCnt > 0 || exitMarbleInfo.pocketCnt > 0) {
-      dispatch(setGlobalCtxExitMarbleInfo({...exitMarbleInfo, showState: true}))
-    }
     if (guestInfo !== null) {
       guestInfo[Object.keys(guestInfo)[0]].stop?.();
       dispatch(setGlobalCtxGuestInfoEmpty())

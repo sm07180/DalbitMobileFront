@@ -10,6 +10,7 @@ import {
 } from "../../actions/globalCtx";
 import {AuthType} from "../../../constant";
 import Utility from "../../../components/lib/utility";
+import {isIos} from "../../../context/hybrid";
 
 function* nativePlayerShow(param){
   try {
@@ -63,10 +64,21 @@ function* nativeEnd(param){
     yield put({type: SET_MEDIA_PLAYER_STATUS, payload: false});
     yield put({type: SET_CAST_STATE, payload: null});
 
-    sessionStorage.removeItem('room_no');
-    Utility.setCookie('isDj', false, 3);
-    Utility.setCookie('native-player-info', '', -1);
-    Utility.setCookie('listen_room_no', null, null);
+    const clearInfo = () => {
+      sessionStorage.removeItem('room_no');
+      Utility.setCookie('isDj', false, 3);
+      Utility.setCookie('native-player-info', '', -1);
+      Utility.setCookie('listen_room_no', null, null);
+    }
+    if(isIos()) {
+      const currentRoomNo: string | null | undefined = sessionStorage.getItem('room_no'); // 현재 청취중인 roomNo (청취중이 아니라면 이전 roomNo)
+      const endedRoomNo: string | undefined = param.payload?.roomNo; // native에서 종료하고 넘겨주는 roomNo
+      if(!currentRoomNo || endedRoomNo === currentRoomNo || endedRoomNo === '0') {
+        clearInfo();
+      }
+    }else {
+      clearInfo();
+    }
 
     // 닫기버튼 누르고 socket unsubscribe 되기까지 기다려야함
     // AOS 경우 기존에 native-end 브릿지를 웹에 보내고 unsubscribe 처리하기 때문에 강제 딜레이 줌

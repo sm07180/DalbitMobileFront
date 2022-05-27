@@ -82,8 +82,6 @@ export default (props) => {
     }
   }
 
-  let marbleTotleCtn =  0;
-
   function chargeClick() {
     async function postChange() {
       const res = await Api.postChangeItem({

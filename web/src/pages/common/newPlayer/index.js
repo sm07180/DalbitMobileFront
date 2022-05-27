@@ -65,7 +65,7 @@ export default (props) => {
 
                     // ios pip는 native-end 브릿지를 안보내서 웹에서 닫기 버튼 누를때 강제로 줌..
                     // fixme ios 1.8.6 버전부터 제거 대상
-                    dispatch(nativeEnd({}));
+                    dispatch(nativeEnd({roomNo: '0'}));
                   }}
                 />
               </div>

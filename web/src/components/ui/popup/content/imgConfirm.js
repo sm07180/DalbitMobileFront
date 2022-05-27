@@ -14,13 +14,13 @@ import _ from 'lodash'
 import useClick from 'components/hooks/useClick'
 //components
 import Utility from 'components/lib/utility'
-import {isAndroid} from "context/hybrid";
+import {Hybrid, isAndroid, isIos} from "context/hybrid";
 import {useDispatch, useSelector} from "react-redux";
 import {
   setGlobalCtxBackFunction,
   setGlobalCtxBackFunctionEnd,
   setGlobalCtxBackState,
-  setGlobalCtxMessage
+  setGlobalCtxMessage, setGlobalCtxNativePlayer, setGlobalCtxNativePlayerInfo
 } from "redux/actions/globalCtx";
 //
 export default (props) => {
@@ -72,6 +72,20 @@ export default (props) => {
   const btnClose = () => {
     dispatch(setGlobalCtxMessage({type:'alert',visible: false}))
   }
+
+  const broadInfoReset = () => {
+    if(isIos()) {
+      sessionStorage.removeItem('room_no');
+      Utility.setCookie('isDj', false, 3);
+      Utility.setCookie('native-player-info', '', -1);
+      Utility.setCookie('listen_room_no', null, null);
+      dispatch(setGlobalCtxNativePlayer(null));
+
+      Hybrid('ExitRoom', '');
+    }
+    dispatch(setGlobalCtxNativePlayerInfo({nativePlayerInfo:{state:'ready', roomNo: ''}}));
+  }
+
   //useEffect
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -80,11 +94,20 @@ export default (props) => {
       dispatch(setGlobalCtxBackState(true))
       dispatch(setGlobalCtxBackFunction({name: 'alertClose'}))
     }
+
+    broadInfoReset();
+
     return () => {
       document.body.style.overflow = ''
       if(isAndroid()) {
         dispatch(setGlobalCtxBackFunctionEnd(''));
       }
+      dispatch(setGlobalCtxMessage({
+        type: '',
+        buttonText: {left: '취소', right: '확인'},
+        msg: '',
+        callback: () => {},
+      }));
     }
   }, [])
   //---------------------------------------------------------------------
