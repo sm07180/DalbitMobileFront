@@ -7,7 +7,7 @@ import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
-import DjChatSwiper from './components/DjChatSwiper'
+import DjChatSwiper from './components/DjChartSwiper'
 import MyRanking from './components/MyRanking'
 import Refresh from './components/Refresh'
 import RankingList from './components/more/RankList'
@@ -301,7 +301,7 @@ const RankPage = () => {
             <div className='clickArea' onClick={()=>{setPopup(true)}}/>
           </div>
         </div>
-        <DjChatSwiper data={djRank}/>
+        <DjChatSwiper data={djRank} type={type}/>
         <Refresh type={type} setType={setType}/>
       </section>
 

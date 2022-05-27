@@ -8,15 +8,14 @@ import {RoomValidateFromClipMemNo, RoomValidateFromListenerFollow,} from "common
 import {IMG_SERVER} from 'context/config'
 import {useDispatch, useSelector} from "react-redux";
 
-const DjChatSwiper = (props) => {
-  const {data} = props
+const DjChartSwiper = (props) => {
+  const {data, type} = props
 
   let locationStateHistory = useHistory();
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  // 스와이퍼
   const swiperParams = {
     slidesPerView: 'auto',
     loop: false,
@@ -68,7 +67,7 @@ const DjChatSwiper = (props) => {
             </div>
           )
         })}
-        <div className='nextRanking' onClick={() => history.push(`/rank/dj`)}>
+        <div className='nextRanking' onClick={() => history.push(`/rank/list/dj/${type}`)}>
           <p>그 다음은 누구일까?</p><span/>
         </div>
       </Swiper>
@@ -77,4 +76,4 @@ const DjChatSwiper = (props) => {
   )
 }
 
-export default React.memo(DjChatSwiper);
+export default React.memo(DjChartSwiper);
