@@ -123,7 +123,7 @@ const TopRanker = (props) => {
                       <div className="ranker" key={index}>
                         <div className="listColumn">
                           <div className="photo">
-                            <img src={"https://image.dalbitlive.com/images/listNone-userProfile.png"} alt=""/>
+                            <img src={"https://image.dallalive.com/images/listNone-userProfile.png"} alt=""/>
                           </div>
                           <div className='rankerNick'>-</div>
                         </div>
@@ -132,7 +132,7 @@ const TopRanker = (props) => {
                           <div className='cupidHeader'>HONEY</div>
                           <div className='cupidContent'>
                             <div className='cupidThumb'>
-                              <img src={"https://image.dalbitlive.com/images/listNone-userProfile.png"}/>
+                              <img src={"https://image.dallalive.com/images/listNone-userProfile.png"}/>
                             </div>
                             <div className='cupidNick'>-</div>
                           </div>
