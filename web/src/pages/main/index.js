@@ -522,7 +522,6 @@ const MainPage = () => {
         topRankType={rankingListInfo.type}>
         <SubTabmenu data={topTenTabMenu} tab={topRankType} setTab={topRankTabChange} defaultTab={0} />
       </ToptenSwiper>
-
       {/* 배너 영역 */}
       <section className='bannerWrap'>
         <BannerSlide/>
