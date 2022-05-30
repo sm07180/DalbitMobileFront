@@ -55,6 +55,7 @@ import Wassup from './wassup'
 import DallaGround from './dallaground'
 import BugReport from './bugreport'
 import ContentBroadcast from './contentBroadcast'
+import Billboard from './billboard'
 
 
 import moment from "moment";
@@ -169,6 +170,8 @@ export default (props) => {
         return <KeyboardTodayWinning />
       case 'contentBroadcast':
         return <ContentBroadcast />
+      case 'billboard':
+        return <Billboard />
       case 'dallaground':
         return <DallaGround />
       default:
