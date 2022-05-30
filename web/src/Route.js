@@ -182,7 +182,7 @@ const Router = () => {
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rank/list/:slct/:type?" component={RankingMore} />
         <Route exact path="/rank/benefit/:slct" component={RankingBenefit} />
-        {/*<Route exact path="/rank/:type" component={RankingGuide} />*/}
+        <Route exact path="/rank/:type" component={RankingGuide} />
 
         <Route exact path="/setting" component={ReSetting} />
         <Route exact path="/setting/:type" component={ReSetting} />
