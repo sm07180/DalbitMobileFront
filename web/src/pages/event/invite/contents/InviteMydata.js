@@ -46,7 +46,7 @@ const InviteMydata = () => {
         <div className='inviteData'>
           <div className='titleWrap'>
             <span className='dataTitle'>
-              <img src='https://image.dalbitlive.com/event/invite/eventPage_myData-title.png' alt="초대친구 현황" className='titleImg'/>
+              <img src='https://image.dallalive.com/event/invite/eventPage_myData-title.png' alt="초대친구 현황" className='titleImg'/>
             </span>
             <button className='questionMark' onClick={popupOpen}/>
           </div>

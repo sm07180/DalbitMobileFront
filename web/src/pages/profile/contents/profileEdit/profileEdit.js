@@ -302,7 +302,7 @@ const ProfileEdit = () => {
                       e.stopPropagation();
                       inputRef.current.click();
                     }}>
-                  <i><img src={"https://image.dalbitlive.com/mypage/dalla/coverNone.png"} alt=""/></i>
+                  <i><img src={"https://image.dallalive.com/mypage/dalla/coverNone.png"} alt=""/></i>
                 </div>
               </section>
             }

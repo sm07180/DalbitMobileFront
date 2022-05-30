@@ -62,7 +62,7 @@ const MoonLandPop = (props: any) => {
     <div className={"layerWrap"} onClick={(e) => e.stopPropagation()}>
       <div className='topimg'/>
       <div className='title'>
-        <img src='https://image.dalbitlive.com/broadcast/event/gotomoon/pop_gotomoon-title.png' alt="달나라 갈끄니까!"/>
+        <img src='https://image.dallalive.com/broadcast/event/gotomoon/pop_gotomoon-title.png' alt="달나라 갈끄니까!"/>
       </div>
       <div className='itemSection'>
         <div className='itemWrap'>

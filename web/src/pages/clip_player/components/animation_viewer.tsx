@@ -258,7 +258,7 @@ const LottieDisplayStyled = styled.div`
             left: -32px;
             width: 18px;
             height: 18px;
-            background: url("https://image.dalbitlive.com/svg/itemmulitiply.svg") no-repeat;
+            background: url("https://image.dallalive.com/svg/itemmulitiply.svg") no-repeat;
             background-size: cover;
           }
 

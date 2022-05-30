@@ -8,7 +8,7 @@ import {RoomJoin} from 'context/room'
 import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 
 import RankArrow from '../static/arrow_right_w.svg'
-const LiveIcon = 'https://image.dalbitlive.com/svg/ic_live.svg'
+const LiveIcon = 'https://image.dallalive.com/svg/ic_live.svg'
 export default (props) => {
   const history = useHistory()
   const {list} = props

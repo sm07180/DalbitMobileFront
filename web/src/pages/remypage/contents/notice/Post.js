@@ -41,9 +41,9 @@ const Post = (props) => {
           <div className="listRow" key={index}>
             {/* noticeType 1 = 공지사항, 2 = 이벤트, 3 = 정기정검, 4 = 업데이트, 5 = 언론보도 */}
             <div className="photo">
-              <img src={list.noticeType === 1 || list.noticeType === 5 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.noticeImg}.png`
-                : list.noticeType === 2 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.eventImg}.png`
-                  : list.noticeType === 3 || list.noticeType === 4 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.showImg}.png` : ""} alt=""/>
+              <img src={list.noticeType === 1 || list.noticeType === 5 ? `https://image.dallalive.com/mypage/dalla/notice/${imgFile.noticeImg}.png`
+                : list.noticeType === 2 ? `https://image.dallalive.com/mypage/dalla/notice/${imgFile.eventImg}.png`
+                  : list.noticeType === 3 || list.noticeType === 4 ? `https://image.dallalive.com/mypage/dalla/notice/${imgFile.showImg}.png` : ""} alt=""/>
               {list.isNew && list.read_yn === "n" && <span className="newBadge">N</span>}
             </div>
             <div className="listContent" data-num={list.noticeIdx} data-read={list.read_yn} onClick={onClick}>

@@ -41,20 +41,20 @@ export default function RoundList({rankList}) {
 
                 <dl className="point_box">
                   {/* <dt>
-                    <img src="https://image.dalbitlive.com/svg/ico_point.svg" width={16} alt="획득" /> 획득
+                    <img src="https://image.dallalive.com/svg/ico_point.svg" width={16} alt="획득" /> 획득
                   </dt>
                   <dd>{totalPoint.toLocaleString()}</dd> */}
                   <dt>
-                    <img src="https://image.dalbitlive.com/svg/people_g_m.svg" width={16} alt="청취자수" /> 50
+                    <img src="https://image.dallalive.com/svg/people_g_m.svg" width={16} alt="청취자수" /> 50
                   </dt>
                   <dd>{listenerPoint.toLocaleString()}회</dd>
                   <dt>
-                    <img src="https://image.dalbitlive.com/svg/like_r_m.svg" width={16} alt="좋아요" /> 100
+                    <img src="https://image.dallalive.com/svg/like_r_m.svg" width={16} alt="좋아요" /> 100
                   </dt>
                   <dd>{goodPoint.toLocaleString()}회</dd>
 
                   <dt>
-                    <img src="https://image.dalbitlive.com/svg/ic_fan.svg" width={16} alt="팬등록" /> 100
+                    <img src="https://image.dallalive.com/svg/ic_fan.svg" width={16} alt="팬등록" /> 100
                   </dt>
                   <dd>{FanPointCount(fanPoint)}명</dd>
                 </dl>
@@ -88,19 +88,19 @@ export default function RoundList({rankList}) {
 
                 <dl className="point_box">
                   {/* <dt>
-                    <img src="https://image.dalbitlive.com/svg/ico_point.svg" width={16} alt="획득" /> 획득
+                    <img src="https://image.dallalive.com/svg/ico_point.svg" width={16} alt="획득" /> 획득
                   </dt>
                   <dd>{totalPoint.toLocaleString()}</dd> */}
                   <dt>
-                    <img src="https://image.dalbitlive.com/svg/people_g_m.svg" width={16} alt="청취자수" /> 50
+                    <img src="https://image.dallalive.com/svg/people_g_m.svg" width={16} alt="청취자수" /> 50
                   </dt>
                   <dd>{listenerPoint.toLocaleString()}회</dd>
                   <dt>
-                    <img src="https://image.dalbitlive.com/svg/like_r_m.svg" width={16} alt="좋아요" /> 100
+                    <img src="https://image.dallalive.com/svg/like_r_m.svg" width={16} alt="좋아요" /> 100
                   </dt>
                   <dd>{goodPoint.toLocaleString()}회</dd>
                   <dt>
-                    <img src="https://image.dalbitlive.com/svg/ic_fan.svg" width={16} alt="팬등록" /> 100
+                    <img src="https://image.dallalive.com/svg/ic_fan.svg" width={16} alt="팬등록" /> 100
                   </dt>
                   <dd>{FanPointCount(fanPoint)}명</dd>
                 </dl>

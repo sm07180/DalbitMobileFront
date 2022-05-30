@@ -15,7 +15,7 @@ export default function awardEventResultFan({resultList}) {
               <li className="awardFanItem" key={idx} onClick={() => history.push(`/profile/${memNo}`)}>
                 <div className="thumb">
                   <img src={profileImage.thumb336x336} className="thumb__image" alt={nickNm} />
-                  <img src="https://image.dalbitlive.com/event/award/201214/ico-2020-medal.png" className="thumb__medal" />
+                  <img src="https://image.dallalive.com/event/award/201214/ico-2020-medal.png" className="thumb__medal" />
                 </div>
                 <p className="nickName">{nickNm}</p>
               </li>

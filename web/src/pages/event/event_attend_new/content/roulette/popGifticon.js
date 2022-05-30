@@ -102,7 +102,7 @@ export default () => {
         </div>
 
         <div className="sns_detail">
-          <img src="https://image.dalbitlive.com/event/attend/210205/sns_img.jpg" />
+          <img src="https://image.dallalive.com/event/attend/210205/sns_img.jpg" />
         </div>
 
         <div className="check_box">
@@ -205,9 +205,9 @@ export default () => {
             <div className="winInfo">
               <div className="winInfo__image">
                 {itemNo === 2 ? (
-                  <img src="https://image.dalbitlive.com/event/attend/201019/img_moon1@2x.png" alt="1달" />
+                  <img src="https://image.dallalive.com/event/attend/201019/img_moon1@2x.png" alt="1달" />
                 ) : itemNo === 3 ? (
-                  <img src="https://image.dalbitlive.com/event/attend/201019/img_moon3@2x.png" alt="3달" />
+                  <img src="https://image.dallalive.com/event/attend/201019/img_moon3@2x.png" alt="3달" />
                 ) : (
                   <img src={imageUrl} alt="룰렛 결과 이미지" />
                 )}

@@ -640,7 +640,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     {[...Array(3 - profileData.fanRank.length)].map((rankItem, index) => {
                       return (
                         <div className={`rankingList__item`} key={index}>
-                          <img className="rankingList__item--img" src={`https://image.dalbitlive.com/common/photoNone-bgGray.png`} alt="기본 이미지" />
+                          <img className="rankingList__item--img" src={`https://image.dallalive.com/common/photoNone-bgGray.png`} alt="기본 이미지" />
                         </div>
                       )
                     })}
@@ -673,7 +673,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                           className={`rankingList__item`}
                         >
                           <img
-                            src="https://image.dalbitlive.com/common/photoNone-bgGray.png"
+                            src="https://image.dallalive.com/common/photoNone-bgGray.png"
                             className="rankingList__item--img"
                             alt={`defalutrankProfileImg` + idx}
                           />
@@ -700,7 +700,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     </button>
                     <div className={`rankingList__item `}>
                       <img
-                        src="https://image.dalbitlive.com/common/photoNone-bgGray.png"
+                        src="https://image.dallalive.com/common/photoNone-bgGray.png"
                         className="rankingList__item--img"
                         alt={`defalutrankProfileImg`}
                       />

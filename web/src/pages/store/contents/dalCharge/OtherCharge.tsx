@@ -233,7 +233,7 @@ const OtherCharge = ()=>{
       {globalState.customHeader['os'] !== OS_TYPE['IOS'] && !moment(nowDay).isAfter(moment('20220428')) &&
         <section className="eventBanner">
           <div className="bannerImg" onClick={() => {openBannerUrl("/notice/661")}}>
-            <img src="https://image.dalbitlive.com/store/banner/store_banner-7951.png" alt=""/>
+            <img src="https://image.dallalive.com/store/banner/store_banner-7951.png" alt=""/>
           </div>
           <div className="bannerInfo">
             <p className="bannerText">※ 단, 무통장입금, 계좌이체, 카드결제 방식에 한합니다.</p>

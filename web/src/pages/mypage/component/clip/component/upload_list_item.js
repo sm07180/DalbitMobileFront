@@ -124,7 +124,7 @@ export default function UploadClip(props) {
               <img className="image_prof" src={item.bgImg['thumb120x120']} alt="profile image"/>
               <img
                 className={`image_lock${item.openType === PRIVATE ? ' visible' : ''}`}
-                src="https://image.dalbitlive.com/svg/lock_circle_g.svg"
+                src="https://image.dallalive.com/svg/lock_circle_g.svg"
                 alt="locked"
               />
             </div>

@@ -152,9 +152,9 @@ module.exports = (_, options) => {
             historyApiFallback: true, // 서버사이드렌더링 문제 해결 코드 express 를 사용할 경우 nodejs 에서 해결
             disableHostCheck: true,
             https: {
-                ca: fs.readFileSync(path.resolve(__dirname, 'key/fullchain.pem')),
-                key: fs.readFileSync(path.resolve(__dirname, 'key/key.pem')),
-                cert: fs.readFileSync(path.resolve(__dirname, 'key/cert.pem'))
+                ca: fs.readFileSync(path.resolve(__dirname, 'key/dalla_fullchain.pem')),
+                key: fs.readFileSync(path.resolve(__dirname, 'key/dalla_key.pem')),
+                cert: fs.readFileSync(path.resolve(__dirname, 'key/dalla_cert.pem'))
             }
         }
 

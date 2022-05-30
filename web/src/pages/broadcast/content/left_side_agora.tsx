@@ -1302,7 +1302,7 @@ export default function LeftSideAgora(props: {
         {broadcastState.ttsActionInfo.showAlarm &&
         <div className="ttsLayer">
           <div className="user">
-            <img src="https://image.dalbitlive.com/broadcast/ico_speaker-layer.png" />
+            <img src="https://image.dallalive.com/broadcast/ico_speaker-layer.png" />
             {broadcastState.ttsActionInfo.nickNm}
           </div>
           <span>{broadcastState.ttsActionInfo.ttsText}</span>
@@ -1379,7 +1379,7 @@ export default function LeftSideAgora(props: {
               history.push("/event/attend_event");
             }}
           >
-            {/* <img src="https://image.dalbitlive.com/main/stamp.webp" width={42} height={42} alt="출석도장" /> */}
+            {/* <img src="https://image.dallalive.com/main/stamp.webp" width={42} height={42} alt="출석도장" /> */}
             <Lottie
               options={{
                 loop: true,
@@ -1402,7 +1402,7 @@ export default function LeftSideAgora(props: {
             history.push("/event/welcome");
           }}
         >
-          <img src="https://image.dalbitlive.com/event/welcome/floatingBtn.png" alt="신입 WELCOME 이벤트" />
+          <img src="https://image.dallalive.com/event/welcome/floatingBtn.png" alt="신입 WELCOME 이벤트" />
         </FloatingIconWrapStyled>
         }
         <RandomMsgWrap
@@ -1569,7 +1569,7 @@ const LottieDisplayStyled = styled.div`
     transform: translate(-50%, -70%);
     width:400px; height:333px;
     padding: 75px 82px 90px;
-    background: url("https://image.dalbitlive.com/ani/story/ani_story-bg.png");
+    background: url("https://image.dallalive.com/ani/story/ani_story-bg.png");
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
@@ -1684,11 +1684,11 @@ const LottieDisplayStyled = styled.div`
       left: 0;
 
       .combo_box__0 {
-        background-image: url("https://image.dalbitlive.com/broadcast/itembar_red.webp");
+        background-image: url("https://image.dallalive.com/broadcast/itembar_red.webp");
       }
 
       .combo_box__1 {
-        background-image: url("https://image.dalbitlive.com/broadcast/itembar_purple.webp");
+        background-image: url("https://image.dallalive.com/broadcast/itembar_purple.webp");
         top: 56px;
 
         & + img {
@@ -1697,7 +1697,7 @@ const LottieDisplayStyled = styled.div`
       }
 
       .combo_box__2 {
-        background-image: url("https://image.dalbitlive.com/broadcast/itembar_green.webp");
+        background-image: url("https://image.dallalive.com/broadcast/itembar_green.webp");
         top: 112px;
 
         & + img {
@@ -1753,7 +1753,7 @@ const LottieDisplayStyled = styled.div`
             left: -50px;
             width: 7px;
             height: 7px;
-            background: url("https://image.dalbitlive.com/svg/itemmulitiply.svg")
+            background: url("https://image.dallalive.com/svg/itemmulitiply.svg")
               no-repeat;
             background-size: cover;
           }

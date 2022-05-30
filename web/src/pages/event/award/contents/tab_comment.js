@@ -73,7 +73,7 @@ export default function awardEventComment() {
 
   return (
     <div className="tabCommentWrap">
-      <img src="https://image.dalbitlive.com/event/award/201214/comment-img-b.png" className="tabCommentWrap__topImg" />
+      <img src="https://image.dallalive.com/event/award/201214/comment-img-b.png" className="tabCommentWrap__topImg" />
       <Comment
         commentList={commentList}
         commentAdd={commentAdd}

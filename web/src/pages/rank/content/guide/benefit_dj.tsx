@@ -132,7 +132,7 @@ export default () => {
               <td
               // onClick={() => {
               //   setEffectPop(true);
-              //   wepbSrc = "https://image.dalbitlive.com/ranking/webp/dj_day1.webp";
+              //   wepbSrc = "https://image.dallalive.com/ranking/webp/dj_day1.webp";
               // }}
               >
                 <img src={`${IMG_SERVER}/ranking/djd1@2x.png`} width={87} alt="입장효과" />
@@ -140,7 +140,7 @@ export default () => {
               <td
               // onClick={() => {
               //   setEffectPop(true);
-              //   wepbSrc = "https://image.dalbitlive.com/ranking/webp/dj_day2.webp";
+              //   wepbSrc = "https://image.dallalive.com/ranking/webp/dj_day2.webp";
               // }}
               >
                 <img src={`${IMG_SERVER}/ranking/djd2@2x.png`} width={87} alt="입장효과" />
@@ -148,7 +148,7 @@ export default () => {
               <td
               // onClick={() => {
               //   setEffectPop(true);
-              //   wepbSrc = "https://image.dalbitlive.com/ranking/webp/dj_day3.webp";
+              //   wepbSrc = "https://image.dallalive.com/ranking/webp/dj_day3.webp";
               // }}
               >
                 <img src={`${IMG_SERVER}/ranking/djd3@2x.png`} width={87} alt="입장효과" />
@@ -269,7 +269,7 @@ export default () => {
               <td
               // onClick={() => {
               //   setEffectPop(true);
-              //   wepbSrc = "https://image.dalbitlive.com/ranking/webp/dj_week1.webp";
+              //   wepbSrc = "https://image.dallalive.com/ranking/webp/dj_week1.webp";
               // }}
               >
                 <img src={`${IMG_SERVER}/ranking/djw1@2x.png`} width={87} alt="입장효과" />
@@ -277,7 +277,7 @@ export default () => {
               <td
               // onClick={() => {
               //   setEffectPop(true);
-              //   wepbSrc = "https://image.dalbitlive.com/ranking/webp/dj_week2.webp";
+              //   wepbSrc = "https://image.dallalive.com/ranking/webp/dj_week2.webp";
               // }}
               >
                 <img src={`${IMG_SERVER}/ranking/djw2@2x.png`} width={87} alt="입장효과" />
@@ -285,7 +285,7 @@ export default () => {
               <td
               // onClick={() => {
               //   setEffectPop(true);
-              //   wepbSrc = "https://image.dalbitlive.com/ranking/webp/dj_week3.webp";
+              //   wepbSrc = "https://image.dallalive.com/ranking/webp/dj_week3.webp";
               // }}
               >
                 <img src={`${IMG_SERVER}/ranking/djw3@2x.png`} width={87} alt="입장효과" />

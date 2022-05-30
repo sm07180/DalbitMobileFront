@@ -56,10 +56,10 @@ export default function () {
   return (
     <div id="moonRise">
       <button className="btnBack" onClick={() => history.goBack()}>
-        <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+        <img src="https://image.dallalive.com/svg/close_w_l.svg" alt="close" />
       </button>
       <div className="share_header">
-        <img src="https://image.dalbitlive.com/event/moonrise/img_title.png" alt="달띄우기상단공통이미지" />
+        <img src="https://image.dallalive.com/event/moonrise/img_title.png" alt="달띄우기상단공통이미지" />
         {/* <span className="share_topDate riseDate">{moonRiseTime.fullmoonText}</span> */}
         <span className="share_topDate wholeDate">{moonRiseTime.fullmoonDuration}</span>
       </div>

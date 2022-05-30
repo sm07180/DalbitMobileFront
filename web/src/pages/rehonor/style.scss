@@ -487,9 +487,9 @@
               background-repeat: no-repeat;
               background-size: contain;
               @include font(12px, $Medium, #999999);
-              &.goodCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
-              &.listenerCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-twoman.png");}
-              &.broadMin {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-time.png");}
+              &.goodCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-heart.png");}
+              &.listenerCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-twoman.png");}
+              &.broadMin {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-time.png");}
             }
             .dataNum {
               @include font(12px, $Medium, #666666);
@@ -522,7 +522,7 @@
     width: 100%;
     padding: 54px 20px 28px;
     height: 193px;
-    background: url("https://image.dalbitlive.com/honor/weeklyPick/honor_weeklyPick-topBg.png");
+    background: url("https://image.dallalive.com/honor/weeklyPick/honor_weeklyPick-topBg.png");
     background-position: right center;
     background-repeat: no-repeat;
     background-size: contain;    
@@ -531,7 +531,7 @@
       position: absolute; top: 30px; left: 65px;
       display: inline-block;
       width: 104px; height: 44px;
-      background: url("https://image.dalbitlive.com/honor/weeklyPick/honor_weeklyPick-textBg.png");
+      background: url("https://image.dallalive.com/honor/weeklyPick/honor_weeklyPick-textBg.png");
       background-position: center;
       background-repeat: no-repeat;
       background-size: contain;

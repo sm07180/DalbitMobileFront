@@ -170,12 +170,12 @@ function ModifyNoticeCompnents(props) {
                 backgroundImage: `url("${
                   thumbNail !== null && thumbNail.path !== ''
                     ? `${PHOTO_SERVER}${thumbNail.path}`
-                    : 'https://image.dalbitlive.com/svg/gallery_w.svg'
+                    : 'https://image.dallalive.com/svg/gallery_w.svg'
 
                   // inputs.imagePath === ""
                   //   ? thumbNail !== null
                   //     ? thumbNail.url
-                  //     : "https://image.dalbitlive.com/svg/gallery_w.svg"
+                  //     : "https://image.dallalive.com/svg/gallery_w.svg"
                   //   : `${PHOTO_SERVER}${inputs.imagePath}`
                 }")`
               }}></label>

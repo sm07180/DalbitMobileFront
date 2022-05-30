@@ -10,19 +10,19 @@ const ListNone = (props) => {
     <div className='listNone' style={{height: height}}>
       {
         imgType === "event01" &&
-          <img src={"https://image.dalbitlive.com/common/listNone/listNone-event01.png"} className='listNoneImg'/>
+          <img src={"https://image.dallalive.com/common/listNone/listNone-event01.png"} className='listNoneImg'/>
       }
       {
         imgType === "event02" &&
-          <img src={"https://image.dalbitlive.com/common/listNone/listNone-event02.png"} className='listNoneImg'/>
+          <img src={"https://image.dallalive.com/common/listNone/listNone-event02.png"} className='listNoneImg'/>
       }
       {
         imgType === "ui01" &&
-          <img src={"https://image.dalbitlive.com/common/listNone/listNone-ui01.png"} className='listNoneImg'/>
+          <img src={"https://image.dallalive.com/common/listNone/listNone-ui01.png"} className='listNoneImg'/>
       }
       {
         imgType === "ui02" &&
-          <img src={"https://image.dalbitlive.com/common/listNone/listNone-ui02.png"} className='listNoneImg'/>
+          <img src={"https://image.dallalive.com/common/listNone/listNone-ui02.png"} className='listNoneImg'/>
       }
       <p className='listNoneText'>
         {text.split('\n').map((line, index) => {

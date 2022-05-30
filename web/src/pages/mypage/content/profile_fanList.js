@@ -46,8 +46,8 @@ export default (props) => {
   const scrollbars = useRef(null)
   const area = useRef()
   //img
-  const SpecialBadgeOff = 'https://image.dalbitlive.com/svg/specialdj_off_s.svg'
-  const SpecialBadgeOn = 'https://image.dalbitlive.com/svg/specialdj_on_s.svg'
+  const SpecialBadgeOff = 'https://image.dallalive.com/svg/specialdj_off_s.svg'
+  const SpecialBadgeOn = 'https://image.dallalive.com/svg/specialdj_on_s.svg'
   //api
   const fetchData = async () => {
     const res = await Api.mypage_fan_ranking({

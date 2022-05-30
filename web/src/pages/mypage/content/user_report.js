@@ -8,7 +8,7 @@ import {useHistory} from 'react-router-dom'
 import {PROFILE_REPORT_TAB} from './constant'
 import Caution from '../static/caution.png'
 
-const CloseBtn = 'https://image.dalbitlive.com/images/api/close_w_l.svg'
+const CloseBtn = 'https://image.dallalive.com/images/api/close_w_l.svg'
 import 'styles/layerpopup.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage, setGlobalCtxUserReport} from "redux/actions/globalCtx";

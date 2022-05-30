@@ -8,7 +8,7 @@ $btnDisable : #FFD8E4;
     position: relative;
     width: 100%;height: 100vh;
     padding: 30% 7%;
-    background-image: url("https://image.dalbitlive.com/dalla/login/login_bg.png");
+    background-image: url("https://image.dallalive.com/dalla/login/login_bg.png");
     background-position: top center;
     background-repeat: repeat-y;
     background-size: 100% auto;
@@ -44,10 +44,10 @@ $btnDisable : #FFD8E4;
         background-size: cover;
         cursor: pointer;
         &.googlePlay {
-          background-image: url("https://image.dalbitlive.com/button/googlePlay.png");
+          background-image: url("https://image.dallalive.com/button/googlePlay.png");
         }
         &.appStore {
-          background-image: url("https://image.dalbitlive.com/button/appStore.png");  
+          background-image: url("https://image.dallalive.com/button/appStore.png");
         }
         &:last-child {
           margin-bottom: 0px;          

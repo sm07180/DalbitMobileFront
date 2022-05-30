@@ -16,20 +16,20 @@ const Invite = () => {
   const tabMenuRef = useRef()
   const [tabData, setTabData] = useState([
     {
-      dufaultSrc : "https://image.dalbitlive.com/event/invite/tab01.png",
-      activeSrc : "https://image.dalbitlive.com/event/invite/tabActive01.png",
+      dufaultSrc : "https://image.dallalive.com/event/invite/tab01.png",
+      activeSrc : "https://image.dallalive.com/event/invite/tabActive01.png",
       alt : "초대 이벤트",
       active : false
     },
     {
-      dufaultSrc : "https://image.dalbitlive.com/event/invite/tab02.png",
-      activeSrc : "https://image.dalbitlive.com/event/invite/tabActive02.png",
+      dufaultSrc : "https://image.dallalive.com/event/invite/tab02.png",
+      activeSrc : "https://image.dallalive.com/event/invite/tabActive02.png",
       alt : "초대왕 현황",
       active : true
     },
     {
-      dufaultSrc : "https://image.dalbitlive.com/event/invite/tab03.png",
-      activeSrc : "https://image.dalbitlive.com/event/invite/tabActive03.png",
+      dufaultSrc : "https://image.dallalive.com/event/invite/tab03.png",
+      activeSrc : "https://image.dallalive.com/event/invite/tabActive03.png",
       alt : "나의 현황",
       active : false
     },
@@ -73,7 +73,7 @@ const Invite = () => {
           <div id="invite">
             <Header position={'sticky'} title={'이벤트'} type={'back'}/>
             <div className='content'>
-              <img src="https://image.dalbitlive.com/event/invite/eventPage_mainImg.png" alt="친구 초대하고 초대왕 도전!" className='fullImage'/>
+              <img src="https://image.dallalive.com/event/invite/eventPage_mainImg.png" alt="친구 초대하고 초대왕 도전!" className='fullImage'/>
               {
                 tabData.length > 0 &&
                   <div className={`tabImgText ${tabFixed ? "fixed" : ""}`} ref={tabMenuRef}>

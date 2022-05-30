@@ -12,7 +12,7 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
   const {profile, token} = globalState
   const inputRef = useRef(null)
   const avatarInputRef = useRef(null)
-  const [img, setImg] = useState('https://image.dalbitlive.com/mypage/ico_profile.svg')
+  const [img, setImg] = useState('https://image.dallalive.com/mypage/ico_profile.svg')
   const [cropOpen, setCropOpen] = useState(false)
   const [editedImg, setEditedImg] = useState(null)
   const [eventObj, setEventObj] = useState(null)
@@ -178,7 +178,7 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
             htmlFor="subProfile"
             className={`addPhotoBtn ${profile?.profImgList.length >= 10 ? 'isDisabled' : ''}`}
             onClick={onAddProfileClick}>
-            <img src={'https://image.dalbitlive.com/svg/ico-camera-gray-plus.svg'} alt="사진 등록하기" />
+            <img src={'https://image.dallalive.com/svg/ico-camera-gray-plus.svg'} alt="사진 등록하기" />
             <span>{profile?.profImgList.length}/10</span>
           </label>
           <input

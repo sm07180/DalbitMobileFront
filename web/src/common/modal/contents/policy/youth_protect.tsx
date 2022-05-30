@@ -45,7 +45,7 @@ export default (props) => {
             <br />
             이름 : 이정호 <br />
             소속 : 미디어사업부 본부장 <br />
-            전자우편 : help@dalbitlive.com <br />
+            전자우편 : help@dallalive.com <br />
             전화번호 : 1522-0251
           </p>
         </div>

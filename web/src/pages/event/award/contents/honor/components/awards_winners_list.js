@@ -24,7 +24,7 @@ export default function AwardsWinnersList(props) {
           ))}
         </Swiper>
       )}
-      <img src="https://image.dalbitlive.com/event/award_rank/dj_content_img01.jpg" alt="2020 달라 어워즈 수상 명단" />
+      <img src="https://image.dallalive.com/event/award_rank/dj_content_img01.jpg" alt="2020 달라 어워즈 수상 명단" />
     </div>
   )
 }

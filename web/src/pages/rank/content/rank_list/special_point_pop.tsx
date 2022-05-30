@@ -82,7 +82,7 @@ export default ({ setPopState }) => {
           </div>
         </div>
         <button className="btnClose" onClick={() => closePopup()}>
-          <img src="https://image.dalbitlive.com/svg/close_w_l.svg" />
+          <img src="https://image.dallalive.com/svg/close_w_l.svg" />
         </button>
       </div>
     </div>

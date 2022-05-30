@@ -10,9 +10,9 @@ const FrameItems = (props) => {
   const commonFrame = ({badgeSpecial, specialDjCnt, holder, holderBg}) => {
     let frameUrl = holder;
     if (specialDjCnt > 20){
-      frameUrl = "https://image.dalbitlive.com/frame/frame_starDJ-profile3.png";
+      frameUrl = "https://image.dallalive.com/frame/frame_starDJ-profile3.png";
     } else if (badgeSpecial === 1){
-      frameUrl = specialDjCnt > 10 ? "https://image.dalbitlive.com/frame/frame_starDJ-profile2.png" : "https://image.dalbitlive.com/frame/frame_starDJ-profile1.png";
+      frameUrl = specialDjCnt > 10 ? "https://image.dallalive.com/frame/frame_starDJ-profile2.png" : "https://image.dallalive.com/frame/frame_starDJ-profile1.png";
     } else {
       frameUrl = holder;
     }

@@ -66,12 +66,12 @@ export default function AwardsBtmBtn(props) {
 
   const buttonsList = [
     {
-      imgUrl: `https://image.dalbitlive.com/event/award_rank/btn_fan${isFan ? '' : '_plus'}@2x.png`,
+      imgUrl: `https://image.dallalive.com/event/award_rank/btn_fan${isFan ? '' : '_plus'}@2x.png`,
       imgAlt: '팬 등록',
       clickHandler: toggleFanHandler
     },
     {
-      imgUrl: `https://image.dalbitlive.com/event/award_rank/btn_fanboard@2x.png`,
+      imgUrl: `https://image.dallalive.com/event/award_rank/btn_fanboard@2x.png`,
       imgAlt: '팬보드 바로가기',
       clickHandler: redirectUser
     }

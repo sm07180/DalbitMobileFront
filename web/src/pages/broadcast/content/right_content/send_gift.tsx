@@ -592,7 +592,7 @@ export default function SendGift(props: {
                         {v.isNew && (
                           <span className="ico__new">
                             <img
-                              src="https://image.dalbitlive.com/broadcast/giftIconNew.png"
+                              src="https://image.dallalive.com/broadcast/giftIconNew.png"
                               alt=""
                             />
                           </span>
@@ -600,7 +600,7 @@ export default function SendGift(props: {
                         {v.ttsUseYn === 'y' && roomInfo?.djTtsSound && (
                           <span className="ico__speaker">
                             <img
-                              src="https://image.dalbitlive.com/broadcast/giftIconSpeaker.png"
+                              src="https://image.dallalive.com/broadcast/giftIconSpeaker.png"
                               alt=""
                             />
                           </span>
@@ -633,7 +633,7 @@ export default function SendGift(props: {
                 <div className="giftTTSinput">
                   {roomInfo?.djTtsSound?
                   <>
-                    <img src="https://image.dalbitlive.com/broadcast/ico_speaker.png" />
+                    <img src="https://image.dallalive.com/broadcast/ico_speaker.png" />
                     <UseInput placeholder={`하고 싶은 말과 함께 선물하세요.(${ttsContentMaxLength}자 이내)`}
                               forwardedRef={ttsInputRef}
                               validator={ttsInputValidator}
@@ -644,7 +644,7 @@ export default function SendGift(props: {
                   </>
                   :
                   <>
-                    <img src="https://image.dalbitlive.com/broadcast/ico_speaker-mute.png"/>
+                    <img src="https://image.dallalive.com/broadcast/ico_speaker-mute.png"/>
                     <UseInput placeholder={'DJ의 설정으로 목소리 옵션을 사용할 수 없습니다'}
                               forwardedRef={ttsInputRef}
                               validator={ttsInputValidator}

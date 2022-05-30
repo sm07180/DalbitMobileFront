@@ -30,7 +30,7 @@ export default (props) => {
        <div className="leftCtn">
         {props.leftCtn === 'backBtn' && 
           <button className="close-btn" onClick={goBack}>
-            <img src='https://image.dalbitlive.com/svg/icon_back_black.svg' alt="뒤로가기" />
+            <img src='https://image.dallalive.com/svg/icon_back_black.svg' alt="뒤로가기" />
           </button>
         }
        </div>

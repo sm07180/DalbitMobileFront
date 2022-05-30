@@ -60,7 +60,7 @@ export default (props) => {
           onClick={() => {
             closePopup()
           }}>
-          <img src="https://image.dalbitlive.com/images/api/ico_layer_close.svg" />
+          <img src="https://image.dallalive.com/images/api/ico_layer_close.svg" />
         </button>
       </div>
     </PopupWrap>

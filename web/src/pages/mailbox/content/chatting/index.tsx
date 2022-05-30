@@ -466,7 +466,7 @@ export default function chatting() {
       <Header title={mailboxState.mailboxInfo?.title} type="back">
         <div className="buttonGroup">
           <button className="btnMore" onClick={() => setMore(!more)}>
-            <img src="https://image.dalbitlive.com/mailbox/ico_more_vertical_g.svg" alt="더보기" />
+            <img src="https://image.dallalive.com/mailbox/ico_more_vertical_g.svg" alt="더보기" />
           </button>
           <ul className={`moreList ${more ? "on" : ""}`}>
             {/* 1:신고하기 0:차단하기 */}

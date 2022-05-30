@@ -29,9 +29,9 @@ export default (props) => {
     },
   ]);
   // icons Url
-  const goldMedalIcon = "https://image.dalbitlive.com/svg/ico_medal_gold_m@2x.png";
-  const silverMedalIcon = "https://image.dalbitlive.com/svg/ico_medal_silver_m@2x.png";
-  const bronzeMedalIcon = "https://image.dalbitlive.com/svg/ico_medal_bronze_m@2x.png";
+  const goldMedalIcon = "https://image.dallalive.com/svg/ico_medal_gold_m@2x.png";
+  const silverMedalIcon = "https://image.dallalive.com/svg/ico_medal_silver_m@2x.png";
+  const bronzeMedalIcon = "https://image.dallalive.com/svg/ico_medal_bronze_m@2x.png";
   //make View
   const makeContents = () => {
     return (

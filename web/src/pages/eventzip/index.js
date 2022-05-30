@@ -23,7 +23,7 @@ const EventZip = () => {
         eventTitle : "달라져스 : 달라 스톤 모으기",
         startDay : "20220308",
         endDay : "20220327",
-        bannerImg : "https://image.dalbitlive.com/eventzip/eventZip_7634.png",
+        bannerImg : "https://image.dallalive.com/eventzip/eventZip_7634.png",
         path : "/event/rebranding",
         endState : false
       },
@@ -31,7 +31,7 @@ const EventZip = () => {
         eventTitle : "슬기로운 달라생활",
         startDay : "20220307",
         endDay : "20220327",
-        bannerImg : "https://image.dalbitlive.com/eventzip/eventZip_7733.png",
+        bannerImg : "https://image.dallalive.com/eventzip/eventZip_7733.png",
         path : "/notice",
         noticeNum : 617,
         endState : false
@@ -40,7 +40,7 @@ const EventZip = () => {
         eventTitle : "달라를 소개해 달라",
         startDay : "20220303",
         endDay : "20220324",
-        bannerImg : "https://image.dalbitlive.com/eventzip/eventZip_7650.png",
+        bannerImg : "https://image.dallalive.com/eventzip/eventZip_7650.png",
         path : "/event/share",
         endState : false
       },
@@ -48,7 +48,7 @@ const EventZip = () => {
         eventTitle : "달라를 축하해 달라",
         startDay : "20220228",
         endDay : "20220321",
-        bannerImg : "https://image.dalbitlive.com/eventzip/eventZip_7649.png",
+        bannerImg : "https://image.dallalive.com/eventzip/eventZip_7649.png",
         path : "/event/acrostic",
         endState : false
       },
@@ -56,7 +56,7 @@ const EventZip = () => {
         eventTitle : "달라에 놀러온 핵인싸 주목!",
         startDay :"20220310",
         endDay : "",
-        bannerImg : "https://image.dalbitlive.com/eventzip/eventZip_7583.png",
+        bannerImg : "https://image.dallalive.com/eventzip/eventZip_7583.png",
         path : "/event/playmaker",
         endState : false
       },
@@ -64,7 +64,7 @@ const EventZip = () => {
         eventTitle : "3사 플랫폼 노래대전",
         startDay : "20220303",
         endDay : "20220311",
-        bannerImg : "https://image.dalbitlive.com/eventzip/eventZip_7677.png",
+        bannerImg : "https://image.dallalive.com/eventzip/eventZip_7677.png",
         path : "/event/platformWar",
         endState : false
       },
@@ -72,7 +72,7 @@ const EventZip = () => {
         eventTitle : "친구 초대, 초대왕 도전!",
         startDay : "20220227",
         endDay : "20220307",
-        bannerImg : "https://image.dalbitlive.com/eventzip/eventZip_7590.png",
+        bannerImg : "https://image.dallalive.com/eventzip/eventZip_7590.png",
         path : "/event/invite",
         endState : false
       },

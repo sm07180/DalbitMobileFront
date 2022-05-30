@@ -25,7 +25,7 @@ export default ({ setEffectPop, webpImg }) => {
     <PopupWrap id="layer-popup" onClick={closePopupDim}>
       <div className="content-wrap">
         <button className="close-btn" onClick={() => closePopup()}>
-          <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="닫기" />
+          <img src="https://image.dallalive.com/svg/close_w_l.svg" alt="닫기" />
         </button>
         <div className="webpBox">
           <img src={webpImg} width={300} alt="입장효과" />

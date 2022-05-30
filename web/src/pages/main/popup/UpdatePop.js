@@ -27,7 +27,7 @@ const UpdatePopup = (props) => {
       <section className="wrapper">
         <div className="topBox">
           <img
-            src={'https://image.dalbitlive.com/svg/img_app_update@2x.png'}
+            src={'https://image.dallalive.com/svg/img_app_update@2x.png'}
             alt="앱설치 유도 팝업 이미지"
           />
           <div className="textBox">

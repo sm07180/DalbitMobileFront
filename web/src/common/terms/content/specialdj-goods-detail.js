@@ -16,7 +16,7 @@ export default (props) => {
     //   <h2>굿즈 상품 미리보기</h2>
 
     //   <p>
-    //     <img src={'https://image.dalbitlive.com/event/2007/24/goods_img_640.jpg'} />
+    //     <img src={'https://image.dallalive.com/event/2007/24/goods_img_640.jpg'} />
     //   </p>
     // </Content> */}
     </div>

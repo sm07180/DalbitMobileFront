@@ -12,7 +12,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage, setGlobalCtxMyPageReport} from "redux/actions/globalCtx";
 
 // import CloseBtn from '../../menu/static/ic_closeBtn.svg'
-const CloseBtn = 'https://image.dalbitlive.com/images/api/close_w_l.svg'
+const CloseBtn = 'https://image.dallalive.com/images/api/close_w_l.svg'
 
 export default (props) => {
   const dispatch = useDispatch();

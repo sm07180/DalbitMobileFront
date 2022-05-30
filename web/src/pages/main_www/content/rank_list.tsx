@@ -5,11 +5,11 @@ import Swiper from "react-id-swiper";
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxUrlInfo} from "../../../redux/actions/globalCtx";
 // static
-const GoldMedal = `https://image.dalbitlive.com/main/200714/ico-ranking-gold.png`;
-const SilverMedal = `https://image.dalbitlive.com/main/200714/ico-ranking-silver.png`;
-const BronzeMedal = `https://image.dalbitlive.com/main/200714/ico-ranking-bronze.png`;
-const LiveIcon = "https://image.dalbitlive.com/svg/ic_live.svg";
-const ListenIcon = "https://image.dalbitlive.com/svg/ico_listen.svg";
+const GoldMedal = `https://image.dallalive.com/main/200714/ico-ranking-gold.png`;
+const SilverMedal = `https://image.dallalive.com/main/200714/ico-ranking-silver.png`;
+const BronzeMedal = `https://image.dallalive.com/main/200714/ico-ranking-bronze.png`;
+const LiveIcon = "https://image.dallalive.com/svg/ic_live.svg";
+const ListenIcon = "https://image.dallalive.com/svg/ico_listen.svg";
 
 type RankingType = {
   list: Array<any>;

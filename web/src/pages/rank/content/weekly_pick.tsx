@@ -53,7 +53,7 @@ function WeeklyPick({ empty }) {
                 </div>
                 <button className="btnMore">
                   <img
-                    src="https://image.dalbitlive.com/svg/icon_more_right.svg"
+                    src="https://image.dallalive.com/svg/icon_more_right.svg"
                     alt="상세페이지이동"
                   />
                 </button>

@@ -211,7 +211,7 @@ const Content = styled.div`
         margin-right: 4px;
         width: 24px;
         height: 24px;
-        background: url('https://image.dalbitlive.com/svg/moon_yellow_s.svg') no-repeat 0 0;
+        background: url('https://image.dallalive.com/svg/moon_yellow_s.svg') no-repeat 0 0;
       }
     }
   }
@@ -255,7 +255,7 @@ const Content = styled.div`
           width:15px;
           height:15px;
           border-radius:100%;
-          background:url("https://image.dalbitlive.com/store/dalla/ico_check.png") no-repeat center / contain;
+          background:url("https://image.dallalive.com/store/dalla/ico_check.png") no-repeat center / contain;
         }
       }
       .dalImg {

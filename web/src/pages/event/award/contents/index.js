@@ -41,15 +41,15 @@ export default function awardEvent() {
       return (
         <div className={`times ${v}`} key={idx}>
           <span className={`images ${count[0]} ${previousCount && previousCount[0] !== count[0] && 'active'}`}>
-            <img src={`https://image.dalbitlive.com/event/award/201214/num0${count[0]}.png`} />
+            <img src={`https://image.dallalive.com/event/award/201214/num0${count[0]}.png`} />
           </span>
           {v === 'seconds' ? (
             <span className={`images ${count[1]} always`}>
-              <img src={`https://image.dalbitlive.com/event/award/201214/num0${count[1]}.png`} />
+              <img src={`https://image.dallalive.com/event/award/201214/num0${count[1]}.png`} />
             </span>
           ) : (
             <span className={`images ${count[1]} ${previousCount && previousCount[1] !== count[1] && 'active'}`}>
-              <img src={`https://image.dalbitlive.com/event/award/201214/num0${count[1]}.png`} />
+              <img src={`https://image.dallalive.com/event/award/201214/num0${count[1]}.png`} />
             </span>
           )}
         </div>
@@ -124,9 +124,9 @@ export default function awardEvent() {
     <>
       <div className="topBox">
         <button className="btnBack" onClick={() => clickCloseBtn()}>
-          <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+          <img src="https://image.dallalive.com/svg/close_w_l.svg" alt="close" />
         </button>
-        <img src="https://image.dalbitlive.com/event/award/201214/main-img.jpg" className="topBox__mainImg" alt="main Image" />
+        <img src="https://image.dallalive.com/event/award/201214/main-img.jpg" className="topBox__mainImg" alt="main Image" />
 
         <div className="countBoxWrap">
           <p className="countBoxWrap__title">투표 마감</p>

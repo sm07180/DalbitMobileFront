@@ -28,18 +28,18 @@ export default () => {
       return (
         <div className={`times ${v}`} key={idx}>
           <span className="images">
-            <img src="https://image.dalbitlive.com/event/level_achieve/comma.png" />
+            <img src="https://image.dallalive.com/event/level_achieve/comma.png" />
           </span>
           <span className={`images ${count[0]} ${previousCount && previousCount[0] !== count[0] && 'active'}`}>
-            <img src={`https://image.dalbitlive.com/event/level_achieve/num${count[0]}.png`} />
+            <img src={`https://image.dallalive.com/event/level_achieve/num${count[0]}.png`} />
           </span>
           {v === 'seconds' ? (
             <span className={`images ${count[1]} always`}>
-              <img src={`https://image.dalbitlive.com/event/level_achieve/num${count[1]}.png`} />
+              <img src={`https://image.dallalive.com/event/level_achieve/num${count[1]}.png`} />
             </span>
           ) : (
             <span className={`images ${count[1]} ${previousCount && previousCount[1] !== count[1] && 'active'}`}>
-              <img src={`https://image.dalbitlive.com/event/level_achieve/num${count[1]}.png`} />
+              <img src={`https://image.dallalive.com/event/level_achieve/num${count[1]}.png`} />
             </span>
           )}
         </div>
@@ -242,16 +242,16 @@ export default () => {
   return (
     <div id="levelAchieve">
       <button className="btnBack" onClick={() => history.goBack()}>
-        <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+        <img src="https://image.dallalive.com/svg/close_w_l.svg" alt="close" />
       </button>
       {viewLevel === '5' ? (
         <>
           <img
-            src="https://image.dalbitlive.com/event/level_achieve/img_five01.jpg"
+            src="https://image.dallalive.com/event/level_achieve/img_five01.jpg"
             alt="가입후 주 이내 5레벨을 달성하시면 달 20개를 선물로 드립니다."
           />
           <div className="timeWrap">
-            <img src="https://image.dalbitlive.com/event/level_achieve/bg_img_five02_1.jpg" alt="이벤트 남은시간" />
+            <img src="https://image.dallalive.com/event/level_achieve/bg_img_five02_1.jpg" alt="이벤트 남은시간" />
             <div className="joinDay">
               {startDt !== null && (
                 <>
@@ -265,11 +265,11 @@ export default () => {
             <div className="countBox">{count !== null && CountWrapComponent()}</div>
           </div>
           <button onClick={() => rewardButton()} className="eventButton">
-            <img src="https://image.dalbitlive.com/event/level_achieve/btn_five.png" alt="선물받기" />
+            <img src="https://image.dallalive.com/event/level_achieve/btn_five.png" alt="선물받기" />
           </button>
 
           <img
-            src="https://image.dalbitlive.com/event/level_achieve/20201214/img_five03.jpg"
+            src="https://image.dallalive.com/event/level_achieve/20201214/img_five03.jpg"
             alt="이벤트 유의사항 5레벨 달성 선물은 가입후 2주일 이내에만 유효합니다."
             className="noticeImg"
           />
@@ -277,11 +277,11 @@ export default () => {
       ) : viewLevel === '10' ? (
         <>
           <img
-            src="https://image.dalbitlive.com/event/level_achieve/img_ten01.jpg"
+            src="https://image.dallalive.com/event/level_achieve/img_ten01.jpg"
             alt="5레벨 달성후 2주일 내 10레벨을 달성하시면 달 50개를 선물로 드립니다."
           />
           <div className="timeWrap">
-            <img src="https://image.dalbitlive.com/event/level_achieve/20201214/new_bg_img_ten02_1.jpg" alt="이벤트 남은시간" />
+            <img src="https://image.dallalive.com/event/level_achieve/20201214/new_bg_img_ten02_1.jpg" alt="이벤트 남은시간" />
 
             <div className="joinDay ten">
               {startDt !== null && (
@@ -296,11 +296,11 @@ export default () => {
             <div className="countBox">{count !== null && CountWrapComponent()}</div>
           </div>
           <button onClick={() => rewardButton()} className="eventButton">
-            <img src="https://image.dalbitlive.com/event/level_achieve/btn_ten.png" alt="선물받기" />
+            <img src="https://image.dallalive.com/event/level_achieve/btn_ten.png" alt="선물받기" />
           </button>
 
           <img
-            src="https://image.dalbitlive.com/event/level_achieve/20201214/img_ten03.jpg"
+            src="https://image.dallalive.com/event/level_achieve/20201214/img_ten03.jpg"
             alt="10레벨 달성 선물은 5레벨 달성 후 2주일 이내에만 유효합니다."
             className="noticeImg"
           />

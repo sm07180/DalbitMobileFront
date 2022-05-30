@@ -78,9 +78,9 @@ export default (props) => {
   const makeImageTop = () => {
     if (!eventRound) return null
     if (eventRound === 1) {
-      return <img src="https://image.dalbitlive.com/event/rising/200715/main_top.png" />
+      return <img src="https://image.dallalive.com/event/rising/200715/main_top.png" />
     } else {
-      return <img src="https://image.dalbitlive.com/event/rising/200722/main_top.png" />
+      return <img src="https://image.dallalive.com/event/rising/200722/main_top.png" />
     }
   }
 
@@ -89,7 +89,7 @@ export default (props) => {
     if (eventRound === 1) {
       return (
         <img
-          src="https://image.dalbitlive.com/event/rising/200715/rising_star_img.png"
+          src="https://image.dallalive.com/event/rising/200715/rising_star_img.png"
           onClick={() => {
             dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'rising-event-gift-detail']}));
           }}
@@ -98,7 +98,7 @@ export default (props) => {
     } else {
       return (
         <img
-          src="https://image.dalbitlive.com/event/rising/200722/rising_star_img.png"
+          src="https://image.dallalive.com/event/rising/200722/rising_star_img.png"
           onClick={() => {
             dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'rising-event-gift-detail2']}));
           }}
@@ -112,7 +112,7 @@ export default (props) => {
     if (eventRound === 1) {
       return (
         <img
-          src="https://image.dalbitlive.com/event/rising/200715/rising_fan_img.png"
+          src="https://image.dallalive.com/event/rising/200715/rising_fan_img.png"
           onClick={() => {
             dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'rising-event-gift-detail']}));
           }}
@@ -121,7 +121,7 @@ export default (props) => {
     } else {
       return (
         <img
-          src="https://image.dalbitlive.com/event/rising/200722/rising_fan_img.png"
+          src="https://image.dallalive.com/event/rising/200722/rising_fan_img.png"
           onClick={() => {
             dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'rising-event-gift-detail2']}));
           }}

@@ -217,7 +217,7 @@ export default (props) => {
                     <h2>{mailboxState.mailboxInfo?.targetNickNm}</h2>
                     <b>차단하시겠습니까?</b>
 
-                    <img src={"https://image.dalbitlive.com/svg/ico_caution.svg"} />
+                    <img src={"https://image.dallalive.com/svg/ico_caution.svg"} />
 
                     <span>
                       차단한 회원은 나의 방송이 보이지 않으며,

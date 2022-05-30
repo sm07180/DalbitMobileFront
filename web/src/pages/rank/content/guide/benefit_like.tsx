@@ -106,7 +106,7 @@ export default () => {
               <td
               // onClick={() => {
               //   setEffectPop(true);
-              //   wepbSrc = "https://image.dalbitlive.com/ranking/webp/fan_day1.webp";
+              //   wepbSrc = "https://image.dallalive.com/ranking/webp/fan_day1.webp";
               // }}
               >
                 <img src={`${IMG_SERVER}/ranking/liked1@2x.png`} width={87} alt="입장효과" />
@@ -114,7 +114,7 @@ export default () => {
               <td
               // onClick={() => {
               //   setEffectPop(true);
-              //   wepbSrc = "https://image.dalbitlive.com/ranking/webp/fan_day2.webp";
+              //   wepbSrc = "https://image.dallalive.com/ranking/webp/fan_day2.webp";
               // }}
               >
                 <img src={`${IMG_SERVER}/ranking/liked2@2x.png`} width={87} alt="입장효과" />
@@ -122,7 +122,7 @@ export default () => {
               <td
               // onClick={() => {
               //   setEffectPop(true);
-              //   wepbSrc = "https://image.dalbitlive.com/ranking/webp/fan_day3.webp";
+              //   wepbSrc = "https://image.dallalive.com/ranking/webp/fan_day3.webp";
               // }}
               >
                 <img src={`${IMG_SERVER}/ranking/likew3@2x.png`} width={87} alt="입장효과" />

@@ -156,7 +156,7 @@ export default function chatListPage() {
       <Header title="메시지" type={'back'}>
         <div className="buttonGroup">
           <button className="btnMassageAdd" onClick={handleNewMessageClick}>
-            <img src="https://image.dalbitlive.com/mailbox/ico_user_b.svg" alt="추가"/>
+            <img src="https://image.dallalive.com/mailbox/ico_user_b.svg" alt="추가"/>
           </button>
         </div>
       </Header>
@@ -171,7 +171,7 @@ export default function chatListPage() {
         ) : (
           <div className="noResultBox">
             <button onClick={handleNewMessageClick}>
-              <img src="https://image.dalbitlive.com/mailbox/ico_user_w.svg" alt="추가" /> 팬/스타 찾기
+              <img src="https://image.dallalive.com/mailbox/ico_user_w.svg" alt="추가" /> 팬/스타 찾기
             </button>
             <p>
               나의 팬/스타에게

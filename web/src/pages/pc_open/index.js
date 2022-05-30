@@ -16,7 +16,7 @@ const PcOpen = () => {
         />
       </div>
 
-      <img src="https://image.dalbitlive.com/images/api/newpcimg.png" className="pcOpen__img" />
+      <img src="https://image.dallalive.com/images/api/newpcimg.png" className="pcOpen__img" />
     </div>
   )
 }

@@ -80,7 +80,7 @@ const DallagersTopSection = (props) => {
       renderer: "svg",
       loop: false,
       autoplay: true,
-      path: 'https://image.dalbitlive.com/event/rebranding/icon_dalla.json',
+      path: 'https://image.dallalive.com/event/rebranding/icon_dalla.json',
     });
 
     const feverTimeLottie = Lottie.loadAnimation({
@@ -88,7 +88,7 @@ const DallagersTopSection = (props) => {
       renderer: "svg",
       loop: false,
       autoplay: false,
-      path: 'https://image.dalbitlive.com/event/rebranding/icon_fever.json',
+      path: 'https://image.dallalive.com/event/rebranding/icon_fever.json',
     });
 
     stoneLottie.addEventListener('data_ready', () => {
@@ -274,7 +274,7 @@ const DallagersTopSection = (props) => {
             playing: true,
             comboPlay: false,
             comboCnt,
-            webpUrl: `https://image.dalbitlive.com/event/rebranding/${webpImgName}.webp?${Date.now()}`
+            webpUrl: `https://image.dallalive.com/event/rebranding/${webpImgName}.webp?${Date.now()}`
           });
           //애니메이션 실행
           aniStatus.stoneAniPlaying = true;

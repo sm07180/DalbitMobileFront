@@ -145,7 +145,7 @@ export default function MyProfile() {
     return (
       <div className="resetPointBox">
         <p>
-          <img src="https://image.dalbitlive.com/ranking/ico_timer_wh@2x.png" alt="icon" />
+          <img src="https://image.dallalive.com/ranking/ico_timer_wh@2x.png" alt="icon" />
           실시간 팬 랭킹 점수 <span>미 반영 중</span>
         </p>
         <button
@@ -171,7 +171,7 @@ export default function MyProfile() {
             }));
           }}
         >
-          <img src="https://image.dalbitlive.com/ranking/ico_circle_x_g@2x.png" alt="icon" /> 반영하기
+          <img src="https://image.dallalive.com/ranking/ico_circle_x_g@2x.png" alt="icon" /> 반영하기
         </button>
       </div>
     );
@@ -181,7 +181,7 @@ export default function MyProfile() {
     return (
       <div className="resetPointBox apply">
         <p>
-          <img src="https://image.dalbitlive.com/ranking/ico_timer_wh@2x.png" alt="icon" />
+          <img src="https://image.dallalive.com/ranking/ico_timer_wh@2x.png" alt="icon" />
           실시간 팬 랭킹 점수 <span>반영 중</span>
         </p>
         <button onClick={() => setResetPointPop(true)}>반영하지 않기</button>

@@ -189,7 +189,7 @@ const keyboardHero = () => {
                   <div className="welcome">축하드립니다!</div>
                   <Swiper {...swiperParams}>
                     {list.map((data, index)=>{
-                      let giftImg = `https://image.dalbitlive.com/event/keyboardHero/present-${imageNum(data.pre_code)}.png`;
+                      let giftImg = `https://image.dallalive.com/event/keyboardHero/present-${imageNum(data.pre_code)}.png`;
                       return(
                         <div key={index}>
                           <ListRow photo={giftImg} key={index}>

@@ -60,7 +60,7 @@ export default ({setBankPop, bankFormData}) => {
           onClick={() => {
             closePopup()
           }}>
-          <img src="https://image.dalbitlive.com/svg/ic_close_w.svg" />
+          <img src="https://image.dallalive.com/svg/ic_close_w.svg" />
         </button>
       </div>
     </PopupWrap>
