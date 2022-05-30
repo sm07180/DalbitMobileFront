@@ -460,7 +460,7 @@ let Profile = () => {
                                     className={`rankingList__item`}
                                 >
                                   <img
-                                      src="https://image.dalbitlive.com/common/photoNone-bgGray.png"
+                                      src="https://image.dallalive.com/common/photoNone-bgGray.png"
                                       className="rankingList__item--img"
                                       alt={`defalutrankProfileImg` + idx}
                                   />
@@ -488,7 +488,7 @@ let Profile = () => {
                           </button>
                           <div className={`rankingList__item `}>
                             <img
-                                src="https://image.dalbitlive.com/common/photoNone-bgGray.png"
+                                src="https://image.dallalive.com/common/photoNone-bgGray.png"
                                 className="rankingList__item--img"
                                 alt={`defalutrankProfileImg`}
                             />

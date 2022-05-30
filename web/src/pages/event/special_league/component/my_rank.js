@@ -24,23 +24,23 @@ export default function MyRank({myData}) {
 
       <dl className="my_point">
         <dt>
-          <img src="https://image.dalbitlive.com/svg/ico_point.svg" width={16} alt="획득" /> 획득
+          <img src="https://image.dallalive.com/svg/ico_point.svg" width={16} alt="획득" /> 획득
         </dt>
         <dd>{myTotalPoint.toLocaleString()}</dd>
         <dt>
-          <img src="https://image.dalbitlive.com/svg/people_g_m.svg" width={16} alt="청취자수" /> 50
+          <img src="https://image.dallalive.com/svg/people_g_m.svg" width={16} alt="청취자수" /> 50
         </dt>
         <dd>{myListenerPoint.toLocaleString()}회</dd>
         <dt>
-          <img src="https://image.dalbitlive.com/svg/cashstar_purple_s.svg" width={16} alt="별" /> 1,000
+          <img src="https://image.dallalive.com/svg/cashstar_purple_s.svg" width={16} alt="별" /> 1,000
         </dt>
         <dd>{myGiftPoint.toLocaleString()}회</dd>
         <dt>
-          <img src="https://image.dalbitlive.com/svg/like_r_m.svg" width={16} alt="좋아요" /> 100
+          <img src="https://image.dallalive.com/svg/like_r_m.svg" width={16} alt="좋아요" /> 100
         </dt>
         <dd>{myGoodPoint.toLocaleString()}회</dd>
         <dt>
-          <img src="https://image.dalbitlive.com/svg/ic_fan.svg" width={16} alt="팬등록" /> 100
+          <img src="https://image.dallalive.com/svg/ic_fan.svg" width={16} alt="팬등록" /> 100
         </dt>
         <dd>{FanPointCount()}명</dd>
       </dl>

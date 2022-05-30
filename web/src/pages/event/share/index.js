@@ -30,20 +30,20 @@ const Share = () => {
 
     async function imageDownload() {
       if(!isHybrid()) {
-        axios.get(`https://photo.dalbitlive.com/fileDownload/event/202201011.png`, {responseType: 'arraybuffer'})
+        axios.get(`https://photo.dallalive.com/fileDownload/event/202201011.png`, {responseType: 'arraybuffer'})
           .then(response => {
             const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
             if(url) {
               const link = document.createElement('a');
               link.href = url;
-              link.setAttribute('download', 'https://photo.dalbitlive.com/fileDownload/event/202201011.png');
+              link.setAttribute('download', 'https://photo.dallalive.com/fileDownload/event/202201011.png');
               document.body.appendChild(link);
               link.click();
               link.remove();
             }
           })
       }else {
-        Hybrid('openUrl', 'https://photo.dalbitlive.com/fileDownload/event/202201011.png')
+        Hybrid('openUrl', 'https://photo.dallalive.com/fileDownload/event/202201011.png')
       }
     }
 
@@ -152,7 +152,7 @@ const Share = () => {
                 <Header position={'sticky'} title={'이벤트'} type={'back'}/>
                 <div className='content'>
                     <div className='imageBox'>
-                        <img src='https://image.dalbitlive.com/event/dalla/7650/event_MainImg.png' alt="달라를 소개해달라" className='fullImage'/>
+                        <img src='https://image.dallalive.com/event/dalla/7650/event_MainImg.png' alt="달라를 소개해달라" className='fullImage'/>
                         <button className='noticeBtn' onClick={popupOpen}>유의사항</button>
                     </div>
                     <div className='step'>
@@ -178,7 +178,7 @@ const Share = () => {
                                 <strong>#달라가달라졌다</strong> 해시태그와 함께글을 게시한다!<br/>
                                 악플은 노노노~ (스위트걸 st.)
                             </p>
-                            <img className='exampleImg' src="https://image.dalbitlive.com/event/dalla/7650/event_example.png" alt="예시 이미지"/>
+                            <img className='exampleImg' src="https://image.dallalive.com/event/dalla/7650/event_example.png" alt="예시 이미지"/>
                         </div>
                     </div>
                     <div className='step'>

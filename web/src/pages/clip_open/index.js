@@ -30,16 +30,16 @@ export default () => {
             이벤트 유의사항
           </button>
 
-          <img src="https://image.dalbitlive.com//event/clip/20200917/img01.jpg" alt="클립 오픈안내" />
+          <img src="https://image.dallalive.com//event/clip/20200917/img01.jpg" alt="클립 오픈안내" />
           <img
-            src="https://image.dalbitlive.com//event/clip/20200917/img02.jpg"
+            src="https://image.dallalive.com//event/clip/20200917/img02.jpg"
             alt="오픈 일에 내 클립 (녹음 파일)을 등록하면 달을 드립니다."
           />
           <img
-            src="https://image.dalbitlive.com//event/clip/20200917/img03.jpg"
+            src="https://image.dallalive.com//event/clip/20200917/img03.jpg"
             alt="참여 방법 1분 이상 ~ 5분 이하 클립 녹음파일을 공개 설정으로 업로드하면 끝"
           />
-          <img src="https://image.dalbitlive.com//event/clip/20200917/img04.jpg" alt="베스트 클립 top 10을 선발합니다." />
+          <img src="https://image.dallalive.com//event/clip/20200917/img04.jpg" alt="베스트 클립 top 10을 선발합니다." />
         </div>
       </div>
     </Layout>

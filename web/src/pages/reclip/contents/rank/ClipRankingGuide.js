@@ -61,9 +61,9 @@ const ClipRankingGuide = () =>{
           <tbody>
           <tr className="badge">
             <td>배지</td>
-            <td><div><BadgeItems data={{commonBadgeList: [{ icon: 'https://image.dalbitlive.com/badge/dalla/symbol/weekly_clip-1.png', startColor: '#8734CA', endColor: '#8734CA', text: '클립 주간 1' }]}} type='commonBadgeList'/></div></td>
-            <td><div><BadgeItems data={{commonBadgeList: [{ icon: 'https://image.dalbitlive.com/badge/dalla/symbol/weekly_clip-2.png', startColor: '#8734CA', endColor: '#8734CA', text: '클립 주간 2' }]}} type='commonBadgeList'/></div></td>
-            <td><div><BadgeItems data={{commonBadgeList: [{ icon: 'https://image.dalbitlive.com/badge/dalla/symbol/weekly_clip-3.png', startColor: '#8734CA', endColor: '#8734CA', text: '클립 주간 3' }]}} type='commonBadgeList'/></div></td>
+            <td><div><BadgeItems data={{commonBadgeList: [{ icon: 'https://image.dallalive.com/badge/dalla/symbol/weekly_clip-1.png', startColor: '#8734CA', endColor: '#8734CA', text: '클립 주간 1' }]}} type='commonBadgeList'/></div></td>
+            <td><div><BadgeItems data={{commonBadgeList: [{ icon: 'https://image.dallalive.com/badge/dalla/symbol/weekly_clip-2.png', startColor: '#8734CA', endColor: '#8734CA', text: '클립 주간 2' }]}} type='commonBadgeList'/></div></td>
+            <td><div><BadgeItems data={{commonBadgeList: [{ icon: 'https://image.dallalive.com/badge/dalla/symbol/weekly_clip-3.png', startColor: '#8734CA', endColor: '#8734CA', text: '클립 주간 3' }]}} type='commonBadgeList'/></div></td>
           </tr>
           </tbody>
         </table>
@@ -78,7 +78,7 @@ const ClipRankingGuide = () =>{
         </ul>
       </section>
       <section className='bottomWrap'>
-        <img src="https://image.dalbitlive.com/clip/dalla/clipBenefitBottom.png" alt="" />
+        <img src="https://image.dallalive.com/clip/dalla/clipBenefitBottom.png" alt="" />
       </section>
     </div>
   )

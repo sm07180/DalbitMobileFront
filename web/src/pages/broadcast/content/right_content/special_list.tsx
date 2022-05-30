@@ -20,8 +20,8 @@ export default (props) => {
   const [list, setList] = useState<any>("");
   const [userInfo, setUserInfo] = useState<any>("");
   // icons Url
-  const SpecialBadgeOff = "https://image.dalbitlive.com/svg/specialdj_off_s.svg";
-  const SpecialBadgeOn = "https://image.dalbitlive.com/svg/specialdj_on_s.svg";
+  const SpecialBadgeOff = "https://image.dallalive.com/svg/specialdj_off_s.svg";
+  const SpecialBadgeOn = "https://image.dallalive.com/svg/specialdj_on_s.svg";
   // 프로필 보기
   const viewProfile = useCallback((memNo: string) => {
     if (globalState.baseData.isLogin === true) {

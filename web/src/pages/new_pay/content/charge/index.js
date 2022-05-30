@@ -28,8 +28,8 @@ import {Hybrid} from "context/hybrid";
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
-const icoPlus = 'https://image.dalbitlive.com/svg/ico_add.svg'
-const icoMinus = 'https://image.dalbitlive.com/svg/ico_minus.svg'
+const icoPlus = 'https://image.dallalive.com/svg/ico_add.svg'
+const icoMinus = 'https://image.dallalive.com/svg/ico_minus.svg'
 
 //방송방 내 결제에서는 헤더 보이지 않기, 취소 처리 등 다름
 
@@ -332,7 +332,7 @@ export default (props) => {
       "simpleCheck" +
       "=" +
       c_value +
-      "; path=/; secure; domain=.dalbitlive.com";
+      "; path=/; secure; domain=.dallalive.com";
   };
 
   const simplePayCheck = () => {
@@ -625,7 +625,7 @@ const Content = styled.div`
     //     margin-left: 6px;
     //     width: 15px;
     //     height: 15px;
-    //     background: url('https://image.dalbitlive.com/mypage/210218/ic_new_item@2x.png') no-repeat center / 15px;
+    //     background: url('https://image.dallalive.com/mypage/210218/ic_new_item@2x.png') no-repeat center / 15px;
     //   }
     // }
     
@@ -662,7 +662,7 @@ const Content = styled.div`
         transform:translateY(-50%);
         width:16px;
         height:16px;
-        background:url("https://image.dalbitlive.com/store/dalla/ico_info.png") no-repeat left / contain;
+        background:url("https://image.dallalive.com/store/dalla/ico_info.png") no-repeat left / contain;
       }
     }
     p {

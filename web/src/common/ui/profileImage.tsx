@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState, useCallback } from "react";
-const defaultImg = "https://photo.dalbitlive.com/profile_3/profile_m_200327.jpg";
+const defaultImg = "https://photo.dallalive.com/profile_3/profile_m_200327.jpg";
 export default (props: any) => {
   const { imageData, imageSize } = props;
   const { profImg, holderBg, holder, level } = imageData;

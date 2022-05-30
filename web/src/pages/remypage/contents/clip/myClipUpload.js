@@ -109,7 +109,7 @@ const MyClipUpload = (props) => {
       case '청취 회원':
         return (
           <div className='total'>
-            <img src="https://image.dalbitlive.com/mypage/dalla/clip/ico_listener.png" className="icon"/>
+            <img src="https://image.dallalive.com/mypage/dalla/clip/ico_listener.png" className="icon"/>
             <div className="title">최근 <span>3개월</span> 내 클립 청취 회원:</div>
             <span className="count">{myClipInfo.total}명</span>
           </div>
@@ -117,7 +117,7 @@ const MyClipUpload = (props) => {
       case '좋아요 회원':
         return (
           <div className='total'>
-            <img src="https://image.dalbitlive.com/mypage/dalla/clip/ico_heart.png" className="icon"/>
+            <img src="https://image.dallalive.com/mypage/dalla/clip/ico_heart.png" className="icon"/>
             <div className="title">최근 <span>3개월</span> 내 클립 좋아요한 회원:</div>
             <span className="count">{myClipInfo.total}명</span>
           </div>
@@ -125,7 +125,7 @@ const MyClipUpload = (props) => {
       case '선물한 회원':
         return (
           <div className='total'>
-            <img src="https://image.dalbitlive.com/mypage/dalla/clip/ico_present.png" className="icon"/>
+            <img src="https://image.dallalive.com/mypage/dalla/clip/ico_present.png" className="icon"/>
             <div className="title">최근 <span>3개월</span> 내 클립 선물한 회원:</div>
             <span className="count">{myClipInfo.total}명</span>
           </div>

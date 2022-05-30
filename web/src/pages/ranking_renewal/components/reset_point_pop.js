@@ -75,7 +75,7 @@ export default ({setResetPointPop, rankSettingBtn, setRankSetting}) => {
           </ul>
         </div>
         <button className="btnClose" onClick={closePopup}>
-          <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="닫기" />
+          <img src="https://image.dallalive.com/svg/close_w_l.svg" alt="닫기" />
         </button>
       </div>
     </PopupWrap>

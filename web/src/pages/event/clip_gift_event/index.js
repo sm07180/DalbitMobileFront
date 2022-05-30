@@ -8,7 +8,7 @@ import {Hybrid} from 'context/hybrid'
 
 import Header from 'components/ui/new_header.js'
 
-const btnClose = 'https://image.dalbitlive.com/svg/ic_close_black.svg'
+const btnClose = 'https://image.dallalive.com/svg/ic_close_black.svg'
 
 export default () => {
   let history = useHistory()
@@ -47,7 +47,7 @@ export default () => {
           </button>
         </Header>
         <div className="event-content">
-          <img src="https://image.dalbitlive.com/event/clip/event/event_gift_201012.png" alt="클립 40% 추가 선물 이벤트" />
+          <img src="https://image.dallalive.com/event/clip/event/event_gift_201012.png" alt="클립 40% 추가 선물 이벤트" />
         </div>
         <div className="event-notice">
           <p className={`title ${noticeView === true ? 'active' : ''}`} onClick={buttonToogle}>

@@ -103,7 +103,7 @@ export default function login_form({ onSubmit }: FormProps) {
       <div className="modal_login">
         <div className="loginForm" onClick={(e) => e.stopPropagation()}>
           <div className="loginForm__logo">
-            <img src="https://image.dalbitlive.com/images/api/logo_p_l.png"></img>
+            <img src="https://image.dallalive.com/images/api/logo_p_l.png"></img>
           </div>
           <form onSubmit={LoginSubmit}>
             <input

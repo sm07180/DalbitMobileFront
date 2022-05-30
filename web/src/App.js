@@ -122,6 +122,16 @@ const setServerDataJson = () =>{
   return null;
 }
 
+
+try{
+  //domain dalbitlive > dallalive
+  const href = window.location.href.toString();
+  if(href.indexOf("dalbitlive.com") > -1){
+    const s = href.replace("dalbitlive.com","dallalive.com");
+    window.location.replace(s)
+  }
+}catch (e) {}
+
 const App = () => {
   let serverDataJson = setServerDataJson();
   //본인인증
@@ -365,7 +375,7 @@ const App = () => {
       splited.forEach((bundle) => {
         let [key, value] = bundle.split('=')
         key = key.trim()
-        document.cookie = key + '=' + '; expires=' + yesterDay + '; path=/; secure; domain=.dalbitlive.com'
+        document.cookie = key + '=' + '; expires=' + yesterDay + '; path=/; secure; domain=.dallalive.com'
       })
 
       Api.error_log({

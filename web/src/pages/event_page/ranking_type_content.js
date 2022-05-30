@@ -11,9 +11,9 @@ export default function RankingType(props) {
   if (props.rankingType === 'exp') {
     return (
       <div className="content-wrap">
-        {rankingTerm.round === 1 && <img src="https://image.dalbitlive.com/event/200608/ranking_exp_01_img1.png"/>}
-        {rankingTerm.round === 2 && <img src="https://image.dalbitlive.com/event/200608/ranking_exp_01_img2.png" />}
-        {rankingTerm.round === 3 && <img src="https://image.dalbitlive.com/event/200608/ranking_exp_01_img3.png" />}
+        {rankingTerm.round === 1 && <img src="https://image.dallalive.com/event/200608/ranking_exp_01_img1.png"/>}
+        {rankingTerm.round === 2 && <img src="https://image.dallalive.com/event/200608/ranking_exp_01_img2.png" />}
+        {rankingTerm.round === 3 && <img src="https://image.dallalive.com/event/200608/ranking_exp_01_img3.png" />}
 
         <div className="notice-wrap">
           <p>순위는 실시간으로 집계됩니다.</p>
@@ -46,9 +46,9 @@ export default function RankingType(props) {
   } else if (props.rankingType === 'like') {
     return (
       <div className="content-wrap">
-        {rankingTerm.round === 1 && <img src="https://image.dalbitlive.com/event/200608/ranking_like_01_img1.png" />}
-        {rankingTerm.round === 2 && <img src="https://image.dalbitlive.com/event/200608/ranking_like_01_img2.png" />}
-        {rankingTerm.round === 3 && <img src="https://image.dalbitlive.com/event/200608/ranking_like_01_img3.png" />}
+        {rankingTerm.round === 1 && <img src="https://image.dallalive.com/event/200608/ranking_like_01_img1.png" />}
+        {rankingTerm.round === 2 && <img src="https://image.dallalive.com/event/200608/ranking_like_01_img2.png" />}
+        {rankingTerm.round === 3 && <img src="https://image.dallalive.com/event/200608/ranking_like_01_img3.png" />}
 
         <div className="notice-wrap">
           <p>부스터도 좋아요 수에 합산됩니다</p>
@@ -60,9 +60,9 @@ export default function RankingType(props) {
   } else if (props.rankingType === 'gift') {
     return (
       <div className="content-wrap">
-        {rankingTerm.round === 1 && <img src="https://image.dalbitlive.com/event/200609/ranking_gift_01_img3_0609.png" />}
-        {rankingTerm.round === 2 && <img src="https://image.dalbitlive.com/event/200608/ranking_gift_01_img2.png" />}
-        {rankingTerm.round === 3 && <img src="https://image.dalbitlive.com/event/200608/ranking_gift_01_img3.png" />}
+        {rankingTerm.round === 1 && <img src="https://image.dallalive.com/event/200609/ranking_gift_01_img3_0609.png" />}
+        {rankingTerm.round === 2 && <img src="https://image.dallalive.com/event/200608/ranking_gift_01_img2.png" />}
+        {rankingTerm.round === 3 && <img src="https://image.dallalive.com/event/200608/ranking_gift_01_img3.png" />}
 
         <div className="notice-wrap">
           <p>

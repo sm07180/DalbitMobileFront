@@ -5,7 +5,7 @@ $MAINCOLOR: #FF3C7B;
 $DOWNCOLOR: #FF6999;
 $DISABLEDCOLOR: #FFD4E1;
 $BLACKBTNCOLOR: #202020;
-$IMGSERVER: unquote("https://image.dalbitlive.com");
+$IMGSERVER: unquote("https://image.dallalive.com");
 
 // height 값 관리
 $HEADER-HEIGHT: 52px;
@@ -311,7 +311,7 @@ $Heavy: 900;
         @include flex;
         line-height:36px;
         padding:0 10%;
-        background-image:url("https://image.dalbitlive.comstore/dalla/receiptBody.png");
+        background-image:url("https://image.dallalive.comstore/dalla/receiptBody.png");
         background-size: 100%;
         background-repeat: repeat-y;
         span {
@@ -352,7 +352,7 @@ $Heavy: 900;
         left:2px;
         width:16px;
         height:16px;
-        background:url("https://image.dalbitlive.com/store/dalla/ico_info.png") no-repeat left / contain;
+        background:url("https://image.dallalive.com/store/dalla/ico_info.png") no-repeat left / contain;
       }
     }
     p {

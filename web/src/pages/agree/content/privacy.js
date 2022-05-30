@@ -298,7 +298,7 @@ export default (props) => {
           소속 : 미디어사업부 본부장 <br />
           연락처: 1522-0251
           <br />
-          E-mail : help@dalbitlive.com
+          E-mail : help@dallalive.com
           <br />
           <br />
           기타 개인정보침해에 대한 신고나 상담이 필요하신 경우에는 아래 기관에 문의하시기 바랍니다.

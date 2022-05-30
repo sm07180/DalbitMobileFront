@@ -287,8 +287,8 @@ export default function RecommendDj() {
 
                 <div className="userText">
                   <span className="userText__genderBox">
-                    {list.gender === 'f' && <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" alt="여성" />}
-                    {list.gender === 'm' && <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" alt="남성" />}
+                    {list.gender === 'f' && <img src="https://image.dallalive.com/svg/gender_w_w.svg" alt="여성" />}
+                    {list.gender === 'm' && <img src="https://image.dallalive.com/svg/gender_m_w.svg" alt="남성" />}
                     <span className="userText__nickName">{list.nickNm}</span>
                   </span>
                   <span className="userText__liveTime">{list.title}</span>

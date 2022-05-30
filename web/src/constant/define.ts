@@ -16,7 +16,7 @@ export const CHAT_SOCKET_URL = __CHAT_SOCKET_URL;
 export const SOCIAL_URL = __SOCIAL_URL;
 export const NODE_ENV = __NODE_ENV;
 export const CHAT_CONFIG = {
-  socketServerPort: __NODE_ENV === "stage" ? 8100 : 8000,
+  socketServerPort: 8000,
   socketServerHost: CHAT_SOCKET_URL,
   // socketServerSecure: __NODE_ENV === "dev" ? false : true,
   socketServerSecure: true,

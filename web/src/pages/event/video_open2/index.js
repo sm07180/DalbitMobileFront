@@ -111,22 +111,22 @@ export default function VideoOpenEvent() {
       <div id="event_page_2nd">
         <div className="event_main_wrap">
           <img
-            src="https://image.dalbitlive.com/event/video_open/20210217/top_visual@3x.png"
+            src="https://image.dallalive.com/event/video_open/20210217/top_visual@3x.png"
             alt="보이는 라디오 오픈기념 STAR &amp; FAN 특별이벤트"
           />
           <button className="btnBack" onClick={() => clickCloseBtn()}>
-            <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+            <img src="https://image.dallalive.com/svg/close_w_l.svg" alt="close" />
           </button>
         </div>
         <div className="tab_box">
           <button className="tab" onClick={() => switchType(1)}>
             <img
-              src={`https://image.dalbitlive.com/event/video_open/20210217/tab_star${eventType === 1 ? '_focus' : ''}@3x.png`}
+              src={`https://image.dallalive.com/event/video_open/20210217/tab_star${eventType === 1 ? '_focus' : ''}@3x.png`}
             />
           </button>
           <button className="tab" onClick={() => switchType(2)}>
             <img
-              src={`https://image.dalbitlive.com/event/video_open/20210217/tab_fan${eventType === 2 ? '_focus' : ''}@3x.png`}
+              src={`https://image.dallalive.com/event/video_open/20210217/tab_fan${eventType === 2 ? '_focus' : ''}@3x.png`}
             />
           </button>
         </div>
@@ -136,7 +136,7 @@ export default function VideoOpenEvent() {
           {eventType === 1 && (
             <div className="stage_wrap">
               <img
-                src="https://image.dalbitlive.com/event/video_open/20210217/event_star_img@3x.png"
+                src="https://image.dallalive.com/event/video_open/20210217/event_star_img@3x.png"
                 alt="방송에서 많이 선물받은 30분께 선물을 드립니다."
               />
               <div className="btn_wrap">
@@ -191,7 +191,7 @@ export default function VideoOpenEvent() {
                 </div>
                 <div className="my_rank_box">
                   <span>
-                    <img src="https://image.dalbitlive.com/event/video_open/ic_star@3x.png" alt="star" /> 받은 별
+                    <img src="https://image.dallalive.com/event/video_open/ic_star@3x.png" alt="star" /> 받은 별
                   </span>
                   <span className="point">{videoRankInfo.myPoint.toLocaleString()}</span>
                 </div>
@@ -208,7 +208,7 @@ export default function VideoOpenEvent() {
                   )}
                   <button onClick={refreshList}>
                     <img
-                      src={'https://image.dalbitlive.com/event/video_open/ic_refresh_new.svg'}
+                      src={'https://image.dallalive.com/event/video_open/ic_refresh_new.svg'}
                       alt="새로고침"
                       className={`refresh-img${refresh ? ' active' : ''}`}
                     />
@@ -223,7 +223,7 @@ export default function VideoOpenEvent() {
           {eventType === 2 && (
             <div className="stage_wrap">
               <img
-                src="https://image.dalbitlive.com/event/video_open/20210217/event_fan_img@3x.png"
+                src="https://image.dallalive.com/event/video_open/20210217/event_fan_img@3x.png"
                 alt="방송에서 많이 선물한 30분께 선물을 드립니다."
               />
               <div className="btn_wrap">
@@ -278,7 +278,7 @@ export default function VideoOpenEvent() {
                 </div>
                 <div className="my_rank_box">
                   <span>
-                    <img src="https://image.dalbitlive.com/event/video_open/ic_moon@3x.png" alt="moon" /> 보낸 달
+                    <img src="https://image.dallalive.com/event/video_open/ic_moon@3x.png" alt="moon" /> 보낸 달
                   </span>
                   <span className="point">{videoRankInfo.myPoint.toLocaleString()}</span>
                 </div>
@@ -296,7 +296,7 @@ export default function VideoOpenEvent() {
                   )}
                   <button onClick={refreshList}>
                     <img
-                      src={'https://image.dalbitlive.com/event/video_open/ic_refresh_new.svg'}
+                      src={'https://image.dallalive.com/event/video_open/ic_refresh_new.svg'}
                       alt="새로고침"
                       className={`refresh-img${refresh ? ' active' : ''}`}
                     />

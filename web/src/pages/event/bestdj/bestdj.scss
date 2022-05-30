@@ -43,7 +43,7 @@
           background-size: 100%;
           image-rendering: auto;
           &:nth-child(odd) {
-            background: url('https://image.dalbitlive.com/event/bestDj/2202/bestDj_2202-bg-odd.png') #439BFF bottom no-repeat;
+            background: url('https://image.dallalive.com/event/bestDj/2202/bestDj_2202-bg-odd.png') #439BFF bottom no-repeat;
             background-size: 100% 100%;
           }
           &:nth-child(even) {
@@ -75,7 +75,7 @@
     }
     .list:nth-child(odd) .fanRank {
         justify-content: flex-end;
-        background: url('https://image.dalbitlive.com/event/bestDj/2202/bestDj_2202-fanBox-odd.png') bottom no-repeat;
+        background: url('https://image.dallalive.com/event/bestDj/2202/bestDj_2202-fanBox-odd.png') bottom no-repeat;
         background-size: 100% 100%;
         .fanRankListWrap {
             width: 75%;
@@ -84,7 +84,7 @@
     }
     .list:nth-child(even) .fanRank {
         justify-content: flex-start;
-        background: url('https://image.dalbitlive.com/event/bestDj/2202/bestDj_2202-fanBox-even.png') bottom no-repeat;
+        background: url('https://image.dallalive.com/event/bestDj/2202/bestDj_2202-fanBox-even.png') bottom no-repeat;
         background-size: 100% 100%;
         .fanRankListWrap {
             width: 80%;
@@ -146,7 +146,7 @@
                   right: -5px;
                   width: 40%;
                   height: 40%;
-                  background-image: url('https://image.dalbitlive.com/event/medal/medal_gold.png');
+                  background-image: url('https://image.dallalive.com/event/medal/medal_gold.png');
                   background-position: center;
                   background-size: 100%;
                   background-repeat: no-repeat;
@@ -162,7 +162,7 @@
                   right: -5px;
                   width: 40%;
                   height: 40%;
-                  background-image: url('https://image.dalbitlive.com/event/medal/medal_silver.png');
+                  background-image: url('https://image.dallalive.com/event/medal/medal_silver.png');
                   background-position: center;
                   background-size: 100%;
                   background-repeat: no-repeat;
@@ -178,7 +178,7 @@
                   right: -5px;
                   width: 40%;
                   height: 40%;
-                  background-image: url('https://image.dalbitlive.com/event/medal/medal_bronze.png');
+                  background-image: url('https://image.dallalive.com/event/medal/medal_bronze.png');
                   background-position: center;
                   background-size: 100%;
                   background-repeat: no-repeat;

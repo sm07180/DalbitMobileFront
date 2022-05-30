@@ -732,7 +732,7 @@ function GuestComponent(props) {
                             dispatch(setBroadcastCtxRightTabType(tabType.GUEST));
                           }}
                         >
-                          <img src="https://image.dalbitlive.com/broadcast/ico_live_guest_g.png" className="guestIcon" alt="G" />
+                          <img src="https://image.dallalive.com/broadcast/ico_live_guest_g.png" className="guestIcon" alt="G" />
                           {guestState.newApplyGuest === false ? (
                             "관리"
                           ) : (
@@ -744,7 +744,7 @@ function GuestComponent(props) {
                         </button>
                       ) : v !== globalState.baseData.memNo ? (
                         <button onClick={applyGuest}>
-                          <img src="https://image.dalbitlive.com/broadcast/ico_live_guest_g.png" alt="G" />
+                          <img src="https://image.dallalive.com/broadcast/ico_live_guest_g.png" alt="G" />
                           {guestState.newApplyGuest === true ? "취소" : "신청"}
                         </button>
                       ) : (
@@ -826,7 +826,7 @@ function GuestComponent(props) {
                       dispatch(setBroadcastCtxRightTabType(tabType.GUEST));
                     }}
                   >
-                    <img src="https://image.dalbitlive.com/broadcast/ico_live_guest_g.png" className="guestIcon" alt="G" />
+                    <img src="https://image.dallalive.com/broadcast/ico_live_guest_g.png" className="guestIcon" alt="G" />
                     {guestState.newApplyGuest === false ? (
                       "관리"
                     ) : (
@@ -842,7 +842,7 @@ function GuestComponent(props) {
                       applyGuest();
                     }}
                   >
-                    <img src="https://image.dalbitlive.com/broadcast/ico_live_guest_g.png" alt="G" />
+                    <img src="https://image.dallalive.com/broadcast/ico_live_guest_g.png" alt="G" />
                     {guestState.newApplyGuest === false ? "신청" : "취소"}
                   </button>
                 )}

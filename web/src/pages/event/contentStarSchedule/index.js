@@ -23,7 +23,7 @@ const contentStarSchedule = () => {
   const [schedule, setSchedule] = useState(
     [
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7901.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_7901.png",
         title:"온유가 간다! EP.1 본사 습격편",
         date:"4월 15일 18:00",
         endDay : "20220415 210000",
@@ -32,7 +32,7 @@ const contentStarSchedule = () => {
         path:'/profile/11631518696100'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7917.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_7917.png",
         title:"옹기종기의 댄스 맞추기",
         date:"4월 15일 20:30",
         endDay : "20220415 233000",
@@ -41,7 +41,7 @@ const contentStarSchedule = () => {
         path:'/profile/41632647800399'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7940-2.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_7940-2.png",
         title:"말쑤의 냉혈의 말쑤",
         date:"4월 20일 22:00",
         endDay : "20220421 010000",
@@ -50,7 +50,7 @@ const contentStarSchedule = () => {
         path:'/profile/31639546917221'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7934.jpg",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_7934.jpg",
         title:"빠기의 오지리는 게임",
         date:"4월 21일 21:30",
         endDay : "20220422 003000",
@@ -59,7 +59,7 @@ const contentStarSchedule = () => {
         path:'/profile/11592380122241'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7924.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_7924.png",
         title:"Int팀 이그잼의 the Voice of Dalla",
         date:"4월 22일 20:00",
         endDay : "20220422 230000",
@@ -68,7 +68,7 @@ const contentStarSchedule = () => {
         path:'/profile/61611836929345'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7941.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_7941.png",
         title:"청이의 리액션 챌린지",
         date:"4월 22일 22:00",
         endDay : "20220423 010000",
@@ -77,7 +77,7 @@ const contentStarSchedule = () => {
         path:'/profile/31607782195952'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7915.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_7915.png",
         title:"시골쥐의 패션왕",
         date:"4월 23일 21:00",
         endDay : "20220424 000000",
@@ -86,7 +86,7 @@ const contentStarSchedule = () => {
         path:'/profile/61641048793489'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7952.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_7952.png",
         title:"제2회 헌이의 음유시인",
         date:"4월 23일 23:00",
         endDay : "20220424 020000",
@@ -95,7 +95,7 @@ const contentStarSchedule = () => {
         path:'/profile/61630125869781'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7935.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_7935.png",
         title:"무진이의 서든어택",
         date:"4월 24일 17:00",
         endDay : "20220424 200000",
@@ -104,7 +104,7 @@ const contentStarSchedule = () => {
         path:'/profile/31605522105416'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7919.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_7919.png",
         title:"온유의 도전! 골든벨",
         date:"4월 24일 19:00",
         endDay : "20220424 220000",
@@ -113,7 +113,7 @@ const contentStarSchedule = () => {
         path:'/profile/11631518696100'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_8027.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_8027.png",
         title:"얀규의 사연 라디오",
         date:"5월 7일 20:00",
         endDay : "20220507 230000",
@@ -122,7 +122,7 @@ const contentStarSchedule = () => {
         path:'/profile/11614503085121'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_8031.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_8031.png",
         title:"뮤아진의 리액션 챌린지",
         date:"5월 11일 22:00",
         endDay : "20220512 010000",
@@ -131,7 +131,7 @@ const contentStarSchedule = () => {
         path:'/profile/61642511571222'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_userpic.jpg",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_userpic.jpg",
         title:"헌이의 최고 목소리를 찾아라",
         date:"5월 13일 22:30",
         endDay : "20220514 013000",
@@ -140,7 +140,7 @@ const contentStarSchedule = () => {
         path:'/profile/61630125869781'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_220517-11631518696100.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_220517-11631518696100.png",
         title:"온유의 연애의 참견",
         date:"5월 17일 19:00",
         endDay : "20220517 220000",
@@ -149,7 +149,7 @@ const contentStarSchedule = () => {
         path:'/profile/11631518696100'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_220519-61641048793489.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_220519-61641048793489.png",
         title:"시골쥐의 나를 표현하라",
         date:"5월 19일 21:00",
         endDay : "20220520 000000",
@@ -158,7 +158,7 @@ const contentStarSchedule = () => {
         path:'/profile/61641048793489'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_8065.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_8065.png",
         title:"빛쀼의 쀼가맨",
         date:"5월 20일 15:15",
         endDay : "20220520 181500",
@@ -167,7 +167,7 @@ const contentStarSchedule = () => {
         path:'/profile/31621777031786'
       },
       {
-        bannerImg: "https://image.dalbitlive.com/event/contentStarSchedule/contentStar_220522-11651057290469.jpg",
+        bannerImg: "https://image.dallalive.com/event/contentStarSchedule/contentStar_220522-11651057290469.jpg",
         title:"채리의 누가알아 채리!",
         date:"5월 22일 17:00",
         endDay: "20220522 200000",
@@ -176,7 +176,7 @@ const contentStarSchedule = () => {
         path:'/profile/11651057290469'
       },
       {
-        bannerImg: "https://image.dalbitlive.com/event/contentStarSchedule/contentStar_220522-41647626846382-fix.jpg",
+        bannerImg: "https://image.dallalive.com/event/contentStarSchedule/contentStar_220522-41647626846382-fix.jpg",
         title:"토리의 Thank you, Dalla People",
         date:"5월 22일 20:00",
         endDay: "20220522 230000",
@@ -185,7 +185,7 @@ const contentStarSchedule = () => {
         path:'/profile/41647626846382'
       },
       {
-        bannerImg: "https://image.dalbitlive.com/event/contentStarSchedule/contentStar_220524-31639546917221.png",
+        bannerImg: "https://image.dallalive.com/event/contentStarSchedule/contentStar_220524-31639546917221.png",
         title:"말쑤의 냉혈의 말쑤 2탄 N행시 편",
         date:"5월 24일 22:00",
         endDay: "20220525 010000",
@@ -194,7 +194,7 @@ const contentStarSchedule = () => {
         path:'/profile/31639546917221'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_220525-31623768115793.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_220525-31623768115793.png",
         title:"기유의 STAR DJ 애장품 경매!",
         date:"5월 25일 21:00",
         endDay: "20220526 000000",
@@ -203,7 +203,7 @@ const contentStarSchedule = () => {
         path:'/event/contentBroadcast'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_220526-11592380122241.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_220526-11592380122241.png",
         title:"빠기의 말빨 디펜스게임",
         date:"5월 26일 22:00",
         endDay: "20220527 010000",
@@ -212,7 +212,7 @@ const contentStarSchedule = () => {
         path:'/profile/11592380122241'
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_8055.png",
+        bannerImg:"https://image.dallalive.com/event/contentStarSchedule/contentStar_8055.png",
         title:"숲속의 음악스케치",
         date:"5월 27일 20:00",
         endDay : "20220527 230000",

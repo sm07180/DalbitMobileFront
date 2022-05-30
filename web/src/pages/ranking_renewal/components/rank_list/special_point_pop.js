@@ -29,7 +29,7 @@ export default ({setPopState}) => {
     <PopupWrap id="layer-popup" onClick={closePopupDim}>
       <div className="content-wrap">
         <button className="close-btn">
-          <img src="https://image.dalbitlive.com/svg/close_w_l.svg" onClick={() => closePopup()} />
+          <img src="https://image.dallalive.com/svg/close_w_l.svg" onClick={() => closePopup()} />
         </button>
 
         <p className="topBox">

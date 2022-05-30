@@ -12,8 +12,8 @@ import {useDispatch, useSelector} from "react-redux";
 const GoldMedal = `${IMG_SERVER}/main/200714/ico-ranking-gold.png`
 const SilverMedal = `${IMG_SERVER}/main/200714/ico-ranking-silver.png`
 const BronzeMedal = `${IMG_SERVER}/main/200714/ico-ranking-bronze.png`
-const LiveIcon = 'https://image.dalbitlive.com/svg/ic_live.svg'
-const ListenIcon = 'https://image.dalbitlive.com/svg/ico_listen.svg'
+const LiveIcon = 'https://image.dallalive.com/svg/ic_live.svg'
+const ListenIcon = 'https://image.dallalive.com/svg/ico_listen.svg'
 
 export default (props) => {
   const history = useHistory()

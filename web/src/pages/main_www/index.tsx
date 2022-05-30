@@ -475,7 +475,7 @@ export default function Main() {
             <button onClick={() => history.push("/search")}>
               <img
                 className="iconSearch"
-                src="https://image.dalbitlive.com/svg/ico_search_w.svg"
+                src="https://image.dallalive.com/svg/ico_search_w.svg"
                 alt="검색버튼"
               />
             </button>
@@ -490,7 +490,7 @@ export default function Main() {
             >
               <img
                 className="iconStore"
-                src="https://image.dalbitlive.com/svg/ico_store_w.svg"
+                src="https://image.dallalive.com/svg/ico_store_w.svg"
                 alt="스토어버튼"
               />
             </button>
@@ -507,7 +507,7 @@ export default function Main() {
                 >
                   <img
                     className="icon mailbox"
-                    src="https://image.dalbitlive.com/svg/postbox_w_on.svg"
+                    src="https://image.dallalive.com/svg/postbox_w_on.svg"
                     alt="메시지"
                   />
                 </div>
@@ -519,13 +519,13 @@ export default function Main() {
                   {!isMailboxOn && baseData.isLogin ? (
                     <img
                       className="icon mailbox"
-                      src="https://image.dalbitlive.com/svg/postbox_m_w_off.svg"
+                      src="https://image.dallalive.com/svg/postbox_m_w_off.svg"
                       alt="메시지"
                     />
                   ) : (
                     <img
                       className="icon mailbox"
-                      src="https://image.dalbitlive.com/svg/postbox_w.svg"
+                      src="https://image.dallalive.com/svg/postbox_w.svg"
                       alt="메시지"
                     />
                   )}
@@ -539,7 +539,7 @@ export default function Main() {
                 }}
               >
                 <img
-                  src="https://image.dalbitlive.com/ani/webp/main/gnb_alarm_w.webp"
+                  src="https://image.dallalive.com/ani/webp/main/gnb_alarm_w.webp"
                   alt="alarm active"
                   width={40}
                   height={40}
@@ -640,7 +640,7 @@ export default function Main() {
                 }}
               >
                 <img
-                  src="https://image.dalbitlive.com/svg/ranking_live.svg"
+                  src="https://image.dallalive.com/svg/ranking_live.svg"
                   className="ico-tit"
                   alt="실시간 랭킹"
                 />
@@ -711,7 +711,7 @@ export default function Main() {
                   className="text isArrow"
                 >
                   <img
-                    src="https://image.dalbitlive.com/svg/mystar_live.svg"
+                    src="https://image.dallalive.com/svg/mystar_live.svg"
                     className="ico-tit"
                     alt="나의스타"
                   />
@@ -736,7 +736,7 @@ export default function Main() {
                   className={`tab_refresh_btn ${liveRefresh ? "on" : ""}`}
                 >
                   <img
-                    src="https://image.dalbitlive.com/main/ico_live_refresh_new_s.svg"
+                    src="https://image.dallalive.com/main/ico_live_refresh_new_s.svg"
                     alt="새로고침"
                   />
                 </button>
@@ -752,7 +752,7 @@ export default function Main() {
                   <img src={sortIcon} alt="검색 정렬하기" />
                 </button> */}
                 {/* <button className="btn__moon" onClick={openPopupMoon}>
-                  <img src="https://image.dalbitlive.com/main/common/ico_moon.png" alt="달이 된 병아리" />
+                  <img src="https://image.dallalive.com/main/common/ico_moon.png" alt="달이 된 병아리" />
                 </button> */}
 
                 {/* <button className="detail-list-icon" onClick={() => setLiveListType("detail")}>
@@ -858,7 +858,7 @@ export default function Main() {
           >
             {state.mediaType === "new" && (
               <img
-                src="https://image.dalbitlive.com/main/banner_newMember.png"
+                src="https://image.dallalive.com/main/banner_newMember.png"
                 alt="총 방송시간 30시간 미만의 새로운 DJ들입니다. 많은 관심 부탁드립니다!"
                 className="newMember_banner"
               />

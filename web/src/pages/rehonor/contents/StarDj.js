@@ -131,7 +131,7 @@ const StarDj = (props) => {
             <button onClick={() => golink("/starDj/benefits")}>혜택 보러가기</button>
           </div>
           <div className='infoDecoration'>
-            <img src='https://image.dalbitlive.com/honor/starDj/honor_starDj-topBadge.png' alt='스타DJ 훈장 이미지'/>
+            <img src='https://image.dallalive.com/honor/starDj/honor_starDj-topBadge.png' alt='스타DJ 훈장 이미지'/>
           </div>
         </div>
       </div>

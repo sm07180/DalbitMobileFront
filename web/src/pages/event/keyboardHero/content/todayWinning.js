@@ -105,7 +105,7 @@ const todayWinning = () => {
       <section>
         {(list && list.length > 0) &&
           list.map((user, index)=>{
-            let giftImg = `https://image.dalbitlive.com/event/keyboardHero/present-${imageNum(user.pre_code)}.png`;
+            let giftImg = `https://image.dallalive.com/event/keyboardHero/present-${imageNum(user.pre_code)}.png`;
             return(
               <ListRow photo={giftImg} key={index}>
                 <div className="listContent" onClick={() => history.push(`/profile/${user.mem_no}`)}>

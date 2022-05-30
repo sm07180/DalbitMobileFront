@@ -54,7 +54,7 @@ export default function LayerPopupWrap({data, setData}) {
 
     const encodedValue = encodeURIComponent(value)
     const c_value = encodedValue + '; expires=' + exdate.toUTCString()
-    document.cookie = c_name + '=' + c_value + '; path=/; secure; domain=.dalbitlive.com'
+    document.cookie = c_name + '=' + c_value + '; path=/; secure; domain=.dallalive.com'
   }
 
   const handleCookie = (idx, type) => {

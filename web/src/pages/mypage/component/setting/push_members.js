@@ -97,7 +97,7 @@ const PushMembers = () => {
                       onClick={() => {
                         callDeleteConfirm(memNo)
                       }}>
-                      <img src={'https://image.dalbitlive.com/svg/icon_wastebasket.svg'} alt="알림회원 삭제" />
+                      <img src={'https://image.dallalive.com/svg/icon_wastebasket.svg'} alt="알림회원 삭제" />
                     </button>
                   </li>
                 )

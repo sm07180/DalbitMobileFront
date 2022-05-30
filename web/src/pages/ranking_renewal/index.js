@@ -63,7 +63,7 @@ import hallOfFameIcon from './static/ic_fame.svg'
 import rankingPageIcon from './static/ic_ranking_page.svg'
 import {useDispatch, useSelector} from "react-redux";
 
-const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
+const arrowRefreshIcon = 'https://image.dallalive.com/main/common/ico_refresh.png'
 
 let timer
 let touchStartY = null

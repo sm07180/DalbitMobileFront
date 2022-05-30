@@ -84,7 +84,7 @@ export default function LayerWinner({setLayerWinner, list, popupType, setPopupTy
                   <li className="winner_item" key={index}>
                     <span className="date">{`2월 ${18 + index}일`}</span>
                     <div className="thumbnail_box null">
-                      <img src="https://image.dalbitlive.com/event/video_open/20210217/comingsoon@3x.png" alt="물음표 아이콘" />
+                      <img src="https://image.dallalive.com/event/video_open/20210217/comingsoon@3x.png" alt="물음표 아이콘" />
                     </div>
                     <p className="null_text">COMING SOON</p>
                   </li>
@@ -157,7 +157,7 @@ const PopupWrap = styled.div`
     width: 32px;
     height: 32px;
     text-indent: -9999px;
-    background: url(https://image.dalbitlive.com/svg/close_w_l.svg) no-repeat 0 0;
+    background: url(https://image.dallalive.com/svg/close_w_l.svg) no-repeat 0 0;
   }
 
   .layerContainer {

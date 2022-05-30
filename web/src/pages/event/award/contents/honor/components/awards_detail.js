@@ -26,7 +26,7 @@ export default function AwardsDetail(props) {
           <div className="infoThumbnail">
             <img src={djProfImg['thumb190x190']} alt={djNickNm} className=" userThumbnail" />
             <img
-              src="https://image.dalbitlive.com/event/award_rank/awards_dj_frame@2x.png"
+              src="https://image.dallalive.com/event/award_rank/awards_dj_frame@2x.png"
               className=" userFrame"
               alt="프레임 이미지"
             />
@@ -41,7 +41,7 @@ export default function AwardsDetail(props) {
         <div className="userItem__textBox">
           <div className="impression">
             <img
-              src="https://image.dalbitlive.com/event/award_rank/dj_impression.png"
+              src="https://image.dallalive.com/event/award_rank/dj_impression.png"
               alt="수상 소감"
               className="impressionPoint"
             />
@@ -51,7 +51,7 @@ export default function AwardsDetail(props) {
         </div>
       </div>
 
-      <img src="https://image.dalbitlive.com/event/award_rank/awards_dj_speech_bg@2x.jpg" alt="어워즈 수상자 배경" />
+      <img src="https://image.dallalive.com/event/award_rank/awards_dj_speech_bg@2x.jpg" alt="어워즈 수상자 배경" />
     </div>
   )
 }

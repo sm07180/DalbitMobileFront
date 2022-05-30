@@ -71,9 +71,9 @@ export default function awardEvent() {
     <>
       <div className="awardRankPage">
         <button className="btnBack" onClick={clickCloseBtn}>
-          <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+          <img src="https://image.dallalive.com/svg/close_w_l.svg" alt="close" />
         </button>
-        <img src="https://image.dalbitlive.com/event/award_rank/awrad_visual.png" alt="영예의 수상자" />
+        <img src="https://image.dallalive.com/event/award_rank/awrad_visual.png" alt="영예의 수상자" />
 
         <AwardsTab pageType={pageType} toggleTab={toggleTab} />
 

@@ -80,13 +80,13 @@ const ClipDetail = (props) => {
               </div>
               <button className="heart" onClick={clickLikeOnoff}>
                 {likeOnoff === false ? 
-                  <img src="https://image.dalbitlive.com/clip/dalla/heartOff.png" />
+                  <img src="https://image.dallalive.com/clip/dalla/heartOff.png" />
                   :
-                  <img src="https://image.dalbitlive.com/clip/dalla/heartOn.png" />
+                  <img src="https://image.dallalive.com/clip/dalla/heartOn.png" />
                 }
               </button>
               <button className="trash">
-                <img src="https://image.dalbitlive.com/clip/dalla/icoTrash.png" />
+                <img src="https://image.dallalive.com/clip/dalla/icoTrash.png" />
               </button>
             </ListRow>
           )

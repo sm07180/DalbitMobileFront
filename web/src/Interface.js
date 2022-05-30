@@ -537,7 +537,7 @@ export default () => {
       case 'native-non-member-end':
         dispatch(setGlobalCtxMessage({type:"confirm",
           buttonText: {right: '로그인'},
-          msg: `<div id="nonMemberPopup"><p>이 방송이 즐거우셨나요~?<br/>로그인 후 DJ와 소통해보세요!<br>DJ가 당신을 기다립니다 ^^</p><img src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
+          msg: `<div id="nonMemberPopup"><p>이 방송이 즐거우셨나요~?<br/>로그인 후 DJ와 소통해보세요!<br>DJ가 당신을 기다립니다 ^^</p><img src="https://image.dallalive.com/images/popup/non-member-popup.png" /></div>`,
           callback: () => {
             localStorage.setItem(
               'prevRoomInfo',

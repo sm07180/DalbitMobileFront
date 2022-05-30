@@ -10,11 +10,11 @@ export default () => {
       <div id="shiningDJ">
         <div className="content">
           <button className="btnBack" onClick={() => history.goBack()}>
-            <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+            <img src="https://image.dallalive.com/svg/close_w_l.svg" alt="close" />
           </button>
-          <img src="https://image.dalbitlive.com/event/shiningdj/210108/shining_visual.png" alt="또 하나의 별 샤이닝DJ" />
+          <img src="https://image.dallalive.com/event/shiningdj/210108/shining_visual.png" alt="또 하나의 별 샤이닝DJ" />
           <div className="qualification">
-            <img src="https://image.dalbitlive.com/event/shiningdj/210108/shining_cont01.png" alt="샤이닝 DJ 후보 기본 자격" />
+            <img src="https://image.dallalive.com/event/shiningdj/210108/shining_cont01.png" alt="샤이닝 DJ 후보 기본 자격" />
             <ul className="text">
               <li>1. 가입일 : - 매월 13일 기준, 가입한 지 60일 이상 지난 DJ</li>
               <li>2. 방송 일수 : - 매월 13일 기준, 30일 내 15일 이상 방송을 한 DJ </li>
@@ -24,10 +24,10 @@ export default () => {
               <li>※ 지난달 스페셜 및 샤이닝 DJ를 제외하는 이유는 보다 많은 분께 균등한 기회를 드리기 위함 입니다.</li>
             </ul>
           </div>
-          <img src="https://image.dalbitlive.com/event/shiningdj/210108/shining_cont02.png" alt="선발방식" />
+          <img src="https://image.dallalive.com/event/shiningdj/210108/shining_cont02.png" alt="선발방식" />
 
           <div className="notice">
-            <img src="https://image.dalbitlive.com/event/shiningdj/210108/shining_cont03.png" alt="샤이닝 DJ 혜택 기억해주세요" />
+            <img src="https://image.dallalive.com/event/shiningdj/210108/shining_cont03.png" alt="샤이닝 DJ 혜택 기억해주세요" />
             <ul className="text">
               <li>샤이닝 DJ는 매월 15일 00시(자정) 공개됩니다. </li>
               <li>샤이닝 DJ 자격은 1개월 (당월 15일 ~ 익월 14일) 동안 유지됩니다. </li>

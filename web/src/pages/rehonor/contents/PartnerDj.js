@@ -130,7 +130,7 @@ const PartnerDj = (props) => {
           <button onClick={() => golink("/partnerDj")}>자세히보기</button>
         </div>
         <div className='infoDecoration'>
-          <img src='https://image.dalbitlive.com/honor/partnerDj/honor_partnerDj-topBadge.png' alt='파트너DJ 훈장 이미지'/>
+          <img src='https://image.dallalive.com/honor/partnerDj/honor_partnerDj-topBadge.png' alt='파트너DJ 훈장 이미지'/>
         </div>
       </div>
       <div className='partnerDjWrap'>

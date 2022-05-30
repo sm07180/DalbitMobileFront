@@ -58,15 +58,15 @@ function Second({ empty }) {
                           </span>
                           <ul className="countBox">
                             <span>
-                              <img src="https://image.dalbitlive.com/svg/ico_like_g_s.svg" />
+                              <img src="https://image.dallalive.com/svg/ico_like_g_s.svg" />
                               {addComma(likeCnt)}
                             </span>
                             <span>
-                              <img src="https://image.dalbitlive.com/svg/people_g_s.svg" />
+                              <img src="https://image.dallalive.com/svg/people_g_s.svg" />
                               {addComma(listenCnt)}
                             </span>
                             <span>
-                              <img src="https://image.dalbitlive.com/svg/time_g_s.svg" />
+                              <img src="https://image.dallalive.com/svg/time_g_s.svg" />
                               {addComma(airTime)}
                             </span>
                           </ul>
@@ -75,7 +75,7 @@ function Second({ empty }) {
                     );
                   })}
                 <button className="btnMore">
-                  <img src="https://image.dalbitlive.com/svg/icon_more_right.svg" alt="상세페이지이동" />
+                  <img src="https://image.dallalive.com/svg/icon_more_right.svg" alt="상세페이지이동" />
                 </button>
               </li>
             );

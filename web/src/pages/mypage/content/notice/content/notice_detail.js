@@ -302,7 +302,7 @@ const NoticeDetail = (props) => {
                   setZoom(false)
                 }}>
                 <div className="zoomWrap">
-                  <img src="https://image.dalbitlive.com/svg/close_w_l.svg" className="closeButton" />
+                  <img src="https://image.dallalive.com/svg/close_w_l.svg" className="closeButton" />
                   <img src={`${typeof zoom === 'string' && zoom}`} className="zoomImg" />
                 </div>
               </div>
@@ -368,7 +368,7 @@ const NoticeDetail = (props) => {
                             </button>
                           </div>
                           <button className="btnToggle" onClick={() => setReplyModifyIdx(-1)}>
-                            접기 <img src="https://image.dalbitlive.com/svg/ico_check_wrap.svg" alt="접기" />
+                            접기 <img src="https://image.dallalive.com/svg/ico_check_wrap.svg" alt="접기" />
                           </button>
                         </div>
                       ) : (
@@ -470,7 +470,7 @@ const NoticeDetail = (props) => {
 
             {/* {replyWriteToggle === true && (
               <button className="btnToggle" onClick={() => setReplyWriteToggle(false)}>
-                접기 <img src="https://image.dalbitlive.com/svg/ico_check_wrap.svg" alt="접기" />
+                접기 <img src="https://image.dallalive.com/svg/ico_check_wrap.svg" alt="접기" />
               </button>
             )} */}
           </div>

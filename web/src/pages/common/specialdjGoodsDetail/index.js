@@ -16,7 +16,7 @@ export default (props) => {
       <div className="popupScroll">
         <div className="popupScroll--margin">
           <div className="popupScroll--content">
-            <img src={'https://image.dalbitlive.com/event/2007/24/goods_img_640.jpg'} />
+            <img src={'https://image.dallalive.com/event/2007/24/goods_img_640.jpg'} />
           </div>
         </div>
       </div>

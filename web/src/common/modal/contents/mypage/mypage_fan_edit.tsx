@@ -38,10 +38,10 @@ export default (props) => {
   ]);
   // icons Url
   const goldMedalIcon = `${IMG_SERVER}/svg/ico_medal_gold_m@2x.png`;
-  const silverMedalIcon = "https://image.dalbitlive.com/svg/ico_medal_silver_m@2x.png";
-  const bronzeMedalIcon = "https://image.dalbitlive.com/svg/ico_medal_bronze_m@2x.png";
-  const moonIcon = "https://image.dalbitlive.com/svg/ico_moon_s.svg";
-  const heartIcon = "https://image.dalbitlive.com/svg/ico_like_red_m.svg";
+  const silverMedalIcon = "https://image.dallalive.com/svg/ico_medal_silver_m@2x.png";
+  const bronzeMedalIcon = "https://image.dallalive.com/svg/ico_medal_bronze_m@2x.png";
+  const moonIcon = "https://image.dallalive.com/svg/ico_moon_s.svg";
+  const heartIcon = "https://image.dallalive.com/svg/ico_like_red_m.svg";
   //make View
   const makeContents = () => {
     return (

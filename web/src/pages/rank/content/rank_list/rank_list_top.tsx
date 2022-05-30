@@ -70,7 +70,7 @@ function RankListTop() {
                 timeNow = (
                   <div className="spPoint" onClick={() => specialPop(memNo)}>
                     <span className="arrowIcon">
-                      <img src="https://image.dalbitlive.com/svg/20200806/arrow_right_b.svg" alt="arrow"></img>
+                      <img src="https://image.dallalive.com/svg/20200806/arrow_right_b.svg" alt="arrow"></img>
                     </span>
                   </div>
                 );

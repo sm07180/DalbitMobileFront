@@ -106,19 +106,19 @@ $borderLine: 1px solid $lighterGray;
         }
 
         &--star {
-          background-image: url(https://image.dalbitlive.com/svg/ic_gift.svg);
+          background-image: url(https://image.dallalive.com/svg/ic_gift.svg);
         }
 
         &--like {
-          background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+          background-image: url(https://image.dallalive.com/svg/ico_like_g_s.svg);
         }
 
         &--message {
-          background-image: url(https://image.dalbitlive.com/svg/message_g_s.svg);
+          background-image: url(https://image.dallalive.com/svg/message_g_s.svg);
         }
 
         &--headset {
-          background-image: url(https://image.dalbitlive.com/svg/visit_g_s.svg);
+          background-image: url(https://image.dallalive.com/svg/visit_g_s.svg);
         }
 
         img {
@@ -371,25 +371,25 @@ $borderLine: 1px solid $lighterGray;
                 bottom: 0px;
                 width: 12px;
                 height: 12px;
-                background: url(https://image.dalbitlive.com/images/api/ic_gold.png);
+                background: url(https://image.dallalive.com/images/api/ic_gold.png);
               }
               &:nth-child(2) {
                 &::after {
                   content: "";
-                  background: url(https://image.dalbitlive.com/images/api/ic_silver.png);
+                  background: url(https://image.dallalive.com/images/api/ic_silver.png);
                 }
               }
               &:nth-child(3) {
                 &::after {
                   content: "";
-                  background: url(https://image.dalbitlive.com/images/api/ic_bronze.png);
+                  background: url(https://image.dallalive.com/images/api/ic_bronze.png);
                 }
               }
             }
             &__more {
               width: 36px;
               height: 36px;
-              background: url(https://image.dalbitlive.com/svg/ic_circlemore.svg);
+              background: url(https://image.dallalive.com/svg/ic_circlemore.svg);
             }
           }
         }
@@ -461,7 +461,7 @@ $borderLine: 1px solid $lighterGray;
           height: 20px;
           &.prev {
             margin-right: 1px;
-            background: url("https://image.dalbitlive.com/svg/back_wg_s.svg")
+            background: url("https://image.dallalive.com/svg/back_wg_s.svg")
               no-repeat;
             &:disabled {
               opacity: 0.3;
@@ -469,7 +469,7 @@ $borderLine: 1px solid $lighterGray;
           }
           &.next {
             margin-left: 1px;
-            background: url("https://image.dalbitlive.com/svg/next_wg_s.svg")
+            background: url("https://image.dallalive.com/svg/next_wg_s.svg")
               no-repeat;
             &:disabled {
               opacity: 0.3;

@@ -558,7 +558,7 @@ const Rebranding = () => {
         }
         </div>
         <div className="totalDalla">
-          내 <img src="https://image.dalbitlive.com/event/rebranding/dalla_logo.png" alt="dalla" />
+          내 <img src="https://image.dallalive.com/event/rebranding/dalla_logo.png" alt="dalla" />
           <span>{myPieceInfo.dalla_cnt === undefined ? 0 : myPieceInfo.dalla_cnt}개</span>
         </div>
       </section>

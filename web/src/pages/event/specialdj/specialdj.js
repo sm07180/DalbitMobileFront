@@ -145,7 +145,7 @@ export default () => {
             onClick={() => {
               dispatch(setGlobalCtxUpdatePopup({popup:['SPECIAL_DJ_STARTING']}));
             }}>
-            <img src="https://image.dalbitlive.com/event/specialdj/20201223/selection_button.png" alt="선발 방식" />
+            <img src="https://image.dallalive.com/event/specialdj/20201223/selection_button.png" alt="선발 방식" />
           </button>
 
           <button
@@ -153,20 +153,20 @@ export default () => {
             onClick={() => {
               dispatch(setGlobalCtxUpdatePopup({popup:['SPECIAL_DJ_GOODS_DETAIL']}));
             }}>
-            <img src="https://image.dalbitlive.com/event/specialdj/20201223/goobs_button.png" alt="굿즈 더보기" />
+            <img src="https://image.dallalive.com/event/specialdj/20201223/goobs_button.png" alt="굿즈 더보기" />
           </button>
           {imgItem()}
         </div>
 
         {globalState.token.isLogin === true ? (
           <>
-            <img src="https://image.dalbitlive.com/event/specialdj/20201223/top_img.jpg" alt="선발 방식" className="imgResize" />
+            <img src="https://image.dallalive.com/event/specialdj/20201223/top_img.jpg" alt="선발 방식" className="imgResize" />
             <div className="dayTitle">
               {infoData !== '' && endDate !== null && `${startDate} ~ ${endDate.split('-')[1]}월 ${endDate.split('-')[2]}일`}
               {/* {`${eventStartY}년 ${eventStartM}월 ${eventStartD}일 ~ ${endM}월 ${endD}일`}  */}
               <br />(<p>{infoData.condition_end_date && eventEnd()}</p>)
             </div>
-            <img src="https://image.dalbitlive.com/event/specialdj/20201223/title.jpg" alt="지원 요건" className="imgResize" />
+            <img src="https://image.dallalive.com/event/specialdj/20201223/title.jpg" alt="지원 요건" className="imgResize" />
 
             <div className="checkList">
               <div className="checkList__table">
@@ -262,7 +262,7 @@ export default () => {
                         )
                       }}>
                       <img
-                        src="https://image.dalbitlive.com/event/specialdj/20201223/write_button.png"
+                        src="https://image.dallalive.com/event/specialdj/20201223/write_button.png"
                         className="imgResize"
                         alt="스페셜 Dj 신청서 작성"
                       />
@@ -271,7 +271,7 @@ export default () => {
                   ) : (
                     <div className="buttonOff">
                       <img
-                        src="https://image.dalbitlive.com/event/specialdj/20201223/next_button.png"
+                        src="https://image.dallalive.com/event/specialdj/20201223/next_button.png"
                         className="imgResize "
                         alt="다음에 지원해주세요"
                       />
@@ -283,7 +283,7 @@ export default () => {
                 <>
                   <div className="buttonOn">
                     <img
-                      src="https://image.dalbitlive.com/event/specialdj/20201223/clear_button.png"
+                      src="https://image.dallalive.com/event/specialdj/20201223/clear_button.png"
                       className="imgResize"
                       alt="이미 지원하셨습니다."
                     />
@@ -307,7 +307,7 @@ export default () => {
                   })
                 }}>
                 <img
-                  src="https://image.dalbitlive.com/event/specialdj/20201223/login_button.png"
+                  src="https://image.dallalive.com/event/specialdj/20201223/login_button.png"
                   className="imgResize"
                   alt="로그인 버튼"
                 />
@@ -318,7 +318,7 @@ export default () => {
         )}
         {globalState.token.isLogin === true ? (
           <img
-            src="https://image.dalbitlive.com/event/specialdj/20201223/new_bottom_img.jpg"
+            src="https://image.dallalive.com/event/specialdj/20201223/new_bottom_img.jpg"
             className="imgResize"
             alt="하단 배경 이미지"
           />

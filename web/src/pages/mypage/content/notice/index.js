@@ -221,7 +221,7 @@ function NoticeComponent(props) {
             onClick={() => {
               history.goBack()
             }}>
-            <img src="https://image.dalbitlive.com/svg/icon_back_gray.svg" alt="뒤로가기" />
+            <img src="https://image.dallalive.com/svg/icon_back_gray.svg" alt="뒤로가기" />
           </button>
         </Header>
       )}

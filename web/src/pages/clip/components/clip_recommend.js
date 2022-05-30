@@ -177,19 +177,19 @@ export default function ClipRecommend() {
                       }}>
                       <li className="scoreList">
                         <button className="scoreButton">
-                          <img src="https://image.dalbitlive.com/svg/ic_gift.svg" alt="별" />
+                          <img src="https://image.dallalive.com/svg/ic_gift.svg" alt="별" />
                         </button>
                         <span className="scoreNumber">{Utility.addComma(marketingClipObj.byeolCnt)}</span>
                       </li>
                       <li className="scoreList">
                         <button className="scoreButton">
-                          <img src="https://image.dalbitlive.com/svg/ic_heart_g.svg" alt="좋아요" />
+                          <img src="https://image.dallalive.com/svg/ic_heart_g.svg" alt="좋아요" />
                         </button>
                         <span className="scoreNumber">{Utility.addComma(marketingClipObj.goodCnt)}</span>
                       </li>
                       <li className="scoreList">
                         <button className="scoreButton">
-                          <img src="https://image.dalbitlive.com/svg/ic_message_g.svg" alt="조회수" />
+                          <img src="https://image.dallalive.com/svg/ic_message_g.svg" alt="조회수" />
                         </button>
                         <span className="scoreNumber">{Utility.addComma(marketingClipObj.replyCnt)}</span>
                       </li>
@@ -202,7 +202,7 @@ export default function ClipRecommend() {
                             onClick={() => {
                               goUrl(marketingClipObj.fbookUrl)
                             }}>
-                            <img src="https://image.dalbitlive.com/svg/ic_facebook.svg" alt="페이스북 바로가기" />
+                            <img src="https://image.dallalive.com/svg/ic_facebook.svg" alt="페이스북 바로가기" />
                           </button>
                         </li>
                         <li>
@@ -210,7 +210,7 @@ export default function ClipRecommend() {
                             onClick={() => {
                               goUrl(marketingClipObj.instaUrl)
                             }}>
-                            <img src="https://image.dalbitlive.com/svg/ic_instagram.svg" alt="인스타 그램 바로가기" />
+                            <img src="https://image.dallalive.com/svg/ic_instagram.svg" alt="인스타 그램 바로가기" />
                           </button>
                         </li>
                         <li>
@@ -218,7 +218,7 @@ export default function ClipRecommend() {
                             onClick={() => {
                               goUrl(marketingClipObj.ytubeUrl)
                             }}>
-                            <img src="https://image.dalbitlive.com/svg/ic_youtube.svg" alt="유튜브 바로가기" />
+                            <img src="https://image.dallalive.com/svg/ic_youtube.svg" alt="유튜브 바로가기" />
                           </button>
                         </li>
                       </ul>

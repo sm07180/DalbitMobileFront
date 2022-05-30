@@ -41,7 +41,7 @@
       &.basic {
         width: 48px;
         height: 48px;
-        background: url("https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png")
+        background: url("https://image.dallalive.com/event/attend/200811/icon_button@2x.png")
           center no-repeat;
         background-size: 100%;
       }
@@ -60,7 +60,7 @@
           border-radius: 50%;
           overflow: hidden;
           content: "";
-          background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_01.png")
+          background: url("https://image.dallalive.com/event/attend/201126/new_icon_roulette_01.png")
             center no-repeat;
           background-size: 48px;
           animation: rotate_image 1s linear infinite;
@@ -79,7 +79,7 @@
           width: 48px;
           height: 48px;
           z-index: 1;
-          background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_02.png")
+          background: url("https://image.dallalive.com/event/attend/201126/new_icon_roulette_02.png")
             center no-repeat;
           background-size: 60px;
         }
@@ -99,7 +99,7 @@
         bottom:30px;
       }
       &.draw {
-        background: url('https://image.dalbitlive.com/event/draw/floatingButton.png') center no-repeat;
+        background: url('https://image.dallalive.com/event/draw/floatingButton.png') center no-repeat;
         background-size: 100%;
       }
   }
@@ -189,7 +189,7 @@
         text-indent: -99999px;
         width: 68px;
         height: 40px;
-        background: url(https://image.dalbitlive.com/main/200714/white_broad.svg)
+        background: url(https://image.dallalive.com/main/200714/white_broad.svg)
           center no-repeat #FF3C7B;
       }
 
@@ -329,7 +329,7 @@
     .giftIcon {
       margin-left: 8px;
       padding: 10px 10px 10px 36px;
-      background: url("https://image.dalbitlive.com/svg/ic_gift.svg") no-repeat
+      background: url("https://image.dallalive.com/svg/ic_gift.svg") no-repeat
         left 4px center $white;
       color: #00a1a7;
       font-size: 13px;
@@ -375,7 +375,7 @@
           width: 24px;
           height: 24px;
           vertical-align: middle;
-          background: url(https://image.dalbitlive.com/svg/ico_arrow_right_b.svg)
+          background: url(https://image.dallalive.com/svg/ico_arrow_right_b.svg)
             no-repeat 0 0;
         }
       }
@@ -475,17 +475,17 @@
       &.djBadge {
         .rankingItem:nth-child(1) {
           i {
-            background-image: url(https://image.dalbitlive.com/badge/20201007/dj_rank_icon1.png);
+            background-image: url(https://image.dallalive.com/badge/20201007/dj_rank_icon1.png);
           }
         }
         .rankingItem:nth-child(2) {
           i {
-            background-image: url(https://image.dalbitlive.com/badge/20201007/dj_rank_icon2.png);
+            background-image: url(https://image.dallalive.com/badge/20201007/dj_rank_icon2.png);
           }
         }
         .rankingItem:nth-child(3) {
           i {
-            background-image: url(https://image.dalbitlive.com/badge/20201007/dj_rank_icon3.png);
+            background-image: url(https://image.dallalive.com/badge/20201007/dj_rank_icon3.png);
           }
         }
       }
@@ -493,17 +493,17 @@
       &.fanBadge {
         .rankingItem:nth-child(1) {
           i {
-            background-image: url(https://image.dalbitlive.com/badge/20201007/fan_rank_icon1.png);
+            background-image: url(https://image.dallalive.com/badge/20201007/fan_rank_icon1.png);
           }
         }
         .rankingItem:nth-child(2) {
           i {
-            background-image: url(https://image.dalbitlive.com/badge/20201007/fan_rank_icon2.png);
+            background-image: url(https://image.dallalive.com/badge/20201007/fan_rank_icon2.png);
           }
         }
         .rankingItem:nth-child(n + 3):nth-child(-n + 5) {
           i {
-            background-image: url(https://image.dalbitlive.com/badge/20201007/fan_rank_icon3.png);
+            background-image: url(https://image.dallalive.com/badge/20201007/fan_rank_icon3.png);
           }
         }
       }
@@ -548,7 +548,7 @@
           border-radius: 50%;
           overflow: hidden;
           content: "";
-          background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_01.png")
+          background: url("https://image.dallalive.com/event/attend/201126/new_icon_roulette_01.png")
             center no-repeat;
           background-size: 48px;
           animation: rotate_image 1s linear infinite;
@@ -567,7 +567,7 @@
           width: 48px;
           height: 48px;
           z-index: 1;
-          background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_02.png")
+          background: url("https://image.dallalive.com/event/attend/201126/new_icon_roulette_02.png")
             center no-repeat;
           background-size: 60px;
         }
@@ -593,9 +593,9 @@
         background-color: rgba(0, 0, 0, 0.6);
         background-position: center;
         background-repeat: no-repeat;
-        background-image: url(https://image.dalbitlive.com/main/200714/ico-banner-down.svg);
+        background-image: url(https://image.dallalive.com/main/200714/ico-banner-down.svg);
         &--active {
-          background-image: url(https://image.dalbitlive.com/main/200714/ico-banner-up.svg);
+          background-image: url(https://image.dallalive.com/main/200714/ico-banner-up.svg);
         }
       }
 
@@ -703,36 +703,36 @@
       }
 
       .tab_all_btn {
-        background: url(https://image.dalbitlive.com/main/common/ico_all_play_off.png)
+        background: url(https://image.dallalive.com/main/common/ico_all_play_off.png)
           no-repeat center / 32px;
 
         &.on {
-          background: url(https://image.dalbitlive.com/main/common/ico_all_play_on.png)
+          background: url(https://image.dallalive.com/main/common/ico_all_play_on.png)
             no-repeat center / 32px;
         }
       }
       .tab_video_btn {
-        background: url(https://image.dalbitlive.com/svg/ico_video_play_list_off.svg)
+        background: url(https://image.dallalive.com/svg/ico_video_play_list_off.svg)
           no-repeat center / 32px;
         &.on {
-          background: url(https://image.dalbitlive.com/main/ico_video_play_list_on_new_.svg)
+          background: url(https://image.dallalive.com/main/ico_video_play_list_on_new_.svg)
             no-repeat center / 32px;
         }
       }
       .tab_radio_btn {
-        background: url(https://image.dalbitlive.com/svg/ico_radio_play_list_off.svg)
+        background: url(https://image.dallalive.com/svg/ico_radio_play_list_off.svg)
           no-repeat center / 32px;
         &.on {
-          background: url(https://image.dalbitlive.com/main/ico_audio_play_list_on_new_.svg)
+          background: url(https://image.dallalive.com/main/ico_audio_play_list_on_new_.svg)
             no-repeat center / 32px;
         }
       }
 
       .tab_new_btn {
-        background: url(https://image.dalbitlive.com/main/ico_newMember_off.png)
+        background: url(https://image.dallalive.com/main/ico_newMember_off.png)
           no-repeat center / 32px;
         &.on {
-          background: url(https://image.dalbitlive.com/main/ico_newMember_on.png)
+          background: url(https://image.dallalive.com/main/ico_newMember_on.png)
             no-repeat center / 32px;
         }
       }
@@ -968,7 +968,7 @@
                 i {
                   opacity: 1;
                   margin-right: 0px;
-                  background-image: url(https://image.dalbitlive.com/svg/like_w_s.svg);
+                  background-image: url(https://image.dallalive.com/svg/like_w_s.svg);
                 }
                 & + .isGoodMember {
                   margin-left: 2px;
@@ -1002,32 +1002,32 @@
               }
 
               &--people {
-                background-image: url(https://image.dalbitlive.com/svg/people_g_s.svg);
+                background-image: url(https://image.dallalive.com/svg/people_g_s.svg);
               }
               &--hit {
-                background-image: url(https://image.dalbitlive.com/svg/ico_hit_g.svg);
+                background-image: url(https://image.dallalive.com/svg/ico_hit_g.svg);
               }
               &--like {
-                background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+                background-image: url(https://image.dallalive.com/svg/ico_like_g_s.svg);
               }
               &--newFan {
                 margin-right: 2px;
-                background-image: url(https://image.dalbitlive.com/main/ico_newpeople.svg);
+                background-image: url(https://image.dallalive.com/main/ico_newpeople.svg);
               }
               &--message {
-                background-image: url(https://image.dalbitlive.com/svg/ico_message_g_s.svg);
+                background-image: url(https://image.dallalive.com/svg/ico_message_g_s.svg);
               }
               &--goodMem {
-                background-image: url(https://image.dalbitlive.com/svg/ico_love_p.svg);
+                background-image: url(https://image.dallalive.com/svg/ico_love_p.svg);
               }
               &--goodMem1 {
-                background-image: url(https://image.dalbitlive.com/svg/ico_love_p1.svg);
+                background-image: url(https://image.dallalive.com/svg/ico_love_p1.svg);
               }
               &--goodMem2 {
-                background-image: url(https://image.dalbitlive.com/svg/ico_love_p2.svg);
+                background-image: url(https://image.dallalive.com/svg/ico_love_p2.svg);
               }
               &--goodMem3 {
-                background-image: url(https://image.dalbitlive.com/svg/ico_love_p3.svg);
+                background-image: url(https://image.dallalive.com/svg/ico_love_p3.svg);
               }
             }
           }
@@ -1114,7 +1114,7 @@
             width: 17px;
             height: 17px;
             text-indent: -9999px;
-            background: url(https://image.dalbitlive.com/svg/person_w.svg)
+            background: url(https://image.dallalive.com/svg/person_w.svg)
               center no-repeat;
           }
           .count-txt {

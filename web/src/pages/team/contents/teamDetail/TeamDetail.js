@@ -372,7 +372,7 @@ const TeamDetail = (props) => {
         <div className="buttonGroup">
           {(statChk === 'm' ||statChk === 't') &&
           <div className="moreBtn" onClick={clickMoreBtn}>
-            <img src="https://image.dalbitlive.com/common/header/icoMore-b.png" alt="" />
+            <img src="https://image.dallalive.com/common/header/icoMore-b.png" alt="" />
             {moreShow &&
             <div className="isMore">
               <button onClick={clickBenefits}>팀 혜택</button>

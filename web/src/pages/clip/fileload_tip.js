@@ -46,9 +46,9 @@ export default function fileloadTip(props) {
 
           <div className="tipContentBox">
             {tabState === 1 ? (
-              <img src="https://image.dalbitlive.com/app/clip_tip_itunes.png" alt="itunes" />
+              <img src="https://image.dallalive.com/app/clip_tip_itunes.png" alt="itunes" />
             ) : (
-              <img src="https://image.dalbitlive.com/app/clip_tip_memo.png" alt="memo" />
+              <img src="https://image.dallalive.com/app/clip_tip_memo.png" alt="memo" />
             )}
           </div>
         </Content>

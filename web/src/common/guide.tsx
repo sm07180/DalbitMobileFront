@@ -62,9 +62,9 @@ export default function Guide() {
               >
                 <div className="guideItem__icon">
                   <img src={flipIsLeft ? 
-                    "https://image.dalbitlive.com/common/icon/ico_flipLeft.png" 
+                    "https://image.dallalive.com/common/icon/ico_flipLeft.png" 
                     : 
-                    "https://image.dalbitlive.com/common/icon/ico_flipRight.png" 
+                    "https://image.dallalive.com/common/icon/ico_flipRight.png" 
                     }  alt="화면 좌우 전환" />
                 </div>
                 <p className="guideItem__text">

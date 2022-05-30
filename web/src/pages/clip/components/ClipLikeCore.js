@@ -24,7 +24,7 @@ const ClipLikeCore = (props) => {
         </div>
       </div>
       <button className="heart">
-        <img src="https://image.dalbitlive.com/clip/dalla/heartOn.png" />
+        <img src="https://image.dallalive.com/clip/dalla/heartOn.png" />
       </button>
     </div>
   );

@@ -2,20 +2,20 @@ export const moonRiseBtnArray = [
   {
     id: 0,
     title: '가이드',
-    srcOn: 'https://image.dalbitlive.com/event/moonrise/moonrise_guide_tab_on.png',
-    srcOff: 'https://image.dalbitlive.com/event/moonrise/moonrise_guide_tab_off.png'
+    srcOn: 'https://image.dallalive.com/event/moonrise/moonrise_guide_tab_on.png',
+    srcOff: 'https://image.dallalive.com/event/moonrise/moonrise_guide_tab_off.png'
   },
   {
     id: 1,
     title: '문법사',
-    srcOn: 'https://image.dalbitlive.com/event/moonrise/moonrise_wizard_tab_on.png',
-    srcOff: 'https://image.dalbitlive.com/event/moonrise/moonrise_wizard_tab_off.png'
+    srcOn: 'https://image.dallalive.com/event/moonrise/moonrise_wizard_tab_on.png',
+    srcOff: 'https://image.dallalive.com/event/moonrise/moonrise_wizard_tab_off.png'
   },
   {
     id: 2,
     title: '문집사',
-    srcOn: 'https://image.dalbitlive.com/event/moonrise/moonrise_houseowner_tab_on.png',
-    srcOff: 'https://image.dalbitlive.com/event/moonrise/moonrise_houseowner_tab_off.png'
+    srcOn: 'https://image.dallalive.com/event/moonrise/moonrise_houseowner_tab_on.png',
+    srcOff: 'https://image.dallalive.com/event/moonrise/moonrise_houseowner_tab_off.png'
   }
 ]
 

@@ -45,23 +45,23 @@ export default (props) => {
         <div className="event-content">
           <button onClick={bottomGo}>버튼</button>
           <div className="topPoint"></div>
-          <img src="https://image.dalbitlive.com/event/guest/20201127/img01.jpg" alt="게스트를 통한 더욱 재미있는 방송" />
-          <img src="https://image.dalbitlive.com/event/guest/20201127/img02.jpg" alt="게스트 초대, 게스트 초대 수락" />
+          <img src="https://image.dallalive.com/event/guest/20201127/img01.jpg" alt="게스트를 통한 더욱 재미있는 방송" />
+          <img src="https://image.dallalive.com/event/guest/20201127/img02.jpg" alt="게스트 초대, 게스트 초대 수락" />
           <img
-            src="https://image.dalbitlive.com/event/guest/20201127/new_img03_01.jpg"
+            src="https://image.dallalive.com/event/guest/20201127/new_img03_01.jpg"
             alt="게스트가 연결되면 DJ와 게스트 모두 반드시 이어폰으로 들어주세요!"
           />
           <img
             ref={topPoint}
-            src="https://image.dalbitlive.com/event/guest/20201127/new_img03_02.jpg"
+            src="https://image.dallalive.com/event/guest/20201127/new_img03_02.jpg"
             alt="센스있는 dj가 되어 효율적인 콘텐츠를 기획해보세요!"
           />
-          <img src="https://image.dalbitlive.com/event/guest/20201127/img04.jpg" alt="게스트에게 선물하기, 게스트연결 종료" />
+          <img src="https://image.dallalive.com/event/guest/20201127/img04.jpg" alt="게스트에게 선물하기, 게스트연결 종료" />
         </div>
 
         <div className="notice" ref={noticeList}>
           <h2 onClick={buttonToogle}>
-            <img className="notice__icon" src="https://image.dalbitlive.com/svg/ic_notice_red_radius.svg" alt="공지 아이콘" />
+            <img className="notice__icon" src="https://image.dallalive.com/svg/ic_notice_red_radius.svg" alt="공지 아이콘" />
             PC에서 게스트 이용 시 주의사항
             {noticeView ? (
               <i className="notice__checkicon down">체크아이콘</i>
@@ -168,11 +168,11 @@ const Content = styled.div`
         display: inline-block;
 
         &.down {
-          background: url('https://image.dalbitlive.com/svg/ic_arrow_up.svg') center no-repeat;
+          background: url('https://image.dallalive.com/svg/ic_arrow_up.svg') center no-repeat;
         }
 
         &.up {
-          background: url('https://image.dalbitlive.com/svg/ic_arrow_down.svg') center no-repeat;
+          background: url('https://image.dallalive.com/svg/ic_arrow_down.svg') center no-repeat;
         }
       }
       &__hiddeText {

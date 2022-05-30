@@ -36,7 +36,7 @@ export default (props) => {
               <img src={url} />
             ) : (
               <div className="deletedImgSlide">
-                <img src={"https://image.dalbitlive.com/svg/deleted_img_l.svg"} />
+                <img src={"https://image.dallalive.com/svg/deleted_img_l.svg"} />
                 삭제된 이미지
               </div>
             )}

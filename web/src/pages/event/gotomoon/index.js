@@ -69,18 +69,18 @@ export default function Gotomoon() {
     <div id="goToMoon">
       <Header title="이벤트" type="back"/>
       <div className="page">
-        <img src="https://image.dalbitlive.com/event/gotomoon/event_7781-top.png" className="img_full" alt="달라에 코인 등장! 코인 모아서 달나라 갈끄니까!"/>
+        <img src="https://image.dallalive.com/event/gotomoon/event_7781-top.png" className="img_full" alt="달라에 코인 등장! 코인 모아서 달나라 갈끄니까!"/>
         <div className="pageContent" ref={tabWrapRef}>
           <div className={`tabWrap ${tabFixed === true ? "fixed" : ""}`} ref={tabBtnRef}>
             <button className="tabMenu" onClick={() =>{
               dispatch(setGlobalCtxGoToMoonTab('info'));
             }}>
-              <img src="https://image.dalbitlive.com/event/gotomoon/event_gotomoonTitle-info.png" className="titleImg" alt="이벤트 설명"/>
+              <img src="https://image.dallalive.com/event/gotomoon/event_gotomoonTitle-info.png" className="titleImg" alt="이벤트 설명"/>
             </button>
             <button className="tabMenu" onClick={() =>{
               dispatch(setGlobalCtxGoToMoonTab('rank'));
             }}>
-              <img src="https://image.dalbitlive.com/event/gotomoon/event_gotomoonTitle-rank.png" className="titleImg" alt="이벤트 랭킹"/>
+              <img src="https://image.dallalive.com/event/gotomoon/event_gotomoonTitle-rank.png" className="titleImg" alt="이벤트 랭킹"/>
             </button>
           </div>
 

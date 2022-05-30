@@ -9,7 +9,7 @@ import Header from 'components/ui/new_header.js'
 import {storeButtonEvent} from "components/ui/header/TitleButton";
 import {useSelector} from "react-redux";
 
-const btnClose = 'https://image.dalbitlive.com/svg/ic_close_black.svg'
+const btnClose = 'https://image.dallalive.com/svg/ic_close_black.svg'
 
 export default () => {
   const noticeList = useRef()
@@ -52,7 +52,7 @@ export default () => {
           </button>
         </Header>
         <div className="content">
-          <img src="https://image.dalbitlive.com/event/lunch_event/lunchEvnet.jpg" alt="런치 결제 이벤트" />
+          <img src="https://image.dallalive.com/event/lunch_event/lunchEvnet.jpg" alt="런치 결제 이벤트" />
           {customHeader['os'] === OS_TYPE['IOS'] ? (
             <button
               className="payLink"
@@ -80,7 +80,7 @@ export default () => {
             <>
               <div className="conent_padding">
                 <img
-                  src="https://image.dalbitlive.com/event/lunch_event/lunchEvnet_down.jpg"
+                  src="https://image.dallalive.com/event/lunch_event/lunchEvnet_down.jpg"
                   alt="런치 결제 이벤트 자세히보기 열기"
                 />
               </div>
@@ -88,12 +88,12 @@ export default () => {
           ) : (
             <>
               <img
-                src="https://image.dalbitlive.com/event/lunch_event/lunchEvnet_up.jpg"
+                src="https://image.dallalive.com/event/lunch_event/lunchEvnet_up.jpg"
                 alt="런치 결제 이벤트 자세히보기 닫기"
               />
 
               <img
-                src="https://image.dalbitlive.com/event/lunch_event/lunchEvnet_hide.jpg"
+                src="https://image.dallalive.com/event/lunch_event/lunchEvnet_hide.jpg"
                 alt="100달 이상 결제시 5%의 달이 추가 지급됩니다."
               />
             </>

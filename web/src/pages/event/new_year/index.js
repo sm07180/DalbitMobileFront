@@ -88,7 +88,7 @@ export default () => {
       <div id="newYear">
         <div className="content">
           <button className="btnBack" onClick={() => history.goBack()}>
-            <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+            <img src="https://image.dallalive.com/svg/close_w_l.svg" alt="close" />
           </button>
           <img
             src={`${IMG_SERVER}/event/new_year/210126/visual.png`}
@@ -116,7 +116,7 @@ export default () => {
             </button>
           </div>
           <div className="notice">
-            <img src="https://image.dalbitlive.com/event/new_year/210126/notice_text.jpg" alt="유의사항" />
+            <img src="https://image.dallalive.com/event/new_year/210126/notice_text.jpg" alt="유의사항" />
             <ul className="text">
               <li> · 보너스는 이벤트 종료 후 2월1일 받을 수 있습니다. </li>
               <li>
@@ -174,7 +174,7 @@ const Content = styled.div`
           width: calc(100% - 40%);
           height: 32px;
           padding-left: 30px;
-          background: url('https://image.dalbitlive.com/event/thxgiving/ic_moon.png') no-repeat left center;
+          background: url('https://image.dallalive.com/event/thxgiving/ic_moon.png') no-repeat left center;
           background-size: 20px;
           font-size: 14px;
           line-height: 32px;

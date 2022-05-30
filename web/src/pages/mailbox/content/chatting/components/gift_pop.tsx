@@ -129,13 +129,13 @@ export default function giftPop({ setGiftPop, giftPop, sendGift }) {
                 <div className="myDalBoxItem">
                   {profile.dalCnt.toLocaleString()}
                   <button onClick={() => history.push(`/store`)}>
-                    <img src="https://image.dalbitlive.com/mailbox/ico_charge.svg" alt="충전" />
+                    <img src="https://image.dallalive.com/mailbox/ico_charge.svg" alt="충전" />
                   </button>
                 </div>
                 <div className="myDalBoxItem">
                   {profile.byeolCnt.toLocaleString()}
                   <button onClick={() => history.push(`/wallet/exchange`)}>
-                    <img src="https://image.dalbitlive.com/mailbox/ico_exchange.svg" alt="교환" />
+                    <img src="https://image.dallalive.com/mailbox/ico_exchange.svg" alt="교환" />
                   </button>
                 </div>
               </div>
@@ -151,7 +151,7 @@ export default function giftPop({ setGiftPop, giftPop, sendGift }) {
                       {value}
                       {isNew && (
                         <span className="newIcon">
-                          <img src="https://image.dalbitlive.com/mailbox/ico_new_item.svg" alt="New" />
+                          <img src="https://image.dallalive.com/mailbox/ico_new_item.svg" alt="New" />
                         </span>
                       )}
                     </button>
@@ -174,12 +174,12 @@ export default function giftPop({ setGiftPop, giftPop, sendGift }) {
                           <img src={thumbs} alt={itemNm} />
                           {isNew && (
                             <span className="newIcon">
-                              <img src="https://image.dalbitlive.com/mailbox/ico_new_item.svg" alt="New" />
+                              <img src="https://image.dallalive.com/mailbox/ico_new_item.svg" alt="New" />
                             </span>
                           )}
 
                           <span className="price">
-                            <img src="https://image.dalbitlive.com/mailbox/ico_moon_s.svg" alt="dal" /> {cost}
+                            <img src="https://image.dallalive.com/mailbox/ico_moon_s.svg" alt="dal" /> {cost}
                           </span>
                           {count > 0 && <span className="clickCnt">{count}</span>}
                         </li>

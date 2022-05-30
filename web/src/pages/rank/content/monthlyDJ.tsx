@@ -25,7 +25,7 @@ export default function MonthlyDJ() {
                         랭킹 5위까지 최종 선정된 DJ는<br/>
                         <span className="monthlyDJ__tooltip-strong">전체 회원 대상 푸시를 1회</span> 보낼 수 있습니다. 1:1문의를
                         통해 신청 가능하며 자세한 내용은 공지사항을 확인하세요.
-                        <img className="monthlyDJ__tooltip-btnClose" onClick={togglePopup} src="https://image.dalbitlive.com/svg/close_g_l.svg" alt="닫기" />
+                        <img className="monthlyDJ__tooltip-btnClose" onClick={togglePopup} src="https://image.dallalive.com/svg/close_g_l.svg" alt="닫기" />
                     </div>
                 )}
             </div>

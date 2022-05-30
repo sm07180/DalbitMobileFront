@@ -106,7 +106,7 @@ function CilpRank() {
                     pathname: `/clip_rank/guidance`
                   })
                 }}>
-                <img src="https://image.dalbitlive.com/images/clip_rank/benefit@2x.png " width={60} alt="혜택" />
+                <img src="https://image.dallalive.com/images/clip_rank/benefit@2x.png " width={60} alt="혜택" />
               </div>
             </Header>
 
